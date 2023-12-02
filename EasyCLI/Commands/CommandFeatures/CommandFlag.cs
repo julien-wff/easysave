@@ -20,7 +20,7 @@ public class CommandFlag : CommandArg
     /// </summary>
     /// <param name="shortHands">The short hands to set.</param>
     /// <returns>The CommandFlag instance.</returns>
-    public CommandFlag SetShortHands(List<string> shortHands)
+    public CommandFlag SetShortHands(IEnumerable<string> shortHands)
     {
         ShortHands.Clear();
         ShortHands.AddRange(shortHands);

@@ -65,7 +65,7 @@ public sealed class CommandBuilder
     /// </summary>
     /// <param name="aliases">The aliases to set.</param>
     /// <returns>The CommandBuilder instance.</returns>
-    public CommandBuilder SetAliases(List<string> aliases)
+    public CommandBuilder SetAliases(IEnumerable<string> aliases)
     {
         Aliases.Clear();
         Aliases.AddRange(aliases);

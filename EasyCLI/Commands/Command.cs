@@ -18,12 +18,12 @@ public abstract class Command
     /// </summary>
     /// <returns>True if the arguments are valid, false otherwise.</returns>
     /// <param name="args">Arguments to validate.</param>
-    public abstract bool ValidateArgs(List<string> args);
+    public abstract bool ValidateArgs(IEnumerable<string> args);
 
     /// <summary>
     /// Executes the command.
     /// This method should be overridden in derived classes to provide specific execution logic.
     /// </summary>
     /// <param name="args">Arguments to execute the command with.</param>
-    public abstract void Run(List<string> args);
+    public abstract void Run(IEnumerable<string> args);
 }
