@@ -33,9 +33,31 @@ public abstract class Command
     public void ShowHelp()
     {
         Console.WriteLine();
-        Console.WriteLine($"Usage: easysave {Params.Name}");
+        Console.Write($"Usage: easysave {Params.Name}");
+
+        foreach (var commandArg in Params.Args)
+        {
+            Console.Write(commandArg.Required ? $" <{commandArg.Name}>" : $" [{commandArg.Name}]");
+        }
+
+        if (Params.Flags.Count > 0)
+        {
+            Console.Write(" [flags]");
+        }
+
+        Console.WriteLine();
         Console.WriteLine();
         Console.WriteLine(Params.Description);
-        Console.WriteLine();
+
+        if (Params.Args.Count > 0)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Arguments:");
+
+            foreach (var commandArg in Params.Args)
+            {
+                Console.WriteLine($"  {commandArg.Name} - {commandArg.Description}");
+            }
+        }
     }
 }
