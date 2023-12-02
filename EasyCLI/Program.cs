@@ -1,9 +1,15 @@
-﻿namespace EasyCLI;
+﻿using EasyCLI.Commands;
+
+namespace EasyCLI;
 
 public static class Program
 {
     public static void Main(string[] args)
     {
-        throw new NotImplementedException();
+        CommandRunner
+            .CommandRunner
+            .GetInstance()
+            .RegisterCommand(new VersionCommand())
+            .RunWithArgs(args);
     }
 }
