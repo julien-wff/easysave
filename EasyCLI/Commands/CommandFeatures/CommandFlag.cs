@@ -32,10 +32,10 @@ public class CommandFlag : CommandArg
     /// </summary>
     /// <param name="alias">The alias to set.</param>
     /// <returns>The CommandFlag instance.</returns>
-    public CommandFlag SetAliases(string alias)
+    public CommandFlag SetAliases(IEnumerable<string> alias)
     {
         Aliases.Clear();
-        Aliases.Add(alias);
+        Aliases.AddRange(alias);
         return this;
     }
 }
