@@ -26,4 +26,16 @@ public abstract class Command
     /// </summary>
     /// <param name="args">Arguments to execute the command with.</param>
     public abstract void Run(IEnumerable<string> args);
+
+    /// <summary>
+    /// Prints the help message for the command.
+    /// </summary>
+    public void ShowHelp()
+    {
+        Console.WriteLine();
+        Console.WriteLine($"Usage: easysave {Params.Name}");
+        Console.WriteLine();
+        Console.WriteLine(Params.Description);
+        Console.WriteLine();
+    }
 }
