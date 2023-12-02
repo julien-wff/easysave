@@ -1,0 +1,48 @@
+name: SonarQube on main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: SonarQube
+    runs-on: windows-latest
+    permissions: read-all
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'adopt'
+      - name: Cache SonarQube packages
+        uses: actions/cache@v3
+        with:
+          path: ~\.sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache SonarQube scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v3
+        with:
+          path: .\.sonar\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+      - name: Install SonarQube scanner and dotnet-coverage
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          New-Item -Path .\.sonar\scanner -ItemType Directory
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+          dotnet tool install dotnet-coverage --tool-path .\.sonar\scanner
+      - name: Build and analyze
+        shell: powershell
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"julien-wff_easysave_AYwqSDqIaQcjCDvif8pU" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"  /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+          dotnet build
+          .\.sonar\scanner\dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
