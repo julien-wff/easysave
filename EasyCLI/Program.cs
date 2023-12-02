@@ -9,6 +9,7 @@ public static class Program
         CommandRunner
             .CommandRunner
             .GetInstance()
+            .RegisterCommand(new HelpCommand())
             .RegisterCommand(new VersionCommand())
             .RunWithArgs(args);
     }
