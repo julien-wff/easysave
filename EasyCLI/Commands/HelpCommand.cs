@@ -22,6 +22,32 @@ public class HelpCommand : Command
 
     public override void Run(IEnumerable<string> args)
     {
+        var argsList = args.ToList();
+
+        if (argsList.Count == 2)
+        {
+            var commandName = argsList[1];
+            var command = CommandRunner
+                .CommandRunner
+                .GetInstance()
+                .GetCommandFromArgs(argsList.GetRange(1, 1));
+
+            if (command is null)
+            {
+                Console.WriteLine($"Command {commandName} not found. Try 'easysave help' for more information.");
+                return;
+            }
+
+            command.ShowHelp();
+        }
+        else
+        {
+            PrintGeneralHelp();
+        }
+    }
+
+    private void PrintGeneralHelp()
+    {
         Console.WriteLine("EasySave CLI Help Page");
         Console.WriteLine();
         Console.WriteLine("Usage: easysave [command] [arguments]");
