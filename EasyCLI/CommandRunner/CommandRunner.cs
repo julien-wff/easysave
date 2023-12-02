@@ -51,11 +51,37 @@ public sealed class CommandRunner
     /// <returns>True if the command was successfully run, false otherwise.</returns>
     public bool RunWithArgs(IEnumerable<string> args)
     {
-        return false;
+        var argsList = args.ToList();
+        var command = GetCommandFromArgs(argsList);
+
+        if (command == null)
+        {
+            return false;
+        }
+
+        command.Run(argsList);
+        return true;
     }
 
     public Command? GetCommandFromArgs(IEnumerable<string> args)
     {
+        var argsList = args.ToList();
+
+        if (argsList.Count < 1)
+        {
+            return null;
+        }
+
+        var argument = argsList[0];
+
+        foreach (var command in Commands)
+        {
+            if (command.Params.Name == argument || command.Params.Aliases.Contains(argument))
+            {
+                return command;
+            }
+        }
+
         return null;
     }
 }

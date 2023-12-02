@@ -33,30 +33,56 @@ public class CommandRunnerTests
         result.Should().BeFalse();
     }
 
-    /*[Fact]
-    public void RunWithArgs_ShouldCallRun_WhenCommandMatches()
+    [Fact]
+    public void RunWithArgs_ShouldCallRun_WhenCommandNameMatches()
     {
         // Arrange
-        var commandRunner = new CommandRunner();
-        var command = new Mock<MockCommand>();
-        command.Setup(c => c.ValidateArgs(It.IsAny<IEnumerable<string>>())).Returns(true);
-        commandRunner.RegisterCommand(command.Object);
+        var commandRunner = CommandRunner.GetInstance();
+        var command = new MockCommand();
+        commandRunner.RegisterCommand(command);
         var args = new List<string> { "mock" };
 
         // Act
         var result = commandRunner.RunWithArgs(args);
 
         // Assert
-        command.Verify(c => c.Run(It.IsAny<IEnumerable<string>>()), Times.Once);
         result.Should().BeTrue();
-    }*/
+    }
 
-    [Fact]
-    public void GetCommandFromArgs_ShouldReturnNull_WhenNoCommandMatches()
+    [Theory]
+    [InlineData("mock")]
+    [InlineData("mo")]
+    [InlineData("m")]
+    public void GetCommandFromArgs_ShouldReturnCommand_WhenCommandMatches(string input)
     {
         // Arrange
         var commandRunner = CommandRunner.GetInstance();
-        var args = new List<string> { "command" };
+        var command = new MockCommand();
+        commandRunner.RegisterCommand(command);
+        var args = new List<string> { input };
+
+        // Act
+        var result = commandRunner.GetCommandFromArgs(args);
+
+        // Assert
+        command.Params.Name.Should().Be(result?.Params.Name);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("moc")]
+    [InlineData("mockk")]
+    public void GetCommandFromArgs_ShouldReturnNull_WhenNoCommandMatches(string? input)
+    {
+        // Arrange
+        var commandRunner = CommandRunner.GetInstance();
+        var command = new MockCommand();
+        commandRunner.RegisterCommand(command);
+        var args = new List<string>();
+        if (input != null)
+        {
+            args.Add(input);
+        }
 
         // Act
         var result = commandRunner.GetCommandFromArgs(args);
@@ -64,21 +90,4 @@ public class CommandRunnerTests
         // Assert
         result.Should().BeNull();
     }
-
-    /*[Fact]
-    public void GetCommandFromArgs_ShouldReturnCommand_WhenCommandMatches()
-    {
-        // Arrange
-        var commandRunner = new CommandRunner();
-        var command = new Mock<MockCommand>();
-        command.Setup(c => c.ValidateArgs(It.IsAny<IEnumerable<string>>())).Returns(true);
-        commandRunner.RegisterCommand(command.Object);
-        var args = new List<string> { "mock" };
-
-        // Act
-        var result = commandRunner.GetCommandFromArgs(args);
-
-        // Assert
-        result.Should().Be(command.Object);
-    }*/
 }

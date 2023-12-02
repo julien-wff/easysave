@@ -7,7 +7,8 @@ public class MockCommand : Command
 {
     public override CommandBuilder Params { get; } = new CommandBuilder()
         .SetName("mock")
-        .SetDescription("Mock command");
+        .SetDescription("Mock command")
+        .SetAliases(new[] { "mo", "m" });
 
     public override bool ValidateArgs(IEnumerable<string> args)
     {
