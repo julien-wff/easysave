@@ -39,7 +39,7 @@ jobs:
       - name: Build and analyze
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"julien-wff_easysave_AYwqSDqIaQcjCDvif8pU" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"  /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"julien-wff_easysave_AYwqSDqIaQcjCDvif8pU" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"  /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.branch.name="${{ github.ref }}"
           dotnet build
           .\.sonar\scanner\dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
