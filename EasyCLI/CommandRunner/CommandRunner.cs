@@ -8,9 +8,30 @@ namespace EasyCLI.CommandRunner;
 public sealed class CommandRunner
 {
     /// <summary>
+    /// Contains the singleton instance of the CommandRunner.
+    /// </summary>
+    private static CommandRunner? _instance;
+
+    /// <summary>
+    /// Makes the constructor private to prevent instantiation outside of the class.
+    /// </summary>
+    private CommandRunner()
+    {
+    }
+
+    /// <summary>
     /// Gets the collection of commands registered with the CommandRunner.
     /// </summary>
     public List<Command> Commands { get; } = new();
+
+    /// <summary>
+    /// Gets the singleton instance of the CommandRunner. If the instance does not exist, it is created.
+    /// </summary>
+    /// <returns>CommandRunner instance</returns>
+    public static CommandRunner GetInstance()
+    {
+        return _instance ??= new CommandRunner();
+    }
 
     /// <summary>
     /// Registers a command with the CommandRunner.

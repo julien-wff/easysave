@@ -9,21 +9,21 @@ public class CommandRunnerTests
     public void RegisterCommand_ShouldAddCommandToCommands()
     {
         // Arrange
-        var commandRunner = new CommandRunner();
+        var commandRunner = CommandRunner.GetInstance();
         var command = new Mock<MockCommand>();
 
         // Act
         commandRunner.RegisterCommand(command.Object);
 
         // Assert
-        commandRunner.Commands.Should().Contain(command.Object);
+        CommandRunner.GetInstance().Commands.Should().Contain(command.Object);
     }
 
     [Fact]
     public void RunWithArgs_ShouldReturnFalse_WhenNoCommandMatches()
     {
         // Arrange
-        var commandRunner = new CommandRunner();
+        var commandRunner = CommandRunner.GetInstance();
         var args = new List<string> { "command" };
 
         // Act
@@ -55,7 +55,7 @@ public class CommandRunnerTests
     public void GetCommandFromArgs_ShouldReturnNull_WhenNoCommandMatches()
     {
         // Arrange
-        var commandRunner = new CommandRunner();
+        var commandRunner = CommandRunner.GetInstance();
         var args = new List<string> { "command" };
 
         // Act
