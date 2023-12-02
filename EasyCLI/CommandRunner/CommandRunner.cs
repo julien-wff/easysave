@@ -52,6 +52,21 @@ public sealed class CommandRunner
     public bool RunWithArgs(IEnumerable<string> args)
     {
         var argsList = args.ToList();
+
+        if (argsList.Count == 0)
+        {
+            var helpCommand = Commands
+                .Find(cmd => cmd.Params.Name == "help");
+
+            if (helpCommand == null)
+            {
+                return false;
+            }
+
+            helpCommand.Run(argsList);
+            return true;
+        }
+
         var command = GetCommandFromArgs(argsList);
 
         if (command == null)
