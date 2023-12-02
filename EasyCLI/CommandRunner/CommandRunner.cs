@@ -32,4 +32,9 @@ public sealed class CommandRunner
     {
         return false;
     }
+
+    public Command? GetCommandFromArgs(IEnumerable<string> args)
+    {
+        return null;
+    }
 }
