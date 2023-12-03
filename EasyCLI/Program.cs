@@ -11,6 +11,7 @@ public static class Program
             .GetInstance()
             .RegisterCommand(new HelpCommand())
             .RegisterCommand(new VersionCommand())
+            .RegisterCommand(new ListCommand())
             .RunWithArgs(args);
     }
 }
