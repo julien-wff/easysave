@@ -1,3 +1,5 @@
+using EasyLib.Json;
+
 namespace EasyLib.Files;
 
 /// <summary>
@@ -28,4 +30,19 @@ public class StateManager
     }
 
     public static StateManager Instance { get; } = new();
+
+    public List<Job.Job> ReadJobs()
+    {
+        var jsonJobs = JsonFileUtils.ReadJson<List<JsonJob>>(StateFilePath);
+
+        return jsonJobs == null
+            ? new List<Job.Job>()
+            : jsonJobs.Select(job => new Job.Job(job)).ToList();
+    }
+
+    public void WriteJobs(List<Job.Job> jobs)
+    {
+        var jsonJobs = jobs.Select(job => job.ToJsonJob()).ToList();
+        JsonFileUtils.WriteJson(StateFilePath, jsonJobs);
+    }
 }
