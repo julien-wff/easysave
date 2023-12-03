@@ -1,7 +1,7 @@
 ﻿namespace EasyLib.Job.BackupFolderStrategy;
 
 /// <summary>
-/// 
+/// selects only the finished backup folders.
 /// </summary>
 public class DifferentialBackupFolderStrategy : IBackupFolderStrategy
 {
