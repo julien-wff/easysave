@@ -12,6 +12,7 @@ public static class Program
             .RegisterCommand(new HelpCommand())
             .RegisterCommand(new VersionCommand())
             .RegisterCommand(new ListCommand())
+            .RegisterCommand(new CheckCommand())
             .RunWithArgs(args);
     }
 }

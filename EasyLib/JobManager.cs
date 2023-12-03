@@ -128,4 +128,58 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     {
         job.Cancel();
     }
+
+    public JobCheckRules CheckJobRules(int id, string name, string source, string destination, bool testEmpty = true)
+    {
+        if (!Path.IsPathFullyQualified(source))
+        {
+            return JobCheckRules.SourcePathInvalid;
+        }
+
+        if (!Path.IsPathFullyQualified(destination))
+        {
+            return JobCheckRules.DestinationPathInvalid;
+        }
+
+        if (!Path.Exists(source))
+        {
+            return JobCheckRules.SourcePathDoesNotExist;
+        }
+
+        if (!Path.Exists(destination))
+        {
+            return JobCheckRules.DestinationPathDoesNotExist;
+        }
+
+        if (source.StartsWith(destination) || destination.StartsWith(source))
+        {
+            return JobCheckRules.SharedRoot;
+        }
+
+        var idCount = _jobs.Count(job => job.Id == id);
+
+        if (idCount > 1)
+        {
+            return JobCheckRules.DuplicateId;
+        }
+
+        var jobs = _jobs.Where(job => job.Id != id).ToList();
+
+        if (jobs.Exists(job => job.Name == name))
+        {
+            return JobCheckRules.DuplicateName;
+        }
+
+        if (jobs.Exists(job => job.SourceFolder == source && job.DestinationFolder == destination))
+        {
+            return JobCheckRules.DuplicatePaths;
+        }
+
+        if (testEmpty && Directory.EnumerateFileSystemEntries(destination).Any())
+        {
+            return JobCheckRules.DestinationNotEmpty;
+        }
+
+        return JobCheckRules.Valid;
+    }
 }
