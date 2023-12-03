@@ -31,7 +31,7 @@ public class BackupFolder
         
         foreach (var subDirectory in subDirectories)
         {
-            var backupFolder = new BackupFolder(subDirectory.FullName+@"\");
+            var backupFolder = new BackupFolder(subDirectory.FullName);
             backupFolder.Walk(subDirectory.FullName);
             SubFolders.Add(backupFolder);
         }
