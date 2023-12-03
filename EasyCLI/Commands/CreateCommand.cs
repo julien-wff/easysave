@@ -85,7 +85,7 @@ public class CreateCommand : Command
         jm.FetchJobs();
 
         var jobCheck = jm.CheckJobRules(-1, name, source, destination);
-        if (jobCheck != JobCheckRules.Valid)
+        if (jobCheck != JobCheckRule.Valid)
         {
             // Translates the error message from the JobCheckRules enum
             Console.WriteLine(Localization.JobCheckRules.GetString(jobCheck));

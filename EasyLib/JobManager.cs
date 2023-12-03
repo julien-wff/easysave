@@ -129,57 +129,57 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
         job.Cancel();
     }
 
-    public JobCheckRules CheckJobRules(int id, string name, string source, string destination, bool testEmpty = true)
+    public JobCheckRule CheckJobRules(int id, string name, string source, string destination, bool testEmpty = true)
     {
         if (!Path.IsPathFullyQualified(source))
         {
-            return JobCheckRules.SourcePathInvalid;
+            return JobCheckRule.SourcePathInvalid;
         }
 
         if (!Path.IsPathFullyQualified(destination))
         {
-            return JobCheckRules.DestinationPathInvalid;
+            return JobCheckRule.DestinationPathInvalid;
         }
 
         if (!Path.Exists(source))
         {
-            return JobCheckRules.SourcePathDoesNotExist;
+            return JobCheckRule.SourcePathDoesNotExist;
         }
 
         if (!Path.Exists(destination))
         {
-            return JobCheckRules.DestinationPathDoesNotExist;
+            return JobCheckRule.DestinationPathDoesNotExist;
         }
 
         if (source.StartsWith(destination) || destination.StartsWith(source))
         {
-            return JobCheckRules.SharedRoot;
+            return JobCheckRule.SharedRoot;
         }
 
         var idCount = _jobs.Count(job => job.Id == id);
 
         if (idCount > 1)
         {
-            return JobCheckRules.DuplicateId;
+            return JobCheckRule.DuplicateId;
         }
 
         var jobs = _jobs.Where(job => job.Id != id).ToList();
 
         if (jobs.Exists(job => job.Name == name))
         {
-            return JobCheckRules.DuplicateName;
+            return JobCheckRule.DuplicateName;
         }
 
         if (jobs.Exists(job => job.SourceFolder == source && job.DestinationFolder == destination))
         {
-            return JobCheckRules.DuplicatePaths;
+            return JobCheckRule.DuplicatePaths;
         }
 
         if (testEmpty && Directory.EnumerateFileSystemEntries(destination).Any())
         {
-            return JobCheckRules.DestinationNotEmpty;
+            return JobCheckRule.DestinationNotEmpty;
         }
 
-        return JobCheckRules.Valid;
+        return JobCheckRule.Valid;
     }
 }

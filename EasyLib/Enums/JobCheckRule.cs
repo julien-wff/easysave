@@ -3,7 +3,7 @@ namespace EasyLib.Enums;
 /// <summary>
 /// List of different rules to respect when creating or checking a job
 /// </summary>
-public enum JobCheckRules
+public enum JobCheckRule
 {
     Valid,
     SourcePathInvalid,

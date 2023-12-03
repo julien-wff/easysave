@@ -38,7 +38,7 @@ public class CheckCommand : Command
         foreach (var job in jobs)
         {
             var checkResult = jm.CheckJobRules((int)job.Id, job.Name, job.SourceFolder, job.DestinationFolder);
-            if (checkResult != JobCheckRules.Valid)
+            if (checkResult != JobCheckRule.Valid)
             {
                 Console.WriteLine(
                     $"Job {job.Name} ({job.Id}) is invalid: {Localization.JobCheckRules.GetString(checkResult)}");
