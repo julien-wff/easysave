@@ -1,5 +1,6 @@
 using EasyLib.Enums;
 using EasyLib.Events;
+using EasyLib.Json;
 
 namespace EasyLib.Job;
 
@@ -16,15 +17,30 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
 {
     private readonly List<IJobStatusSubscriber> _observers = new();
     public string DestinationFolder = destinationFolder;
-    public ulong FilesBytesCopied = 0;
-    public uint FilesCopied = 0;
-    public uint FilesCount = 0;
-    public ulong FilesSizeBytes = 0;
+    public ulong FilesBytesCopied;
+    public uint FilesCopied;
+    public uint FilesCount;
+    public ulong FilesSizeBytes;
     public uint Id;
     public string Name = name;
     public string SourceFolder = sourceFolder;
     public JobState State = state;
     public JobType Type = type;
+
+    /// <summary>
+    /// Create a job instance from a JsonJob object
+    /// </summary>
+    /// <param name="job">JsonJob object</param>
+    public Job(JsonJob job) : this(job.name, job.source_folder, job.destination_folder, JobType.Full)
+    {
+        Id = job.id;
+        Type = EnumConverter<JobType>.ConvertToEnum(job.type);
+        State = EnumConverter<JobState>.ConvertToEnum(job.state);
+        FilesCount = job.active_job_info?.total_file_count ?? 0;
+        FilesSizeBytes = job.active_job_info?.total_file_size ?? 0;
+        FilesCopied = job.active_job_info?.files_copied ?? 0;
+        FilesBytesCopied = job.active_job_info?.bytes_copied ?? 0;
+    }
 
     public void Subscribe(IJobStatusSubscriber subscriber)
     {
@@ -34,6 +50,32 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
     public void Unsubscribe(IJobStatusSubscriber subscriber)
     {
         _observers.Remove(subscriber);
+    }
+
+    /// <summary>
+    /// Convert a job instance to a JsonJob object
+    /// </summary>
+    /// <returns>JsonJob object</returns>
+    public JsonJob ToJsonJob()
+    {
+        return new JsonJob
+        {
+            id = Id,
+            name = Name,
+            source_folder = SourceFolder,
+            destination_folder = DestinationFolder,
+            type = EnumConverter<JobType>.ConvertToString(Type),
+            state = EnumConverter<JobState>.ConvertToString(State),
+            active_job_info = State == JobState.End
+                ? null
+                : new JsonActiveJobInfo
+                {
+                    total_file_count = FilesCount,
+                    total_file_size = FilesSizeBytes,
+                    files_copied = FilesCopied,
+                    bytes_copied = FilesBytesCopied
+                }
+        };
     }
 
     /// <summary>
