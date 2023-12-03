@@ -18,7 +18,7 @@ public class BackupFile
         Hash = _calculateChecksum(path);
     }
     
-    private string _calculateChecksum(string path)
+    static string _calculateChecksum(string path)
     {
         using (var md5 = MD5.Create())
         {

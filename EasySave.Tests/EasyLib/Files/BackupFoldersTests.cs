@@ -27,7 +27,7 @@ public class BackupFoldersTests
         // Assert
         Assert.Equal(tempDirName, backupFolder.Name);
         Assert.Equal(2, backupFolder.SubFolders.Count);
-        Assert.Equal(1, backupFolder.SubFolders[0].SubFolders.Count);
+        Assert.Single(backupFolder.SubFolders[0].SubFolders);
         Assert.Equal("dir1", backupFolder.SubFolders[0].Name);
         Assert.Equal("dir3", backupFolder.SubFolders[0].SubFolders[0].Name);
         Assert.Equal("file0.txt", backupFolder.Files[0].Name);
