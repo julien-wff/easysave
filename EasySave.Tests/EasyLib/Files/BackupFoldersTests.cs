@@ -12,7 +12,7 @@ public class BackupFoldersTests
         Directory.CreateDirectory(tempDirPath + @"BackupFolderTests\");
         tempDirPath += @"BackupFolderTests\";
         var backupFolder = new BackupFolder(tempDirPath);
-        string tempDirName = Path.GetFileName(Path.GetDirectoryName(tempDirPath));
+        string tempDirName = Path.GetFileName(Path.GetDirectoryName(tempDirPath))!;
         Directory.CreateDirectory(tempDirPath + @"dir1\");
         Directory.CreateDirectory(tempDirPath + @"dir2\");
         Directory.CreateDirectory(tempDirPath + "dir1\\dir3\\");

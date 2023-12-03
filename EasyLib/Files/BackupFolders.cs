@@ -1,4 +1,5 @@
-﻿namespace EasyLib.Files;
+﻿
+namespace EasyLib.Files;
 
 /// <summary>
 /// Recursively reproduce the file tree given by the file path
@@ -6,15 +7,15 @@
 public class BackupFolder
 {
     public readonly string Name;
-    public List<BackupFolder> SubFolders;
-    public List<BackupFile> Files;
+    public readonly List<BackupFolder> SubFolders;
+    public readonly List<BackupFile> Files;
     /// <summary>
     /// Constructor of the BackupFolder class
     /// </summary>
     /// <param name="path"></param>
     public BackupFolder(string path)
     {
-        this.Name = Path.GetFileName(Path.GetDirectoryName(path));
+        this.Name = Path.GetFileName(Path.GetDirectoryName(path))!;
         this.SubFolders = new();
         this.Files = new();
     }
