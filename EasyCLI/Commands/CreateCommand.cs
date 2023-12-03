@@ -82,7 +82,6 @@ public class CreateCommand : Command
         }
 
         var jm = new JobManager();
-        jm.FetchJobs();
 
         var jobCheck = jm.CheckJobRules(-1, name, source, destination);
         if (jobCheck != JobCheckRule.Valid)

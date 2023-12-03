@@ -19,6 +19,11 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     /// </summary>
     private readonly List<IJobStatusSubscriber> _subscribers = new();
 
+    public JobManager()
+    {
+        FetchJobs();
+    }
+
     public void Subscribe(IJobStatusSubscriber subscriber)
     {
         _subscribers.Add(subscriber);
@@ -118,6 +123,7 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     public void DeleteJob(Job.Job job)
     {
         _jobs.Remove(job);
+        StateManager.Instance.WriteJobs(_jobs);
     }
 
     /// <summary>
