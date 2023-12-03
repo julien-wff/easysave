@@ -28,4 +28,14 @@ public class BackupFile
             }
         }
     }
+    
+    public static bool operator== (BackupFile file1, BackupFile file2)
+    {
+        return (file1.Hash == file2.Hash);
+    }
+
+    public static bool operator !=(BackupFile file1, BackupFile file2)
+    {
+        return !(file1 == file2);
+    }
 }

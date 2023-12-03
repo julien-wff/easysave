@@ -1,4 +1,6 @@
 ﻿
+using EasyLib.Job;
+
 namespace EasyLib.Files;
 
 /// <summary>
@@ -41,5 +43,61 @@ public class TransferManager
         {
             _getFileInfo(subFolder);
         }
+    }
+    public void ComputeDifference(List<string> folders)
+    {
+        _destinationFolder = _sourceFolder;
+        foreach (var folder in folders)
+        {
+            BackupFolder tempFolder = new BackupFolder(folder);
+            tempFolder.Walk(folder);
+            CompareFolders(tempFolder, _destinationFolder);
+        }
+        
+    }
+
+    private void CompareFolders(BackupFolder actualFolder, BackupFolder destinationFolder)
+    {
+        foreach (var sourceFile in actualFolder.Files)
+        {
+            foreach (var destinationFile in destinationFolder.Files)
+            {
+                if (sourceFile == destinationFile)
+                {
+                    destinationFolder.Files.Remove(destinationFile);
+                }
+            }
+        }
+        foreach (var actualSubFolder in actualFolder.SubFolders)
+        {
+            foreach (var subFolder in destinationFolder.SubFolders)
+            {
+                if (actualSubFolder == subFolder)
+                {
+                    CompareFolders(actualSubFolder, subFolder);
+                }
+            }
+        }
+        
+    }
+    
+    public void CreateDestStructure()
+    {
+        
+    }
+    
+    public void TransferFile()
+    {
+        
+    }
+    
+    public void TransferFiles()
+    {
+        
+    }
+    
+    public void TransferChecksum()
+    {
+        
     }
 }

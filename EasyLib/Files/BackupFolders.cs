@@ -15,9 +15,9 @@ public class BackupFolder
     /// <param name="path"></param>
     public BackupFolder(string path)
     {
-        this.Name = Path.GetFileName(Path.GetDirectoryName(path))!;
-        this.SubFolders = new();
-        this.Files = new();
+        Name = Path.GetFileName(Path.GetDirectoryName(path))!;
+        SubFolders = new();
+        Files = new();
     }
     /// <summary>
     /// This method recursively walks through the file tree
@@ -41,5 +41,15 @@ public class BackupFolder
             var backupFile = new BackupFile(file.FullName);
             Files.Add(backupFile);
         }
+    }
+    
+    public static bool operator== (BackupFolder folder1, BackupFolder folder2)
+    {
+        return (folder1.Name == folder2.Name);
+    }
+
+    public static bool operator !=(BackupFolder folder1, BackupFolder folder2)
+    {
+        return !(folder1 == folder2);
     }
 }
