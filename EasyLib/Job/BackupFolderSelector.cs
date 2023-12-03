@@ -4,8 +4,8 @@ namespace EasyLib.Job;
 
 public class BackupFolderSelector
 {
-    private IBackupFolderStrategy _typeSelector;
-    private IBackupFolderStrategy _stateSelector;
+    readonly IBackupFolderStrategy _typeSelector;
+    readonly IBackupFolderStrategy _stateSelector;
     /// <summary>
     /// Constructor of the BackupFolderSelector class.
     /// </summary>
