@@ -17,6 +17,7 @@ public static class EnumConverter<T> where T : Enum
 
     public static T ConvertToEnum(string enumValueStr)
     {
+        enumValueStr = enumValueStr[0].ToString().ToUpper() + enumValueStr[1..].ToLower();
         if (StringToEnumMap.TryGetValue(enumValueStr, out var enumValue))
         {
             return enumValue;
