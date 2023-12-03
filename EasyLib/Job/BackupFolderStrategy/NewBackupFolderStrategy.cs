@@ -7,6 +7,6 @@ public class NewBackupFolderStrategy : IBackupFolderStrategy
 {
     public List<string> SelectFolders(List<string> folders, string? pausedJob)
     {
-        return new List<string>();
+        return folders;
     }
 }

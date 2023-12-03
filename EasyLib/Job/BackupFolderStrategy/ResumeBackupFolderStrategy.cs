@@ -7,11 +7,10 @@ public class ResumeBackupFolderStrategy : IBackupFolderStrategy
 {
     public List<string> SelectFolders(List<string> folders, string? pausedJob)
     {
-        var selectedFolder = new List<string>();
         if (pausedJob != null)
         {
-            selectedFolder.Add(pausedJob);
+            folders.Add(pausedJob);
         }
-        return selectedFolder;
+        return folders;
     }
 }
