@@ -101,7 +101,11 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     /// <returns>Newly created job</returns>
     public Job.Job CreateJob(string name, string src, string dest, JobType type)
     {
-        var newJob = new Job.Job(name, src, dest, type);
+        var highestId = _jobs.Count > 0 ? _jobs.Max(job => job.Id) : 0;
+        var newJob = new Job.Job(name, src, dest, type)
+        {
+            Id = highestId + 1
+        };
         _jobs.Add(newJob);
         StateManager.Instance.WriteJobs(_jobs);
         return newJob;
