@@ -1,5 +1,6 @@
 using EasyLib.Enums;
 using EasyLib.Events;
+using EasyLib.Files;
 
 namespace EasyLib;
 
@@ -43,7 +44,9 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     /// <returns>True if the operation is successful</returns>
     public bool FetchJobs()
     {
-        throw new NotImplementedException();
+        _jobs.Clear();
+        _jobs.AddRange(StateManager.Instance.ReadJobs());
+        return true;
     }
 
     /// <summary>
@@ -100,6 +103,7 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     {
         var newJob = new Job.Job(name, src, dest, type);
         _jobs.Add(newJob);
+        StateManager.Instance.WriteJobs(_jobs);
         return newJob;
     }
 
