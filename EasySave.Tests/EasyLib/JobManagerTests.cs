@@ -32,6 +32,9 @@ public class JobManagerTests
 
     [Theory]
     [InlineData("2")]
+    [InlineData("2,2")]
+    [InlineData("job2,2")]
+    [InlineData("2,2-2")]
     [InlineData("job2")]
     public void GetJobsFromString_ShouldReturnIndividualJob(string input)
     {

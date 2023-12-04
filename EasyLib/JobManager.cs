@@ -83,7 +83,7 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
             if (int.TryParse(segment, out var id))
             {
                 var job = _jobs.Find(job => job.Id == id);
-                if (job != null)
+                if (job != null && !jobs.Contains(job))
                 {
                     jobs.Add(job);
                 }
@@ -94,13 +94,13 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
                 int firstNum = int.Parse(range[0]), lastNum = int.Parse(range[1]);
                 var start = (uint)Math.Min(firstNum, lastNum);
                 var end = (uint)Math.Max(firstNum, lastNum);
-                var jobRange = _jobs.Where(job => job.Id >= start && job.Id <= end);
+                var jobRange = _jobs.Where(job => job.Id >= start && job.Id <= end && !jobs.Contains(job)).ToList();
                 jobs.AddRange(jobRange);
             }
             else
             {
                 var job = _jobs.Find(job => job.Name == segment);
-                if (job != null)
+                if (job != null && !jobs.Contains(job))
                 {
                     jobs.Add(job);
                 }
