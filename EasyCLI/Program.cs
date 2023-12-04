@@ -11,6 +11,10 @@ public static class Program
             .GetInstance()
             .RegisterCommand(new HelpCommand())
             .RegisterCommand(new VersionCommand())
+            .RegisterCommand(new ListCommand())
+            .RegisterCommand(new CheckCommand())
+            .RegisterCommand(new CreateCommand())
+            .RegisterCommand(new DeleteCommand())
             .RunWithArgs(args);
     }
 }

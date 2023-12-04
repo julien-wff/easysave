@@ -59,5 +59,16 @@ public abstract class Command
                 Console.WriteLine($"  {commandArg.Name} - {commandArg.Description}");
             }
         }
+
+        if (Params.Flags.Count > 0)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Flags:");
+
+            foreach (var commandFlag in Params.Flags)
+            {
+                Console.WriteLine($"  --{commandFlag.Name} - {commandFlag.Description}");
+            }
+        }
     }
 }
