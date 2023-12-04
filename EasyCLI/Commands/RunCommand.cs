@@ -77,6 +77,7 @@ public class RunCommand : Command, IJobStatusSubscriber
         }
 
         jm.Subscribe(this);
+        Console.WriteLine($"Starting {jobs.Count} job(s)...");
         var executedJobs = jm.ExecuteJobs(jobs);
         jm.Unsubscribe(this);
 
