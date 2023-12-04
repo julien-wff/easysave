@@ -1,24 +1,23 @@
-﻿
-namespace EasyLib.Files;
+﻿namespace EasyLib.Files;
 
 /// <summary>
 /// Recursively reproduce the file tree given by the file path
 /// </summary>
 public class BackupFolder
 {
+    public readonly List<BackupFile> Files = new();
     public readonly string Name;
-    public readonly List<BackupFolder> SubFolders;
-    public readonly List<BackupFile> Files;
+    public readonly List<BackupFolder> SubFolders = new();
+
     /// <summary>
     /// Constructor of the BackupFolder class
     /// </summary>
     /// <param name="path"></param>
     public BackupFolder(string path)
     {
-        this.Name = Path.GetFileName(Path.GetDirectoryName(path))!;
-        this.SubFolders = new();
-        this.Files = new();
+        Name = Path.GetFileName(Path.GetDirectoryName(path))!;
     }
+
     /// <summary>
     /// This method recursively walks through the file tree
     /// </summary>
@@ -28,14 +27,14 @@ public class BackupFolder
         var directoryInfo = new DirectoryInfo(path);
         var subDirectories = directoryInfo.GetDirectories();
         var files = directoryInfo.GetFiles();
-        
+
         foreach (var subDirectory in subDirectories)
         {
-            var backupFolder = new BackupFolder(subDirectory.FullName+@"\");
+            var backupFolder = new BackupFolder(subDirectory.FullName + Path.DirectorySeparatorChar);
             backupFolder.Walk(subDirectory.FullName);
             SubFolders.Add(backupFolder);
         }
-        
+
         foreach (var file in files)
         {
             var backupFile = new BackupFile(file.FullName);

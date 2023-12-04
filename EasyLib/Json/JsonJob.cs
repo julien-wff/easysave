@@ -7,11 +7,11 @@ namespace EasyLib.Json;
 /// </summary>
 public struct JsonJob
 {
-    public uint id;
-    public string name;
-    public string source_folder;
-    public string destination_folder;
-    public string type;
-    public string state;
-    public JsonActiveJobInfo? active_job_info;
+    public uint id { get; init; }
+    public string name { get; init; }
+    public string source_folder { get; init; }
+    public string destination_folder { get; init; }
+    public string type { get; init; }
+    public string state { get; init; }
+    public JsonActiveJobInfo? active_job_info { get; init; }
 }
