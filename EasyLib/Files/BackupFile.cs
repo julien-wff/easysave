@@ -25,4 +25,14 @@ public class BackupFile
         using var stream = File.OpenRead(path);
         return BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", string.Empty);
     }
+    
+    public static bool operator== (BackupFile file1, BackupFile file2)
+    {
+        return (file1.Hash == file2.Hash);
+    }
+
+    public static bool operator !=(BackupFile file1, BackupFile file2)
+    {
+        return !(file1 == file2);
+    }
 }
