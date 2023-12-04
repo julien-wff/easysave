@@ -1,5 +1,6 @@
 ﻿using EasyLib.Enums;
 using EasyLib.Events;
+using EasyLib.Json;
 
 namespace EasyLib.Files;
 
@@ -137,11 +138,23 @@ public class TransferManager : IJobStatusPublisher
     {
         foreach (var file in folder.Files)
         {
+            var copyStart = DateTime.Now;
             File.Copy(sourceFolder + Path.DirectorySeparatorChar + file.Name,
                 destinationFolderPath + Path.DirectorySeparatorChar + file.Name);
+            var copyEnd = DateTime.Now;
+
             _job.FilesCopied++;
             _job.FilesBytesCopied += file.Size;
             _notifySubscribersForChange();
+
+            LogManager.Instance.AppendLog(new JsonLogElement
+            {
+                JobName = _job.Name,
+                SourcePath = Path.Combine(sourceFolder, file.Name),
+                DestinationPath = Path.Combine(destinationFolderPath, file.Name),
+                FileSize = file.Size,
+                TransferTime = (int)(copyEnd - copyStart).TotalMilliseconds
+            });
         }
 
         foreach (var subFolder in folder.SubFolders)
