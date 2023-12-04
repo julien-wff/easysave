@@ -34,6 +34,11 @@ This project contains the core of the software. It contains the backup jobs, the
 [Open class diagram online](https://www.figma.com/file/69B3eZT084VoueoZVX9qXm/ProgSystem?type=whiteboard&node-id=1-5137&t=XkVQ1kuQdN3ifJBx-4)
 ![Lib Class Diagram](./assets/ProgSystemLib.png)
 
+### Communication between CLI and Lib
+The `CLI` instantiate `JobManager` from the `LIB`.
+
+The `CLI` subscribe to the `JobStatusListener` observer of the `JobState`.
+
 ## Sequence diagrams
 
 ### New backup job
