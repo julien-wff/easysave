@@ -60,7 +60,10 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
             subscriber.OnJobProgress(job);
         }
 
-        StateManager.Instance.WriteJobs(_jobs);
+        if (job.State == JobState.Copy)
+        {
+            StateManager.Instance.WriteJobs(_jobs);
+        }
     }
 
     public void OnJobStateChange(JobState state, Job.Job job)
