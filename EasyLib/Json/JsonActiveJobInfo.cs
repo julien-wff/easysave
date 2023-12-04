@@ -7,10 +7,10 @@ namespace EasyLib.Json;
 /// </summary>
 public struct JsonActiveJobInfo
 {
-    public uint total_file_count;
-    public ulong total_file_size;
-    public uint files_copied;
-    public ulong bytes_copied;
-    public string current_file_source;
-    public string current_file_destination;
+    public uint total_file_count { get; init; }
+    public ulong total_file_size { get; init; }
+    public uint files_copied { get; init; }
+    public ulong bytes_copied { get; init; }
+    public string current_file_source { get; init; }
+    public string current_file_destination { get; init; }
 }

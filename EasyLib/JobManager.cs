@@ -8,7 +8,7 @@ namespace EasyLib;
 /// <summary>
 /// Facade to all the job-related work
 /// </summary>
-public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
+public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
 {
     /// <summary>
     /// List of all available jobs
@@ -44,6 +44,9 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     {
         _subscribers.Remove(subscriber);
     }
+
+    [GeneratedRegex(@"^\d+-\d+$", RegexOptions.NonBacktracking)]
+    private static partial Regex JobIndexRangeRegex();
 
     /// <summary>
     /// Get all the jobs
@@ -88,7 +91,7 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
                     jobs.Add(job);
                 }
             }
-            else if (Regex.IsMatch(segment, @"^\d+-\d+$"))
+            else if (JobIndexRangeRegex().IsMatch(segment))
             {
                 var range = segment.Split('-');
                 int firstNum = int.Parse(range[0]), lastNum = int.Parse(range[1]);

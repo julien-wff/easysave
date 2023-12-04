@@ -46,7 +46,7 @@ public class HelpCommand : Command
         }
     }
 
-    private void PrintGeneralHelp()
+    private static void PrintGeneralHelp()
     {
         Console.WriteLine("EasySave CLI Help Page");
         Console.WriteLine();

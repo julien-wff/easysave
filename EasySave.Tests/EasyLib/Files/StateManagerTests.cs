@@ -7,7 +7,7 @@ namespace EasySave.Tests.EasyLib.Files;
 
 public class StateManagerTests
 {
-    private string GetStateFilePath()
+    private static string GetStateFilePath()
     {
         var appDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         var stateDirectory = Path.Combine(appDataDir, "easysave");
