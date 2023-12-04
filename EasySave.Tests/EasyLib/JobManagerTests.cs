@@ -14,7 +14,7 @@ public class JobManagerTests
     public void GetJobsFromString_ShouldReturnNoJob(string input)
     {
         // Arrange
-        var jobManager = new JobManager();
+        var jobManager = new JobManager(true);
         if (jobManager.GetJobs().Count > 0)
         {
             jobManager.GetJobs().Clear();
@@ -36,7 +36,7 @@ public class JobManagerTests
     public void GetJobsFromString_ShouldReturnIndividualJob(string input)
     {
         // Arrange
-        var jobManager = new JobManager();
+        var jobManager = new JobManager(true);
         if (jobManager.GetJobs().Count > 0)
         {
             jobManager.GetJobs().Clear();
@@ -63,7 +63,7 @@ public class JobManagerTests
     public void GetJobsFromString_ShouldReturnThreeJobsJob(string input)
     {
         // Arrange
-        var jobManager = new JobManager();
+        var jobManager = new JobManager(true);
         if (jobManager.GetJobs().Count > 0)
         {
             jobManager.GetJobs().Clear();

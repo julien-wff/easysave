@@ -16,13 +16,23 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     private readonly List<Job.Job> _jobs = new();
 
     /// <summary>
+    /// Don't save the changes to the state.json file. Everything is lost on restart.
+    /// For test purposes only
+    /// </summary>
+    private readonly bool _ramOnly;
+
+    /// <summary>
     /// List of all the subscribers to the job-related events
     /// </summary>
     private readonly List<IJobStatusSubscriber> _subscribers = new();
 
-    public JobManager()
+    public JobManager(bool ramOnly = false)
     {
-        FetchJobs();
+        _ramOnly = ramOnly;
+        if (!ramOnly)
+        {
+            FetchJobs();
+        }
     }
 
     public void Subscribe(IJobStatusSubscriber subscriber)
@@ -148,7 +158,12 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
             Id = highestId + 1
         };
         _jobs.Add(newJob);
-        StateManager.Instance.WriteJobs(_jobs);
+
+        if (!_ramOnly)
+        {
+            StateManager.Instance.WriteJobs(_jobs);
+        }
+
         return newJob;
     }
 
@@ -159,7 +174,10 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     public void DeleteJob(Job.Job job)
     {
         _jobs.Remove(job);
-        StateManager.Instance.WriteJobs(_jobs);
+        if (!_ramOnly)
+        {
+            StateManager.Instance.WriteJobs(_jobs);
+        }
     }
 
     /// <summary>
