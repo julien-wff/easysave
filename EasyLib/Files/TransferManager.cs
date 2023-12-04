@@ -7,9 +7,8 @@ namespace EasyLib.Files;
 /// </summary>
 public class TransferManager
 {
+    private readonly BackupFolder _sourceFolder;
     private BackupFolder _instructionsFolder;
-    private BackupFolder _sourceFolder;
-    public Job.Job Job;
 
     public TransferManager(Job.Job job)
     {
@@ -17,6 +16,8 @@ public class TransferManager
         _sourceFolder = new BackupFolder(Job.SourceFolder);
         _instructionsFolder = new BackupFolder(Job.DestinationFolder);
     }
+
+    private Job.Job Job { get; }
 
     public BackupFolder InstructionsFolder => _instructionsFolder;
 
@@ -68,7 +69,7 @@ public class TransferManager
         {
             foreach (var destinationFile in destinationFolder.Files)
             {
-                if (sourceFile == destinationFile)
+                if (sourceFile.Hash == destinationFile.Hash)
                 {
                     destinationFolder.Files.Remove(destinationFile);
                 }
@@ -79,7 +80,7 @@ public class TransferManager
         {
             foreach (var subFolder in destinationFolder.SubFolders)
             {
-                if (actualSubFolder == subFolder)
+                if (actualSubFolder.Name == subFolder.Name)
                 {
                     CompareFolders(actualSubFolder, subFolder);
                 }
@@ -103,8 +104,8 @@ public class TransferManager
     {
         foreach (var subFolder in folder.SubFolders)
         {
-            Directory.CreateDirectory(parentPath + @"\" + subFolder.Name);
-            _createTree(parentPath + @"\" + subFolder.Name, subFolder);
+            Directory.CreateDirectory(parentPath + Path.DirectorySeparatorChar + subFolder.Name);
+            _createTree(parentPath + Path.DirectorySeparatorChar + subFolder.Name, subFolder);
         }
     }
 
@@ -117,14 +118,16 @@ public class TransferManager
 
     private void _transferFile(string sourceFolder, string destinationFolderPath, BackupFolder folder)
     {
-        foreach (var file in folder.Files)
+        foreach (var name in folder.Files.Select(f => f.Name))
         {
-            File.Copy(sourceFolder + @"\" + file.Name, destinationFolderPath + @"\" + file.Name);
+            File.Copy(sourceFolder + Path.DirectorySeparatorChar + name,
+                destinationFolderPath + Path.DirectorySeparatorChar + name);
         }
 
         foreach (var subFolder in folder.SubFolders)
         {
-            _transferFile(sourceFolder + @"\" + subFolder.Name, destinationFolderPath + @"\" + subFolder.Name,
+            _transferFile(sourceFolder + Path.DirectorySeparatorChar + subFolder.Name,
+                destinationFolderPath + Path.DirectorySeparatorChar + subFolder.Name,
                 subFolder);
         }
     }

@@ -42,14 +42,4 @@ public class BackupFolder
             Files.Add(backupFile);
         }
     }
-    
-    public static bool operator== (BackupFolder folder1, BackupFolder folder2)
-    {
-        return (folder1.Name == folder2.Name);
-    }
-
-    public static bool operator !=(BackupFolder folder1, BackupFolder folder2)
-    {
-        return !(folder1 == folder2);
-    }
 }
