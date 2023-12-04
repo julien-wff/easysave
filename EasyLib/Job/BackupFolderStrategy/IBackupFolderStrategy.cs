@@ -12,5 +12,5 @@ public interface IBackupFolderStrategy
     /// <param name="folders"></param>
     /// <param name="pausedJob"></param>
     /// <returns></returns>
-    List<string> SelectFolders(List<string> folders, string? pausedJob);
+    List<string> SelectFolders(List<string> folders, string? pausedJob, string jobName, string destinationPath);
 }
