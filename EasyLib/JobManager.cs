@@ -1,5 +1,7 @@
+using System.Text.RegularExpressions;
 using EasyLib.Enums;
 using EasyLib.Events;
+using EasyLib.Files;
 
 namespace EasyLib;
 
@@ -14,9 +16,24 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     private readonly List<Job.Job> _jobs = new();
 
     /// <summary>
+    /// Don't save the changes to the state.json file. Everything is lost on restart.
+    /// For test purposes only
+    /// </summary>
+    private readonly bool _ramOnly;
+
+    /// <summary>
     /// List of all the subscribers to the job-related events
     /// </summary>
     private readonly List<IJobStatusSubscriber> _subscribers = new();
+
+    public JobManager(bool ramOnly = false)
+    {
+        _ramOnly = ramOnly;
+        if (!ramOnly)
+        {
+            FetchJobs();
+        }
+    }
 
     public void Subscribe(IJobStatusSubscriber subscriber)
     {
@@ -43,7 +60,9 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     /// <returns>True if the operation is successful</returns>
     public bool FetchJobs()
     {
-        throw new NotImplementedException();
+        _jobs.Clear();
+        _jobs.AddRange(StateManager.Instance.ReadJobs());
+        return true;
     }
 
     /// <summary>
@@ -53,7 +72,42 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     /// <returns>The list of found jobs</returns>
     public List<Job.Job> GetJobsFromString(string jobsIString)
     {
-        throw new NotImplementedException();
+        var segments = jobsIString
+            .Split(',')
+            .Select(s => s.Trim());
+
+        var jobs = new List<Job.Job>();
+
+        foreach (var segment in segments)
+        {
+            if (int.TryParse(segment, out var id))
+            {
+                var job = _jobs.Find(job => job.Id == id);
+                if (job != null && !jobs.Contains(job))
+                {
+                    jobs.Add(job);
+                }
+            }
+            else if (Regex.IsMatch(segment, @"^\d+-\d+$"))
+            {
+                var range = segment.Split('-');
+                int firstNum = int.Parse(range[0]), lastNum = int.Parse(range[1]);
+                var start = (uint)Math.Min(firstNum, lastNum);
+                var end = (uint)Math.Max(firstNum, lastNum);
+                var jobRange = _jobs.Where(job => job.Id >= start && job.Id <= end && !jobs.Contains(job)).ToList();
+                jobs.AddRange(jobRange);
+            }
+            else
+            {
+                var job = _jobs.Find(job => job.Name == segment);
+                if (job != null && !jobs.Contains(job))
+                {
+                    jobs.Add(job);
+                }
+            }
+        }
+
+        return jobs;
     }
 
     /// <summary>
@@ -98,8 +152,18 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     /// <returns>Newly created job</returns>
     public Job.Job CreateJob(string name, string src, string dest, JobType type)
     {
-        var newJob = new Job.Job(name, src, dest, type);
+        var highestId = _jobs.Count > 0 ? _jobs.Max(job => job.Id) : 0;
+        var newJob = new Job.Job(name, src, dest, type)
+        {
+            Id = highestId + 1
+        };
         _jobs.Add(newJob);
+
+        if (!_ramOnly)
+        {
+            StateManager.Instance.WriteJobs(_jobs);
+        }
+
         return newJob;
     }
 
@@ -110,6 +174,10 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     public void DeleteJob(Job.Job job)
     {
         _jobs.Remove(job);
+        if (!_ramOnly)
+        {
+            StateManager.Instance.WriteJobs(_jobs);
+        }
     }
 
     /// <summary>
@@ -119,5 +187,59 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     public void CancelJob(Job.Job job)
     {
         job.Cancel();
+    }
+
+    public JobCheckRule CheckJobRules(int id, string name, string source, string destination, bool testEmpty = true)
+    {
+        if (!Path.IsPathFullyQualified(source))
+        {
+            return JobCheckRule.SourcePathInvalid;
+        }
+
+        if (!Path.IsPathFullyQualified(destination))
+        {
+            return JobCheckRule.DestinationPathInvalid;
+        }
+
+        if (!Path.Exists(source))
+        {
+            return JobCheckRule.SourcePathDoesNotExist;
+        }
+
+        if (!Path.Exists(destination))
+        {
+            return JobCheckRule.DestinationPathDoesNotExist;
+        }
+
+        if (source.StartsWith(destination) || destination.StartsWith(source))
+        {
+            return JobCheckRule.SharedRoot;
+        }
+
+        var idCount = _jobs.Count(job => job.Id == id);
+
+        if (idCount > 1)
+        {
+            return JobCheckRule.DuplicateId;
+        }
+
+        var jobs = _jobs.Where(job => job.Id != id).ToList();
+
+        if (jobs.Exists(job => job.Name == name))
+        {
+            return JobCheckRule.DuplicateName;
+        }
+
+        if (jobs.Exists(job => job.SourceFolder == source && job.DestinationFolder == destination))
+        {
+            return JobCheckRule.DuplicatePaths;
+        }
+
+        if (testEmpty && Directory.EnumerateFileSystemEntries(destination).Any())
+        {
+            return JobCheckRule.DestinationNotEmpty;
+        }
+
+        return JobCheckRule.Valid;
     }
 }
