@@ -21,6 +21,8 @@ public class BackupFolderSelector
     /// </summary>
     /// <param name="folders"></param>
     /// <param name="pausedJob"></param>
+    /// <param name="jobName"></param>
+    /// <param name="destinationPath"></param>
     /// <returns></returns>
     public List<string> SelectFolders(List<string> folders, string? pausedJob, string jobName, string destinationPath)
     {

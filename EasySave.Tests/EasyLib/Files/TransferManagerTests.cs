@@ -64,7 +64,7 @@ public class TransferManagerTests
         var transferManager = new TransferManager(job);
         transferManager.ScanSource();
         var method = new BackupFolderSelector(new FullBackupFolderStrategy(),new NewBackupFolderStrategy());
-        List<string> folders = method.SelectFolders( new List<string>(), null);
+        List<string> folders = method.SelectFolders( new List<string>(), null, job.Name, job.DestinationFolder);
         transferManager.ComputeDifference(folders);
         
         // Assert
@@ -105,7 +105,7 @@ public class TransferManagerTests
         var transferManager = new TransferManager(job);
         transferManager.ScanSource();
         var method = new BackupFolderSelector(new FullBackupFolderStrategy(),new NewBackupFolderStrategy());
-        List<string> folders = method.SelectFolders( new List<string>(), null);
+        List<string> folders = method.SelectFolders( new List<string>(), null,  job.Name, job.DestinationFolder);
         transferManager.ComputeDifference(folders);
         
         // Assert
@@ -114,5 +114,46 @@ public class TransferManagerTests
         Assert.Equal("file1.txt", transferManager.InstructionsFolder.SubFolders[0].Files[0].Name);
         Assert.Equal("file3.txt", transferManager.InstructionsFolder.SubFolders[0].SubFolders[0].Files[0].Name);
         Assert.Equal(2, transferManager.InstructionsFolder.SubFolders.Count);
+    }
+    
+    [Fact]
+    public void TestTransferManagerCreateDestinationStructure()
+    {
+        // Arrange
+        string tempDirPath = Path.GetTempPath();
+        Directory.CreateDirectory(tempDirPath + @"TransferManagerTests2\");
+        string testPath = @"TransferManagerTests2\";
+        Directory.CreateDirectory(tempDirPath + testPath + @"SourcePath\");
+        Directory.CreateDirectory(tempDirPath + testPath + @"DestinationPath\");
+        Directory.CreateDirectory(tempDirPath + testPath + @"SourcePath\dir1\");
+        Directory.CreateDirectory(tempDirPath + testPath + @"SourcePath\dir2\");
+        Directory.CreateDirectory(tempDirPath + testPath + @"SourcePath\dir1\dir3\");
+        File.WriteAllText(tempDirPath + testPath + @"SourcePath\file0.txt", "fil0");
+        File.WriteAllText(tempDirPath + testPath + @"SourcePath\dir1\file1.txt", "file1");
+        File.WriteAllText(tempDirPath + testPath + @"SourcePath\dir2\fil2.txt", "file2");
+        File.WriteAllText(tempDirPath + testPath + @"SourcePath\dir1\dir3\file3.txt", "file3");
+        Directory.CreateDirectory(tempDirPath + testPath + @"DestinationPath\dir1\");
+        Directory.CreateDirectory(tempDirPath + testPath + @"DestinationPath\dir2\");
+        Directory.CreateDirectory(tempDirPath + testPath + @"DestinationPath\dir1\dir3\");
+        File.WriteAllText(tempDirPath + testPath + @"DestinationPath\file0.txt", "fil0");
+        File.WriteAllText(tempDirPath + testPath + @"DestinationPath\dir1\file1.txt", "file1");
+        
+        const string jobName = "job1";
+        string sourcePath = tempDirPath + testPath + @"SourcePath\";
+        string destinationPath = tempDirPath + testPath + @"DestinationPath\";
+        const JobType jobType = JobType.Full;
+        
+        // Act
+        var job = new Job(jobName, sourcePath, destinationPath, jobType);
+        var transferManager = new TransferManager(job);
+        transferManager.ScanSource();
+        var method = new BackupFolderSelector(new FullBackupFolderStrategy(),new NewBackupFolderStrategy());
+        List<string> folders = method.SelectFolders( new List<string>(), null,  job.Name, job.DestinationFolder);
+        transferManager.ComputeDifference(folders);
+        transferManager.CreateDestinationStructure(folders.Last());
+        
+        // Assert
+        Assert.True(Directory.Exists(tempDirPath + testPath + @"DestinationPath\dir1\dir3\"));
+        Assert.True(Directory.Exists(tempDirPath + testPath + @"DestinationPath\dir2\"));
     }
 }

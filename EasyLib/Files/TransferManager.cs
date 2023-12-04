@@ -1,4 +1,5 @@
 ﻿
+using EasyLib.Enums;
 using EasyLib.Job;
 
 namespace EasyLib.Files;
@@ -24,6 +25,7 @@ public class TransferManager
     /// </summary>
     public void ScanSource()
     {
+        Job.State = JobState.SourceScan;
         _sourceFolder.Walk(Job.SourceFolder);
         Job.FilesCount = 0;
         Job.FilesSizeBytes = 0;
@@ -47,6 +49,7 @@ public class TransferManager
     }
     public void ComputeDifference(List<string> folders)
     {
+        Job.State = JobState.DifferenceCalculation;
         _instructionsFolder = _sourceFolder;
         foreach (var folder in folders)
         {
@@ -81,10 +84,24 @@ public class TransferManager
         }
         
     }
-    
-    public void CreateDestStructure()
+    /// <summary>
+    /// This class take the destination folder path and create the folder structure for the backup
+    /// </summary>
+    /// <param name="destinationFolderPath"></param>
+    /// <returns></returns>
+    public void CreateDestinationStructure(string destinationFolderPath)
     {
-        
+        Job.State = JobState.DestinationStructureCreation;
+        Directory.CreateDirectory(destinationFolderPath);
+        _createTree(destinationFolderPath, _instructionsFolder);
+    }
+    private void _createTree(string parentPath, BackupFolder folder)
+    {
+        foreach (var subFolder in folder.SubFolders)
+        {
+            Directory.CreateDirectory(parentPath + subFolder.Name);
+            _createTree(parentPath + subFolder.Name, subFolder);
+        }
     }
     
     public void TransferFile()
