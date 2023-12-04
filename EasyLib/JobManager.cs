@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using EasyLib.Enums;
 using EasyLib.Events;
 using EasyLib.Files;
@@ -61,7 +62,42 @@ public class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     /// <returns>The list of found jobs</returns>
     public List<Job.Job> GetJobsFromString(string jobsIString)
     {
-        throw new NotImplementedException();
+        var segments = jobsIString
+            .Split(',')
+            .Select(s => s.Trim());
+
+        var jobs = new List<Job.Job>();
+
+        foreach (var segment in segments)
+        {
+            if (int.TryParse(segment, out var id))
+            {
+                var job = _jobs.Find(job => job.Id == id);
+                if (job != null)
+                {
+                    jobs.Add(job);
+                }
+            }
+            else if (Regex.IsMatch(segment, @"^\d+-\d+$"))
+            {
+                var range = segment.Split('-');
+                int firstNum = int.Parse(range[0]), lastNum = int.Parse(range[1]);
+                var start = (uint)Math.Min(firstNum, lastNum);
+                var end = (uint)Math.Max(firstNum, lastNum);
+                var jobRange = _jobs.Where(job => job.Id >= start && job.Id <= end);
+                jobs.AddRange(jobRange);
+            }
+            else
+            {
+                var job = _jobs.Find(job => job.Name == segment);
+                if (job != null)
+                {
+                    jobs.Add(job);
+                }
+            }
+        }
+
+        return jobs;
     }
 
     /// <summary>
