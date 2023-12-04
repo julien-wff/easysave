@@ -1,3 +1,4 @@
+using EasyCLI.Commands.CommandFeatures;
 using EasyLib;
 using EasyLib.Enums;
 
@@ -8,7 +9,11 @@ public class CheckCommand : Command
     public override CommandBuilder.CommandBuilder Params { get; } = new CommandBuilder.CommandBuilder()
         .SetName("check")
         .SetDescription("Checks if the config is valid, and if the state matches all the rules")
-        .SetAliases(new[] { "validate", "verify" });
+        .SetAliases(new[] { "validate", "verify" })
+        .AddArg(new CommandArg()
+            .SetName("jobs")
+            .SetDescription("Jobs to check. Use format selector (1,2 or 1-3 or job1,2-4). Optional")
+            .SetRequired(false));
 
     public override bool ValidateArgs(IEnumerable<string> args)
     {
@@ -17,6 +22,7 @@ public class CheckCommand : Command
 
     public override void Run(IEnumerable<string> args)
     {
+        var argsList = args.ToList();
         var jm = new JobManager();
         var fetchJobsResult = jm.FetchJobs();
 
@@ -27,6 +33,11 @@ public class CheckCommand : Command
         }
 
         var jobs = jm.GetJobs();
+
+        if (argsList.Count == 2)
+        {
+            jobs = jm.GetJobsFromString(argsList[1]);
+        }
 
         if (jobs.Count == 0)
         {
