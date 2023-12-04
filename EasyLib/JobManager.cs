@@ -45,6 +45,34 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
         _subscribers.Remove(subscriber);
     }
 
+    public void OnJobError(string error)
+    {
+        foreach (var subscriber in _subscribers)
+        {
+            subscriber.OnJobError(error);
+        }
+    }
+
+    public void OnJobProgress(Job.Job job)
+    {
+        foreach (var subscriber in _subscribers)
+        {
+            subscriber.OnJobProgress(job);
+        }
+
+        StateManager.Instance.WriteJobs(_jobs);
+    }
+
+    public void OnJobStateChange(JobState state, Job.Job job)
+    {
+        foreach (var subscriber in _subscribers)
+        {
+            subscriber.OnJobStateChange(state, job);
+        }
+
+        StateManager.Instance.WriteJobs(_jobs);
+    }
+
     [GeneratedRegex(@"^\d+-\d+$", RegexOptions.NonBacktracking)]
     private static partial Regex JobIndexRangeRegex();
 
@@ -120,7 +148,8 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     /// <returns></returns>
     public List<Job.Job> GetJobsFromIds(IEnumerable<int> jobIds)
     {
-        var ids = jobIds.ToList().Select(id => (uint)id);
+        var list = jobIds.ToList();
+        var ids = list.Select(id => (uint)id);
         return _jobs.Where(job => ids.Contains(job.Id)).ToList();
     }
 
@@ -141,7 +170,21 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     /// <returns></returns>
     public bool ExecuteJobs(IEnumerable<Job.Job> jobs)
     {
-        throw new NotImplementedException();
+        var success = true;
+        foreach (var job in jobs)
+        {
+            job.Subscribe(this);
+            var jobSuccess = job.Run();
+            job.Unsubscribe(this);
+
+            if (jobSuccess)
+                continue;
+
+            success = false;
+            break;
+        }
+
+        return success;
     }
 
 
