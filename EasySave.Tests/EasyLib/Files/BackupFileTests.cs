@@ -8,10 +8,10 @@ public class BackupFileTests
     void TestBackupFile()
     {
         // Arrange
-        string tempFilePath = Path.GetTempFileName();
+        var tempFilePath = Path.GetTempFileName();
         FileInfo file = new(tempFilePath);
-        string expectedName = Path.GetFileName(tempFilePath);
-        ulong expectedSize =(ulong) file.Length;
+        var expectedName = Path.GetFileName(tempFilePath);
+        var expectedSize = (ulong)file.Length;
 
         // Act
         var backupFile = new BackupFile(tempFilePath);
@@ -25,5 +25,4 @@ public class BackupFileTests
         // Cleanup
         File.Delete(tempFilePath);
     }
-    
 }

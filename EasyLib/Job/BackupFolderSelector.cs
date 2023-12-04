@@ -4,8 +4,9 @@ namespace EasyLib.Job;
 
 public class BackupFolderSelector
 {
-    private IBackupFolderStrategy _typeSelector;
-    private IBackupFolderStrategy _stateSelector;
+    private readonly IBackupFolderStrategy _stateSelector;
+    private readonly IBackupFolderStrategy _typeSelector;
+
     /// <summary>
     /// Constructor of the BackupFolderSelector class.
     /// </summary>
@@ -16,6 +17,7 @@ public class BackupFolderSelector
         _typeSelector = typeSelector;
         _stateSelector = stateSelector;
     }
+
     /// <summary>
     /// Call the SelectFolders method of the IBackupFolderStrategy object to filter the folders depending on the type and state of the backup job.
     /// </summary>
