@@ -5,8 +5,16 @@
 /// </summary>
 public class NewBackupFolderStrategy : IBackupFolderStrategy
 {
-    public List<string> SelectFolders(List<string> folders, string? pausedJob)
+    public List<string> SelectFolders(List<string> folders, string? pausedJob, string jobName, string destinationPath)
     {
-        return folders;
+        string date = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+        Directory.CreateDirectory(destinationPath + date + jobName + @"\");
+        List<string> newFolders = new List<string>();
+        foreach (var path in folders)
+        {
+            newFolders.Add(path);
+        }
+        newFolders.Add(destinationPath + date + jobName + @"\");
+        return newFolders;
     }
 }

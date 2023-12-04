@@ -6,7 +6,7 @@
 /// </summary>
 public class FullBackupFolderStrategy : IBackupFolderStrategy
 {
-    public List<string> SelectFolders(List<string> folders, string? pausedJob)
+    public List<string> SelectFolders(List<string> folders, string? pausedJob, string jobName, string destinationPath)
     {
         return new List<string>();
     }

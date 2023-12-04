@@ -5,7 +5,7 @@
 /// </summary>
 public class ResumeBackupFolderStrategy : IBackupFolderStrategy
 {
-    public List<string> SelectFolders(List<string> folders, string? pausedJob)
+    public List<string> SelectFolders(List<string> folders, string? pausedJob, string jobName, string destinationPath)
     {
         if (pausedJob != null)
         {
