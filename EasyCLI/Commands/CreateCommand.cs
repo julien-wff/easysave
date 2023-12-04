@@ -42,7 +42,7 @@ public class CreateCommand : Command
     {
         var argsList = args.ToList();
 
-        if (argsList.Count < 3)
+        if (argsList.Count <= 3)
         {
             Console.WriteLine("Not enough arguments provided. Use 'help create' for more information.");
             return;
