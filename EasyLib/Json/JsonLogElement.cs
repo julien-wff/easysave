@@ -1,5 +1,8 @@
 ﻿namespace EasyLib.Json;
 
+/// <summary>
+/// Data structure used by JsonFileUtils for the json log
+/// </summary>
 public struct JsonLogElement
 {
     public string JobName { get; set; }
