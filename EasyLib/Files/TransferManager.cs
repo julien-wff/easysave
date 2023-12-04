@@ -1,35 +1,48 @@
 ﻿using EasyLib.Enums;
+using EasyLib.Events;
+using EasyLib.Json;
 
 namespace EasyLib.Files;
 
 /// <summary>
 /// this class is used to handle the transfer of files from a source to a destination
 /// </summary>
-public class TransferManager
+public class TransferManager : IJobStatusPublisher
 {
+    private readonly Job.Job _job;
     private readonly BackupFolder _sourceFolder;
-    private BackupFolder _instructionsFolder;
+    private readonly List<IJobStatusSubscriber> _subscribers = new();
 
     public TransferManager(Job.Job job)
     {
-        Job = job;
-        _sourceFolder = new BackupFolder(Job.SourceFolder);
-        _instructionsFolder = new BackupFolder(Job.DestinationFolder);
+        _job = job;
+        _sourceFolder = new BackupFolder(_job.SourceFolder);
+        InstructionsFolder = new BackupFolder(_job.DestinationFolder);
     }
 
-    private Job.Job Job { get; }
+    public BackupFolder InstructionsFolder { get; private set; }
 
-    public BackupFolder InstructionsFolder => _instructionsFolder;
+    public void Subscribe(IJobStatusSubscriber subscriber)
+    {
+        _subscribers.Add(subscriber);
+    }
+
+    public void Unsubscribe(IJobStatusSubscriber subscriber)
+    {
+        _subscribers.Remove(subscriber);
+    }
 
     /// <summary>
     /// Update the instance source folder and the files count and size from the job instance
     /// </summary>
     public void ScanSource()
     {
-        Job.State = JobState.SourceScan;
-        _sourceFolder.Walk(Job.SourceFolder);
-        Job.FilesCount = 0;
-        Job.FilesSizeBytes = 0;
+        _notifySubscribersForChange();
+        _job.State = JobState.SourceScan;
+        _sourceFolder.Walk(_job.SourceFolder);
+        _notifySubscribersForChange();
+        _job.FilesCount = 0;
+        _job.FilesSizeBytes = 0;
         _getFileInfo(_sourceFolder);
     }
 
@@ -41,9 +54,11 @@ public class TransferManager
     {
         foreach (var file in folder.Files)
         {
-            Job.FilesSizeBytes += file.Size;
-            Job.FilesCount++;
+            _job.FilesSizeBytes += file.Size;
+            _job.FilesCount++;
         }
+
+        _notifySubscribersForChange();
 
         foreach (var subFolder in folder.SubFolders)
         {
@@ -53,18 +68,19 @@ public class TransferManager
 
     public void ComputeDifference(List<string> folders)
     {
-        Job.State = JobState.DifferenceCalculation;
-        _instructionsFolder = _sourceFolder;
+        _job.State = JobState.DifferenceCalculation;
+        InstructionsFolder = _sourceFolder;
         foreach (var folder in folders)
         {
-            BackupFolder tempFolder = new BackupFolder(folder);
+            var tempFolder = new BackupFolder(folder);
             tempFolder.Walk(folder);
-            CompareFolders(tempFolder, _instructionsFolder);
+            _compareFolders(tempFolder, InstructionsFolder);
         }
     }
 
-    private void CompareFolders(BackupFolder actualFolder, BackupFolder destinationFolder)
+    private void _compareFolders(BackupFolder actualFolder, BackupFolder destinationFolder)
     {
+        _notifySubscribersForChange();
         foreach (var sourceFile in actualFolder.Files)
         {
             foreach (var destinationFile in destinationFolder.Files)
@@ -76,13 +92,14 @@ public class TransferManager
             }
         }
 
+        _notifySubscribersForChange();
         foreach (var actualSubFolder in actualFolder.SubFolders)
         {
             foreach (var subFolder in destinationFolder.SubFolders)
             {
                 if (actualSubFolder.Name == subFolder.Name)
                 {
-                    CompareFolders(actualSubFolder, subFolder);
+                    _compareFolders(actualSubFolder, subFolder);
                 }
             }
         }
@@ -95,15 +112,16 @@ public class TransferManager
     /// <returns></returns>
     public void CreateDestinationStructure(string destinationFolderPath)
     {
-        Job.State = JobState.DestinationStructureCreation;
+        _job.State = JobState.DestinationStructureCreation;
         Directory.CreateDirectory(destinationFolderPath);
-        _createTree(destinationFolderPath, _instructionsFolder);
+        _createTree(destinationFolderPath, InstructionsFolder);
     }
 
     private void _createTree(string parentPath, BackupFolder folder)
     {
         foreach (var subFolder in folder.SubFolders)
         {
+            _notifySubscribersForChange();
             Directory.CreateDirectory(parentPath + Path.DirectorySeparatorChar + subFolder.Name);
             _createTree(parentPath + Path.DirectorySeparatorChar + subFolder.Name, subFolder);
         }
@@ -111,24 +129,49 @@ public class TransferManager
 
     public void TransferFiles(string destinationFolder)
     {
-        Job.State = JobState.Copy;
-        var sourceFolder = Job.SourceFolder;
-        _transferFile(sourceFolder, destinationFolder, _instructionsFolder);
+        _job.State = JobState.Copy;
+        var sourceFolder = _job.SourceFolder;
+        _transferFile(sourceFolder, destinationFolder, InstructionsFolder);
     }
 
     private void _transferFile(string sourceFolder, string destinationFolderPath, BackupFolder folder)
     {
-        foreach (var name in folder.Files.Select(f => f.Name))
+        foreach (var file in folder.Files)
         {
-            File.Copy(sourceFolder + Path.DirectorySeparatorChar + name,
-                destinationFolderPath + Path.DirectorySeparatorChar + name);
+            var copyStart = DateTime.Now;
+            File.Copy(sourceFolder + Path.DirectorySeparatorChar + file.Name,
+                destinationFolderPath + Path.DirectorySeparatorChar + file.Name);
+            var copyEnd = DateTime.Now;
+
+            _job.FilesCopied++;
+            _job.FilesBytesCopied += file.Size;
+            _notifySubscribersForChange();
+
+            LogManager.Instance.AppendLog(new JsonLogElement
+            {
+                JobName = _job.Name,
+                SourcePath = Path.Combine(sourceFolder, file.Name),
+                DestinationPath = Path.Combine(destinationFolderPath, file.Name),
+                FileSize = file.Size,
+                TransferTime = (int)(copyEnd - copyStart).TotalMilliseconds
+            });
         }
 
         foreach (var subFolder in folder.SubFolders)
         {
-            _transferFile(sourceFolder + Path.DirectorySeparatorChar + subFolder.Name,
+            _transferFile(
+                sourceFolder + Path.DirectorySeparatorChar + subFolder.Name,
                 destinationFolderPath + Path.DirectorySeparatorChar + subFolder.Name,
-                subFolder);
+                subFolder
+            );
+        }
+    }
+
+    private void _notifySubscribersForChange()
+    {
+        foreach (var subscriber in _subscribers)
+        {
+            subscriber.OnJobProgress(_job);
         }
     }
 }

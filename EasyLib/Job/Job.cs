@@ -1,5 +1,6 @@
 using EasyLib.Enums;
 using EasyLib.Events;
+using EasyLib.Files;
 using EasyLib.Json;
 
 namespace EasyLib.Job;
@@ -13,20 +14,8 @@ namespace EasyLib.Job;
 /// <param name="type">Backup type (full, differential)</param>
 /// <param name="state">Current state</param>
 public class Job(string name, string sourceFolder, string destinationFolder, JobType type,
-    JobState state = JobState.End) : IJobStatusPublisher
+    JobState state = JobState.End) : IJobStatusPublisher, IJobStatusSubscriber
 {
-    private readonly List<IJobStatusSubscriber> _observers = new();
-    public string DestinationFolder = destinationFolder;
-    public ulong FilesBytesCopied;
-    public uint FilesCopied;
-    public uint FilesCount;
-    public ulong FilesSizeBytes;
-    public uint Id;
-    public string Name = name;
-    public string SourceFolder = sourceFolder;
-    public JobState State = state;
-    public JobType Type = type;
-
     /// <summary>
     /// Create a job instance from a JsonJob object
     /// </summary>
@@ -42,14 +31,34 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
         FilesBytesCopied = job.active_job_info?.bytes_copied ?? 0;
     }
 
+    private List<IJobStatusSubscriber> Subscribers { get; } = new();
+    public string DestinationFolder { get; } = destinationFolder;
+    public ulong FilesBytesCopied { get; set; }
+    public uint FilesCopied { get; set; }
+    public uint FilesCount { get; set; }
+    public ulong FilesSizeBytes { get; set; }
+    public uint Id { get; init; }
+    public string Name { get; } = name;
+    public string SourceFolder { get; } = sourceFolder;
+    public JobState State { get; set; } = state;
+    public JobType Type { get; } = type;
+
     public void Subscribe(IJobStatusSubscriber subscriber)
     {
-        _observers.Add(subscriber);
+        Subscribers.Add(subscriber);
     }
 
     public void Unsubscribe(IJobStatusSubscriber subscriber)
     {
-        _observers.Remove(subscriber);
+        Subscribers.Remove(subscriber);
+    }
+
+    public void OnJobProgress(Job job)
+    {
+        foreach (var subscriber in Subscribers)
+        {
+            subscriber.OnJobProgress(job);
+        }
     }
 
     /// <summary>
@@ -93,6 +102,19 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
     /// <returns>True when the job is complete</returns>
     public bool Run()
     {
+        var tm = new TransferManager(this);
+        tm.Subscribe(this);
+        _setJobState(JobState.SourceScan);
+        tm.ScanSource();
+        _setJobState(JobState.DifferenceCalculation);
+        tm.ComputeDifference(new List<string> { DestinationFolder });
+        _setJobState(JobState.DestinationStructureCreation);
+        tm.CreateDestinationStructure(DestinationFolder);
+        _setJobState(JobState.Copy);
+        tm.TransferFiles(DestinationFolder);
+        _setJobState(JobState.End);
+        tm.Unsubscribe(this);
+
         return true;
     }
 
@@ -112,5 +134,19 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
     public bool Cancel()
     {
         return true;
+    }
+
+    private void _notifySubscribersForChangeState(JobState state)
+    {
+        foreach (var subscriber in Subscribers)
+        {
+            subscriber.OnJobStateChange(state, this);
+        }
+    }
+
+    private void _setJobState(JobState state)
+    {
+        State = state;
+        _notifySubscribersForChangeState(state);
     }
 }
