@@ -151,7 +151,7 @@ public class TransferManagerTests
         var method = new BackupFolderSelector(new FullBackupFolderStrategy(), new NewBackupFolderStrategy());
         List<string> folders = method.SelectFolders(new List<string>(), null, job.Name, job.DestinationFolder);
         transferManager.ComputeDifference(folders);
-        transferManager.CreateDestinationStructure(folders.Last());
+        transferManager.CreateDestinationStructure(folders[folders.Count - 1]);
 
         // Assert
         Assert.True(Directory.Exists(tempDirPath + testPath + @"DestinationPath\dir1\dir3\"));
@@ -188,13 +188,13 @@ public class TransferManagerTests
         var method = new BackupFolderSelector(new FullBackupFolderStrategy(), new NewBackupFolderStrategy());
         List<string> folders = method.SelectFolders(new List<string>(), null, job.Name, job.DestinationFolder);
         transferManager.ComputeDifference(folders);
-        transferManager.CreateDestinationStructure(folders.Last());
-        transferManager.TransferFiles(folders.Last());
+        transferManager.CreateDestinationStructure(folders[folders.Count - 1]);
+        transferManager.TransferFiles(folders[folders.Count - 1]);
 
         // Assert
-        Assert.True(File.Exists(folders.Last() + @"\dir1\dir3\file3.txt"));
-        Assert.True(File.Exists(folders.Last() + @"\dir2\file2.txt"));
-        Assert.Single(Directory.GetFiles(folders.Last() + @"\dir1\dir3\"));
+        Assert.True(File.Exists(folders[folders.Count - 1] + @"\dir1\dir3\file3.txt"));
+        Assert.True(File.Exists(folders[folders.Count - 1] + @"\dir2\file2.txt"));
+        Assert.Single(Directory.GetFiles(folders[folders.Count - 1] + @"\dir1\dir3\"));
 
         // Clean up
 
