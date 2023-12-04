@@ -214,7 +214,8 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
             return JobCheckRule.DestinationPathDoesNotExist;
         }
 
-        if (source.StartsWith(destination) || destination.StartsWith(source))
+        if (source.StartsWith(destination + Path.DirectorySeparatorChar) ||
+            destination.StartsWith(source + Path.DirectorySeparatorChar))
         {
             return JobCheckRule.SharedRoot;
         }
