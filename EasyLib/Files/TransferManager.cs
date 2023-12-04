@@ -1,6 +1,4 @@
-﻿
-using EasyLib.Enums;
-using EasyLib.Job;
+﻿using EasyLib.Enums;
 
 namespace EasyLib.Files;
 
@@ -9,17 +7,19 @@ namespace EasyLib.Files;
 /// </summary>
 public class TransferManager
 {
-    public Job.Job Job;
-    private BackupFolder _sourceFolder;
     private BackupFolder _instructionsFolder;
-    public BackupFolder InstructionsFolder => _instructionsFolder;
-    
+    private BackupFolder _sourceFolder;
+    public Job.Job Job;
+
     public TransferManager(Job.Job job)
     {
         Job = job;
         _sourceFolder = new BackupFolder(Job.SourceFolder);
         _instructionsFolder = new BackupFolder(Job.DestinationFolder);
     }
+
+    public BackupFolder InstructionsFolder => _instructionsFolder;
+
     /// <summary>
     /// Update the instance source folder and the files count and size from the job instance
     /// </summary>
@@ -31,6 +31,7 @@ public class TransferManager
         Job.FilesSizeBytes = 0;
         _getFileInfo(_sourceFolder);
     }
+
     /// <summary>
     /// Used in ScanSource to go trough the file tree and get the size and number of files
     /// </summary>
@@ -42,11 +43,13 @@ public class TransferManager
             Job.FilesSizeBytes += file.Size;
             Job.FilesCount++;
         }
+
         foreach (var subFolder in folder.SubFolders)
         {
             _getFileInfo(subFolder);
         }
     }
+
     public void ComputeDifference(List<string> folders)
     {
         Job.State = JobState.DifferenceCalculation;
@@ -57,7 +60,6 @@ public class TransferManager
             tempFolder.Walk(folder);
             CompareFolders(tempFolder, _instructionsFolder);
         }
-        
     }
 
     private void CompareFolders(BackupFolder actualFolder, BackupFolder destinationFolder)
@@ -72,6 +74,7 @@ public class TransferManager
                 }
             }
         }
+
         foreach (var actualSubFolder in actualFolder.SubFolders)
         {
             foreach (var subFolder in destinationFolder.SubFolders)
@@ -82,8 +85,8 @@ public class TransferManager
                 }
             }
         }
-        
     }
+
     /// <summary>
     /// This class take the destination folder path and create the folder structure for the backup
     /// </summary>
@@ -95,23 +98,34 @@ public class TransferManager
         Directory.CreateDirectory(destinationFolderPath);
         _createTree(destinationFolderPath, _instructionsFolder);
     }
+
     private void _createTree(string parentPath, BackupFolder folder)
     {
         foreach (var subFolder in folder.SubFolders)
         {
-            Directory.CreateDirectory(parentPath + subFolder.Name);
-            _createTree(parentPath + subFolder.Name, subFolder);
+            Directory.CreateDirectory(parentPath + @"\" + subFolder.Name);
+            _createTree(parentPath + @"\" + subFolder.Name, subFolder);
         }
     }
-    
-    public void TransferFile()
+
+    public void TransferFiles(string destinationFolder)
     {
-        
+        Job.State = JobState.Copy;
+        var sourceFolder = Job.SourceFolder;
+        _transferFile(sourceFolder, destinationFolder, _instructionsFolder);
     }
-    
-    public void TransferFiles()
+
+    private void _transferFile(string sourceFolder, string destinationFolderPath, BackupFolder folder)
     {
-        
+        foreach (var file in folder.Files)
+        {
+            File.Copy(sourceFolder + @"\" + file.Name, destinationFolderPath + @"\" + file.Name);
+        }
+
+        foreach (var subFolder in folder.SubFolders)
+        {
+            _transferFile(sourceFolder + @"\" + subFolder.Name, destinationFolderPath + @"\" + subFolder.Name,
+                subFolder);
+        }
     }
-    
 }
