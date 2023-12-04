@@ -10,13 +10,14 @@ public class TransferManager
 {
     public Job.Job Job;
     private BackupFolder _sourceFolder;
-    private BackupFolder _destinationFolder;
+    private BackupFolder _instructionsFolder;
+    public BackupFolder InstructionsFolder => _instructionsFolder;
     
     public TransferManager(Job.Job job)
     {
         Job = job;
         _sourceFolder = new BackupFolder(Job.SourceFolder);
-        _destinationFolder = new BackupFolder(Job.DestinationFolder);
+        _instructionsFolder = new BackupFolder(Job.DestinationFolder);
     }
     /// <summary>
     /// Update the instance source folder and the files count and size from the job instance
@@ -46,12 +47,12 @@ public class TransferManager
     }
     public void ComputeDifference(List<string> folders)
     {
-        _destinationFolder = _sourceFolder;
+        _instructionsFolder = _sourceFolder;
         foreach (var folder in folders)
         {
             BackupFolder tempFolder = new BackupFolder(folder);
             tempFolder.Walk(folder);
-            CompareFolders(tempFolder, _destinationFolder);
+            CompareFolders(tempFolder, _instructionsFolder);
         }
         
     }
@@ -96,8 +97,4 @@ public class TransferManager
         
     }
     
-    public void TransferChecksum()
-    {
-        
-    }
 }
