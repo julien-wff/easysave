@@ -5,9 +5,7 @@
 /// </summary>
 public class BackupFolder
 {
-    public readonly List<BackupFile> Files = new();
     public readonly string Name;
-    public readonly List<BackupFolder> SubFolders = new();
 
     /// <summary>
     /// Constructor of the BackupFolder class
@@ -17,6 +15,9 @@ public class BackupFolder
     {
         Name = Path.GetFileName(Path.GetDirectoryName(path))!;
     }
+
+    public List<BackupFile> Files { get; } = new();
+    public List<BackupFolder> SubFolders { get; } = new();
 
     /// <summary>
     /// This method recursively walks through the file tree
