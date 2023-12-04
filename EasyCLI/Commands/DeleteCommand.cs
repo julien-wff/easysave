@@ -50,6 +50,6 @@ public class DeleteCommand : Command
             jobManager.DeleteJob(job);
         }
 
-        Console.WriteLine($"Successfully deleted {jobs.Count} jobs.");
+        Console.WriteLine($"Successfully deleted {jobs.Count} job(s).");
     }
 }
