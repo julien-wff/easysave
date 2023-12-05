@@ -50,6 +50,10 @@ public static class JobProgression
         result += new string('=', (int)(barWidth * progression));
         result += new string(' ', (int)(barWidth * (1 - progression)));
         result += $"] {progression * 100:0.0}%";
+        result += "\n\n";
+        result += $"Source       {job.CurrentFileSource}";
+        result += "\n";
+        result += $"Destination  {job.CurrentFileDestination}";
         Console.WriteLine(result);
     }
 }

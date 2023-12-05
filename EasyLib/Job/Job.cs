@@ -29,6 +29,8 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
         FilesSizeBytes = job.active_job_info?.total_file_size ?? 0;
         FilesCopied = job.active_job_info?.files_copied ?? 0;
         FilesBytesCopied = job.active_job_info?.bytes_copied ?? 0;
+        CurrentFileSource = job.active_job_info?.current_file_source ?? string.Empty;
+        CurrentFileDestination = job.active_job_info?.current_file_destination ?? string.Empty;
     }
 
     private List<IJobStatusSubscriber> Subscribers { get; } = new();
@@ -42,6 +44,8 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
     public string SourceFolder { get; } = sourceFolder;
     public JobState State { get; set; } = state;
     public JobType Type { get; } = type;
+    public string CurrentFileSource { get; set; } = string.Empty;
+    public string CurrentFileDestination { get; set; } = string.Empty;
 
     public void Subscribe(IJobStatusSubscriber subscriber)
     {
@@ -82,7 +86,9 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
                     total_file_count = FilesCount,
                     total_file_size = FilesSizeBytes,
                     files_copied = FilesCopied,
-                    bytes_copied = FilesBytesCopied
+                    bytes_copied = FilesBytesCopied,
+                    current_file_source = CurrentFileSource,
+                    current_file_destination = CurrentFileDestination
                 }
         };
     }

@@ -138,9 +138,11 @@ public class TransferManager : IJobStatusPublisher
     {
         foreach (var file in folder.Files)
         {
+            _job.CurrentFileSource = Path.Combine(sourceFolder, file.Name);
+            _job.CurrentFileDestination = Path.Combine(destinationFolderPath, file.Name);
+
             var copyStart = DateTime.Now;
-            File.Copy(sourceFolder + Path.DirectorySeparatorChar + file.Name,
-                destinationFolderPath + Path.DirectorySeparatorChar + file.Name);
+            File.Copy(_job.CurrentFileSource, _job.CurrentFileDestination, true);
             var copyEnd = DateTime.Now;
 
             _job.FilesCopied++;
