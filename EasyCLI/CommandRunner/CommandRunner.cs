@@ -71,6 +71,7 @@ public sealed class CommandRunner
 
         if (command == null)
         {
+            Console.WriteLine($"Command '{argsList[0]}' not found. Type 'easysave help' for more information");
             return false;
         }
 
