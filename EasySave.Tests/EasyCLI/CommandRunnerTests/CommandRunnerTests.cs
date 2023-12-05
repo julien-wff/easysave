@@ -49,7 +49,6 @@ public class CommandRunnerTests
         result.Should().BeTrue();
     }
 
-
     [Fact]
     public void RunWithArgs_ShouldReturnFalse_WhenEmptyArgsAndNoHelp()
     {
