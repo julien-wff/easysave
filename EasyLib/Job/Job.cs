@@ -113,11 +113,14 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
         _setJobState(JobState.SourceScan);
         tm.ScanSource();
         _setJobState(JobState.DifferenceCalculation);
-        tm.ComputeDifference(new List<string> { DestinationFolder });
+        BackupFolderSelector selector = BackupFolderSelectorFactory.Create(Type, State);
+        List<string> directories = Directory.GetDirectories(DestinationFolder).ToList();
+        List<string> folders = selector.SelectFolders(directories, directories.Last(), Name, DestinationFolder);
+        tm.ComputeDifference(folders);
         _setJobState(JobState.DestinationStructureCreation);
-        tm.CreateDestinationStructure(DestinationFolder);
+        tm.CreateDestinationStructure(Path.Combine(DestinationFolder, folders.Last()));
         _setJobState(JobState.Copy);
-        tm.TransferFiles(DestinationFolder);
+        tm.TransferFiles(Path.Combine(DestinationFolder, folders.Last()));
         _setJobState(JobState.End);
         tm.Unsubscribe(this);
 
