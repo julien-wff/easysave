@@ -236,6 +236,7 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     public void CancelJob(Job.Job job)
     {
         job.Cancel();
+        StateManager.Instance.WriteJobs(_jobs);
     }
 
     public JobCheckRule CheckJobRules(int id, string name, string source, string destination, bool testEmpty = true)

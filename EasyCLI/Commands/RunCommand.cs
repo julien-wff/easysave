@@ -76,13 +76,20 @@ public class RunCommand : Command, IJobStatusSubscriber
 
         foreach (var job in jobs)
         {
-            var result = jm.CheckJobRules((int)job.Id, job.Name, job.SourceFolder, job.DestinationFolder, false);
+            var jobValidity = jm.CheckJobRules((int)job.Id, job.Name, job.SourceFolder, job.DestinationFolder, false);
 
-            if (result == JobCheckRule.Valid)
-                continue;
+            if (jobValidity != JobCheckRule.Valid)
+            {
+                Console.WriteLine($"Job #{job.Id} - {job.Name} is invalid: {JobCheckRules.GetString(jobValidity)}");
+                return;
+            }
 
-            Console.WriteLine($"Job #{job.Id} - {job.Name} is invalid: {JobCheckRules.GetString(result)}");
-            return;
+            if (job.State is not JobState.End)
+            {
+                Console.WriteLine(
+                    $"Job #{job.Id} - {job.Name} is already running. Please resume or discard it instead.");
+                return;
+            }
         }
 
         jm.Subscribe(this);
