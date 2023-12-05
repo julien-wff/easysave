@@ -66,15 +66,17 @@ public class TransferManager : IJobStatusPublisher
         }
     }
 
-    public void ComputeDifference(List<string> folders)
+    public void ComputeDifference(List<List<string>> folders)
     {
         _job.State = JobState.DifferenceCalculation;
         InstructionsFolder = _sourceFolder;
-        foreach (var folder in folders)
+        if (folders.Count == 1)
         {
-            var tempFolder = new BackupFolder(folder);
-            tempFolder.Walk(folder);
-            _compareFolders(tempFolder, InstructionsFolder);
+            foreach (var folder in folders[0])
+            {
+                var tempFolder = new BackupFolder(folder);
+                tempFolder.Walk(folder);
+            }
         }
     }
 

@@ -26,10 +26,13 @@ public class BackupFolderSelector
     /// <param name="jobName"></param>
     /// <param name="destinationPath"></param>
     /// <returns></returns>
-    public List<string> SelectFolders(List<string> folders, string? pausedJob, string jobName, string destinationPath)
+    public List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, string jobName,
+        string destinationPath)
     {
-        List<string> typeSelectedFolders = _typeSelector.SelectFolders(folders, pausedJob,  jobName,  destinationPath);
-        List<string> stateSelectedFolders = _stateSelector.SelectFolders(typeSelectedFolders, pausedJob,  jobName,  destinationPath);
+        List<List<string>> typeSelectedFolders =
+            _typeSelector.SelectFolders(folders, lastFolderPath, jobName, destinationPath);
+        List<List<string>> stateSelectedFolders =
+            _stateSelector.SelectFolders(typeSelectedFolders, lastFolderPath, jobName, destinationPath);
         return stateSelectedFolders;
     }
 }

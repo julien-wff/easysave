@@ -11,6 +11,7 @@ public static class BackupFolderSelectorFactory
         {
             JobType.Full => new FullBackupFolderStrategy(),
             JobType.Differential => new DifferentialBackupFolderStrategy(),
+            JobType.Incremental => new IncrementalBackupFolderStrategy(),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 

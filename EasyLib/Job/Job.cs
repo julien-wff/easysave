@@ -109,18 +109,21 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
     public bool Run()
     {
         var tm = new TransferManager(this);
+        var selector = BackupFolderSelectorFactory.Create(Type, State);
+        var folderList = Directory.GetDirectories(DestinationFolder).ToList();
+        var directories = new List<List<string>>() { folderList };
+        var lastFolder = "";
+
+        var folders = selector.SelectFolders(directories, lastFolder, Name, DestinationFolder);
         tm.Subscribe(this);
         _setJobState(JobState.SourceScan);
         tm.ScanSource();
         _setJobState(JobState.DifferenceCalculation);
-        BackupFolderSelector selector = BackupFolderSelectorFactory.Create(Type, State);
-        List<string> directories = Directory.GetDirectories(DestinationFolder).ToList();
-        List<string> folders = selector.SelectFolders(directories, directories.Last(), Name, DestinationFolder);
         tm.ComputeDifference(folders);
         _setJobState(JobState.DestinationStructureCreation);
-        tm.CreateDestinationStructure(Path.Combine(DestinationFolder, folders.Last()));
+        tm.CreateDestinationStructure(Path.Combine(DestinationFolder, folders[0].Last()));
         _setJobState(JobState.Copy);
-        tm.TransferFiles(Path.Combine(DestinationFolder, folders.Last()));
+        tm.TransferFiles(Path.Combine(DestinationFolder, folders[0].Last()));
         _setJobState(JobState.End);
         tm.Unsubscribe(this);
 

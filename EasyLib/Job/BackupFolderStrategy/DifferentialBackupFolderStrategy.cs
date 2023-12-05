@@ -1,13 +1,13 @@
-﻿
-namespace EasyLib.Job.BackupFolderStrategy;
+﻿namespace EasyLib.Job.BackupFolderStrategy;
 
 /// <summary>
 /// selects only the finished backup folders.
 /// </summary>
 public class DifferentialBackupFolderStrategy : IBackupFolderStrategy
 {
-    public List<string> SelectFolders(List<string> folders, string? pausedJob, string jobName, string destinationPath)
+    public List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, string jobName,
+        string destinationPath)
     {
-        return folders;
+        return new List<List<string>>();
     }
 }
