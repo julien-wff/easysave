@@ -1,5 +1,10 @@
 # EasySave
 
+<p align="center" width="100%">
+ <img alt="EasySave logo" src="./assets/easysave-logo@128.png" width="128px" />
+</p>
+
+
 ## Table of Contents
 **[1. Description](#description)**<br/>
 **[1. Project Structure](#project-structure)**

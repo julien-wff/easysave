@@ -5,6 +5,23 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <!-- Publish options -->
+        <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>true</SelfContained>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <PublishTrimmed>true</PublishTrimmed>
+        <!-- Branding -->
+        <ApplicationIcon>../assets/easysave-logo.ico</ApplicationIcon>
+        <Authors>ProSoft</Authors>
+        <Company>ProSoft</Company>
+        <Product>EasySave</Product>
+        <Copyright>Copyright © 2023 ProSoft</Copyright>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <AssemblyTitle>EasySave</AssemblyTitle>
+        <AssemblyDescription>Create, manage and execute backup jobs</AssemblyDescription>
+        <AssemblyCompany>ProSoft</AssemblyCompany>
+        <AssemblyProduct>EasySave</AssemblyProduct>
+        <AssemblyCopyright>Copyright © 2023 ProSoft</AssemblyCopyright>
     </PropertyGroup>
 
     <ItemGroup>
