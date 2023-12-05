@@ -1,50 +1,23 @@
-﻿using EasyLib.Json;
+﻿using EasyLib.Files.References;
 
 namespace EasyLib.Files;
 
 /// <summary>
-/// 
+/// Write daily logs for file transfers
 /// </summary>
-public class LogManager
+public class LogManager : LogManagerReference
 {
-    public readonly string LogFilePath;
+    private static LogManager? _instance;
 
-    /// <summary>
-    /// Create the instance of the singleton if it doesn't exist
-    /// Create the log directory if it doesn't exist
-    /// Create the log file if it doesn't exist
-    /// </summary>
-    private LogManager()
+    private LogManager() : base(AppDataPath)
     {
-        // AppData dir and append easysave/logs/
-        var appDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var stateDirectory = Path.Combine(appDataDir, "easysave", "logs");
-        LogFilePath = Path.Combine(stateDirectory, DateTime.Now.ToString("yyyy-MM-dd") + ".json");
-
-        // Create directory if it doesn't exist
-        if (!Directory.Exists(stateDirectory))
-        {
-            Directory.CreateDirectory(stateDirectory);
-        }
-
-        // Create file and write [] if it doesn't exist
-        if (!File.Exists(LogFilePath))
-        {
-            File.WriteAllText(LogFilePath, "");
-        }
     }
 
-    /// <summary>
-    /// expose the singleton instance
-    /// </summary>
-    public static LogManager Instance { get; } = new LogManager();
+    public static string AppDataPath { get; set; } =
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
     /// <summary>
-    /// Append the log to the log file
+    /// Expose the singleton instance
     /// </summary>
-    /// <param name="jsonLog"></param>
-    public void AppendLog(JsonLogElement jsonLog)
-    {
-        JsonFileUtils.AppendJsonToList(LogFilePath, jsonLog);
-    }
+    public static LogManager Instance => _instance ??= new LogManager();
 }
