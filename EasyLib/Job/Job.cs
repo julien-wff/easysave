@@ -133,6 +133,11 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
     /// <returns></returns>
     public bool Cancel()
     {
+        FilesCount = 0;
+        FilesSizeBytes = 0;
+        FilesCopied = 0;
+        FilesBytesCopied = 0;
+        State = JobState.End;
         return true;
     }
 
