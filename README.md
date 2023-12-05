@@ -136,6 +136,9 @@ Delete a job from the state file: <br/>
 Run selected jobs: <br/>
 `easysave run <jobs>`
 
+Discard the state of running jobs: <br/>
+`easysave discard <jobs>`
+
 #### Files
 Esaysave use 2 files to store the state of the jobs and the logs. They are located in `SystemUserFiles/easySave`.
 
