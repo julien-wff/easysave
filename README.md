@@ -4,30 +4,38 @@
  <img alt="EasySave logo" src="./assets/easysave-logo@128.png" width="128px" />
 </p>
 
+## Badges
+
+[![Lines of Code](https://sonarqube.julien-wff.com/api/project_badges/measure?project=julien-wff_easysave_AYwqSDqIaQcjCDvif8pU&metric=ncloc&token=sqb_2d66627c14aef6e42ca83736774c1533e2797edd)](https://sonarqube.julien-wff.com/dashboard?id=julien-wff_easysave_AYwqSDqIaQcjCDvif8pU)
+[![Coverage](https://sonarqube.julien-wff.com/api/project_badges/measure?project=julien-wff_easysave_AYwqSDqIaQcjCDvif8pU&metric=coverage&token=sqb_2d66627c14aef6e42ca83736774c1533e2797edd)](https://sonarqube.julien-wff.com/dashboard?id=julien-wff_easysave_AYwqSDqIaQcjCDvif8pU)
+[![Bugs](https://sonarqube.julien-wff.com/api/project_badges/measure?project=julien-wff_easysave_AYwqSDqIaQcjCDvif8pU&metric=bugs&token=sqb_2d66627c14aef6e42ca83736774c1533e2797edd)](https://sonarqube.julien-wff.com/dashboard?id=julien-wff_easysave_AYwqSDqIaQcjCDvif8pU)
+[![Maintainability Rating](https://sonarqube.julien-wff.com/api/project_badges/measure?project=julien-wff_easysave_AYwqSDqIaQcjCDvif8pU&metric=sqale_rating&token=sqb_2d66627c14aef6e42ca83736774c1533e2797edd)](https://sonarqube.julien-wff.com/dashboard?id=julien-wff_easysave_AYwqSDqIaQcjCDvif8pU)
+[![Reliability Rating](https://sonarqube.julien-wff.com/api/project_badges/measure?project=julien-wff_easysave_AYwqSDqIaQcjCDvif8pU&metric=reliability_rating&token=sqb_2d66627c14aef6e42ca83736774c1533e2797edd)](https://sonarqube.julien-wff.com/dashboard?id=julien-wff_easysave_AYwqSDqIaQcjCDvif8pU)
+[![Security Rating](https://sonarqube.julien-wff.com/api/project_badges/measure?project=julien-wff_easysave_AYwqSDqIaQcjCDvif8pU&metric=security_rating&token=sqb_2d66627c14aef6e42ca83736774c1533e2797edd)](https://sonarqube.julien-wff.com/dashboard?id=julien-wff_easysave_AYwqSDqIaQcjCDvif8pU)
 
 ## Table of Contents
+
 **[1. Description](#description)**<br/>
-**[1. Project Structure](#project-structure)**
+**[2. Project Structure](#project-structure)**
 
-* [1.1. Solution structure](#solution-structure)
-* [1.2. CLI](#cli)
-* [1.3. Lib](#lib)
-* [1.4. Communication between CLI and Lib](#comm-lib-cli)
+* [2.1. Solution structure](#solution-structure)
+* [2.2. CLI](#cli)
+* [2.3. Lib](#lib)
+* [2.4. Communication between CLI and Lib](#comm-lib-cli)
 
-**[2. Sequence diagrams](#sequence-diagrams)**
-* [2.1. New backup job](#new-backup-job)
-* [2.2. Start backup job](#start-backup-job)
+**[3. Sequence diagrams](#sequence-diagrams)**
 
-**[3. User Documentation](#user-documentation)**
-* [3.1. CLI](#cli-1)
-* [3.2. Examples](#examples)
+* [3.1. New backup job](#new-backup-job)
+* [3.2. Start backup job](#start-backup-job)
 
+**[4. User Documentation](#user-documentation)**
 
-## Badges
+* [4.1. CLI](#cli-1)
+* [4.2. Examples](#examples)
 
 <div id="description"/>
 
-## Description 
+## Description
 
 EasySave is a software developed on .NET by ProSoft. It allows to create, manage and
 execute backup jobs with different modes and settings.
@@ -48,7 +56,7 @@ The solution contains 3 projects:
 
 ![Project structure](./assets/project-structure.png)
 
-Open interactive diagrams 
+Open interactive diagrams
 [on Figma](https://www.figma.com/file/69B3eZT084VoueoZVX9qXm/ProgSystem?type=whiteboard&node-id=0%3A1&t=XkVQ1kuQdN3ifJBx-1).
 
 <div id="cli"/>
@@ -90,8 +98,8 @@ The `CLI` subscribe to the `JobStatusListener` observer of the `JobState`.
 
 This sequence diagram describe the creation of a new backup job.
 
-[Job creation sequence diagram on Figma](https://www.figma.com/file/69B3eZT084VoueoZVX9qXm/ProgSystem?type=whiteboard&node-id=5-5174&t=XkVQ1kuQdN3ifJBx-4)
 ![Job creation sequence diagram on Figma](./assets/ProgSystemNew.png)
+[Job creation sequence diagram on Figma](https://www.figma.com/file/69B3eZT084VoueoZVX9qXm/ProgSystem?type=whiteboard&node-id=5-5174&t=XkVQ1kuQdN3ifJBx-4)
 
 <div id="start-backup-job"/>
 
@@ -122,16 +130,16 @@ Get the version of the application: <br/>
 `easysave version`
 
 List all the jobs in the state file: <br/>
-`easysave list`
+`easysave list [jobs]`
 
 Checks if the config is valid, and if the state matches all the rules: <br/>
 `easysave check [jobs]`
 
 Create a new job in the state file: <br/>
-`easysave create <srcPath> <destPath> [--type <{full}|differential>] [-n <name>]` 
+`easysave create <name> <srcPath> <destPath> [--type <{full}|differential>]`
 
 Delete a job from the state file: <br/>
-`easysave delete <id|name>`
+`easysave delete <jobs>`
 
 Run selected jobs: <br/>
 `easysave run <jobs>`
@@ -140,16 +148,17 @@ Discard the state of running jobs: <br/>
 `easysave discard <jobs>`
 
 #### Files
+
 Esaysave use 2 files to store the state of the jobs and the logs. They are located in `SystemUserFiles/easySave`.
 
 #### Source and destination paths
 
-The source and destination paths can be either a file or a director located on the local machine or on a network drive or a removable drive.
+The source and destination paths can be either a file or a director located on the local machine or on a network drive
+or a removable drive.
 
 <div id="examples"/>
 
 ### Examples
-
 
 ## Authors
 
