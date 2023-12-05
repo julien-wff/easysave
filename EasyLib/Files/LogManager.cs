@@ -5,19 +5,14 @@ namespace EasyLib.Files;
 /// <summary>
 /// Write daily logs for file transfers
 /// </summary>
-public class LogManager : LogManagerReference
+public abstract class LogManager
 {
-    private static LogManager? _instance;
+    private static LogManagerReference? _instance;
 
-    private LogManager() : base(AppDataPath)
-    {
-    }
-
-    public static string AppDataPath { get; set; } =
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+    private static readonly string AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
     /// <summary>
     /// Expose the singleton instance
     /// </summary>
-    public static LogManager Instance => _instance ??= new LogManager();
+    public static LogManagerReference Instance => _instance ??= new LogManagerReference(AppDataPath);
 }
