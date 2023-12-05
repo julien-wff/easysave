@@ -31,6 +31,17 @@ public class RunCommand : Command, IJobStatusSubscriber
         JobProgression.PrintJobProgression(job);
     }
 
+    public void OnJobStateChange(JobState state, Job job)
+    {
+        if (state != JobState.End)
+            return;
+
+        JobProgression.Reset();
+        Console.WriteLine($"Job #{job.Id} - {job.Name} complete");
+        Console.WriteLine();
+        Console.WriteLine();
+    }
+
     public override bool ValidateArgs(IEnumerable<string> args)
     {
         throw new NotImplementedException();
@@ -76,6 +87,7 @@ public class RunCommand : Command, IJobStatusSubscriber
 
         jm.Subscribe(this);
         Console.WriteLine($"Starting {jobs.Count} job(s)...");
+        Console.WriteLine();
         var executedJobs = jm.ExecuteJobs(jobs);
         jm.Unsubscribe(this);
 
