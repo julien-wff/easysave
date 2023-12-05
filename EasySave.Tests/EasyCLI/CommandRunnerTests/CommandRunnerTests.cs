@@ -49,6 +49,19 @@ public class CommandRunnerTests
         result.Should().BeTrue();
     }
 
+    [Fact]
+    public void RunWithArgs_ShouldReturnFalse_WhenEmptyArgsAndNoHelp()
+    {
+        // Arrange
+        var commandRunner = CommandRunner.GetInstance();
+
+        // Act
+        var result = commandRunner.RunWithArgs(Array.Empty<string>());
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
     [Theory]
     [InlineData("mock")]
     [InlineData("mo")]

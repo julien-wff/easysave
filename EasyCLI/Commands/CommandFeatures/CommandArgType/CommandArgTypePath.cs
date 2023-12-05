@@ -4,15 +4,8 @@ public class CommandArgTypePath() : CommandArgType("path")
 {
     public override bool CheckValue()
     {
-        try
-        {
-            Path.GetFullPath(RawValue);
-            return true;
-        }
-        catch (Exception)
-        {
-            return false;
-        }
+        var invalidChars = Path.GetInvalidPathChars();
+        return RawValue.IndexOfAny(invalidChars) < 0;
     }
 
     public override object ParseValue()
