@@ -27,8 +27,6 @@ public class RunCommand : Command, IJobStatusSubscriber
             return;
 
         _lastConsoleUpdate = DateTime.UtcNow;
-        Console.Clear();
-        Console.WriteLine();
 
         JobProgression.PrintJobProgression(job);
     }
