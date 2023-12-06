@@ -35,4 +35,11 @@ public class BackupFolderSelector
             _stateSelector.SelectFolders(typeSelectedFolders, lastFolderPath, jobName, destinationPath);
         return stateSelectedFolders;
     }
+
+    public static string GetDestinationPath(string jobType, string destinationPath)
+    {
+        string date = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+        string finalDestinationPath = Path.Join(destinationPath, date + "_" + jobType + @"\");
+        return finalDestinationPath;
+    }
 }

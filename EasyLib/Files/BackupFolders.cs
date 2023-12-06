@@ -5,7 +5,7 @@
 /// </summary>
 public class BackupFolder
 {
-    public readonly string Name;
+    public string Name;
 
     /// <summary>
     /// Constructor of the BackupFolder class

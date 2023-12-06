@@ -121,9 +121,9 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
         _setJobState(JobState.DifferenceCalculation);
         tm.ComputeDifference(folders);
         _setJobState(JobState.DestinationStructureCreation);
-        tm.CreateDestinationStructure(Path.Combine(DestinationFolder, folders[0].Last()));
+        tm.CreateDestinationStructure();
         _setJobState(JobState.Copy);
-        tm.TransferFiles(Path.Combine(DestinationFolder, folders[0].Last()));
+        tm.TransferFiles();
         _setJobState(JobState.End);
         tm.Unsubscribe(this);
 
