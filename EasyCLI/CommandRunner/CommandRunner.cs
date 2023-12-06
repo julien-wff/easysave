@@ -1,4 +1,5 @@
 using EasyCLI.Commands;
+using EasyCLI.Localization;
 
 namespace EasyCLI.CommandRunner;
 
@@ -71,7 +72,7 @@ public sealed class CommandRunner
 
         if (command == null)
         {
-            Console.WriteLine($"Command '{argsList[0]}' not found. Type 'easysave help' for more information");
+            Console.WriteLine(Loc.T("Commands.CommandNotFound", argsList[0]));
             return false;
         }
 

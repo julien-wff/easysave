@@ -1,4 +1,5 @@
 using EasyCLI.Commands.CommandFeatures;
+using EasyCLI.Localization;
 using EasyLib;
 using EasyLib.Enums;
 
@@ -8,11 +9,11 @@ public class CheckCommand : Command
 {
     public override CommandBuilder.CommandBuilder Params { get; } = new CommandBuilder.CommandBuilder()
         .SetName("check")
-        .SetDescription("Checks if the config is valid, and if the state matches all the rules")
+        .SetDescription(Loc.T("Commands.Check.Description"))
         .SetAliases(new[] { "validate", "verify" })
         .AddArg(new CommandArg()
             .SetName("jobs")
-            .SetDescription("Jobs to check. Use format selector (1,2 or 1-3 or job1,2-4). Optional")
+            .SetDescription(Loc.T("Commands.Check.Args.Jobs.Description"))
             .SetRequired(false));
 
     public override bool ValidateArgs(IEnumerable<string> args)
@@ -28,7 +29,7 @@ public class CheckCommand : Command
 
         if (!fetchJobsResult)
         {
-            Console.WriteLine("Failed to fetch jobs.");
+            Console.WriteLine(Loc.T("Job.FetchError"));
             return;
         }
 
@@ -41,7 +42,7 @@ public class CheckCommand : Command
 
         if (jobs.Count == 0)
         {
-            Console.WriteLine("No jobs found.");
+            Console.WriteLine(Loc.T("Job.NoJobsFound"));
             return;
         }
 
@@ -51,17 +52,20 @@ public class CheckCommand : Command
             var checkResult = jm.CheckJobRules((int)job.Id, job.Name, job.SourceFolder, job.DestinationFolder);
             if (checkResult != JobCheckRule.Valid)
             {
-                Console.WriteLine(
-                    $"Job {job.Name} ({job.Id}) is invalid: {Localization.JobCheckRules.GetString(checkResult)}");
-                Console.WriteLine($"  Source: {job.SourceFolder}");
-                Console.WriteLine($"  Destination: {job.DestinationFolder}");
-                Console.WriteLine($"  Type: {EnumConverter<JobType>.ConvertToString(job.Type)}");
+                Console.WriteLine(Loc.T("Job.CheckError", job.Name, job.Id, JobCheckRules.GetString(checkResult)));
+                Console.WriteLine(Loc.T(
+                    "Job.JobInformation.Attributes",
+                    job.SourceFolder,
+                    job.DestinationFolder,
+                    EnumConverter<JobType>.ConvertToString(job.Type),
+                    EnumConverter<JobState>.ConvertToString(job.State)
+                ));
                 Console.WriteLine();
                 invalidCount++;
             }
         }
 
-        Console.WriteLine($"Checks complete with {invalidCount} invalid out of {jobs.Count}.");
+        Console.WriteLine(Loc.T("Commands.Check.Result", invalidCount, jobs.Count));
 
         if (invalidCount > 0)
         {
