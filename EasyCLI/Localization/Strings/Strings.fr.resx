@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <data name="Commands.Help.Description" xml:space="preserve">
+        <value>Affiche l'aide pour les commandes</value>
+    </data>
+    <data name="Commands.Help.Args.Command.Description" xml:space="preserve">
+        <value>Affiche l'aide pour une commande spécifique</value>
+    </data>
+    <data name="Commands.CommandNotFound" xml:space="preserve">
+        <value>Commande '{0}' introuvable. Essayez 'easysave help' pour plus d'informations.</value>
+    </data>
+    <data name="Commands.Help.GeneralHelp.Header" xml:space="preserve">
+        <value>Page d'aide EasySave CLI
+
+Usage: easysave [commande] [arguments]
+
+Un outil en ligne de commande pour sauvegarder vos fichiers
+
+Commandes disponibles:</value>
+    </data>
+    <data name="Commands.Version.Description" xml:space="preserve">
+        <value>Affiche la version de l'application</value>
+    </data>
+    <data name="Commands.WrongArgumentCount" xml:space="preserve">
+        <value>La commande attend {0} argument(s), {1} fournis. Essayez 'easysave help '2}' pour plus d'informations.</value>
+    </data>
+    <data name="Commands.Version.Version" xml:space="preserve">
+        <value>Easysave version {0} sur {1}</value>
+    </data>
+</root>

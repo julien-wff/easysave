@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <data name="Commands.Help.Description">
+        <value>Display help on other commands</value>
+    </data>
+    <data name="Commands.Help.Args.Command.Description">
+        <value>Display help of a specific command</value>
+    </data>
+    <data name="Commands.CommandNotFound">
+        <value>Command '{0}' not found. Try 'easysave help' for more information.</value>
+    </data>
+    <data name="Commands.Help.GeneralHelp.Header" xml:space="preserve">
+        <value>EasySave CLI Help Page
+
+Usage: easysave [command] [arguments]
+
+A CLI tool to backup your files
+
+Available commands:</value>
+    </data>
+    <data name="Commands.Version.Description">
+        <value>Display the version of the application</value>
+    </data>
+    <data name="Commands.WrongArgumentCount" xml:space="preserve">
+        <value>Command expects {0} argument(s), {1} given. Type 'easysave help {2}' for more information.</value>
+    </data>
+    <data name="Commands.Version.Version" xml:space="preserve">
+        <value>Easysave version {0} on {1}</value>
+    </data>
+</root>
