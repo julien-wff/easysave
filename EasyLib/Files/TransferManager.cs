@@ -73,45 +73,55 @@ public class TransferManager : IJobStatusPublisher
         if (folders[2].Any())
         {
             InstructionsFolder.SubFolders.Add(new BackupFolder(folders[3][0]));
-            var source = _sourceFolder;
-            InstructionsFolder.SubFolders[0] = _compareFolders(source, folders[0]);
+            InstructionsFolder = _compareBackupPath(InstructionsFolder.SubFolders[0], folders[0]);
         }
         else
         {
-            var source = _sourceFolder;
-            source.Name = InstructionsFolder.Name;
-            InstructionsFolder = _compareFolders(source, folders[0]);
+            InstructionsFolder = _compareBackupPath(InstructionsFolder, folders[0]);
         }
     }
 
-    private BackupFolder _compareFolders(BackupFolder source, List<string> pathList)
+    private BackupFolder _compareBackupPath(BackupFolder increment, List<string> pathList)
     {
+        increment.SubFolders = _sourceFolder.SubFolders;
+        increment.Files = _sourceFolder.Files;
         foreach (var path in pathList)
         {
-            var dirs = Directory.GetDirectories(path);
-            foreach (var dir in dirs)
-            {
-                var name = Path.GetDirectoryName(dir);
-                var selectedFolder = source.SubFolders.Find(folder => folder.Name == name);
-                if (selectedFolder != null)
-                {
-                    selectedFolder = _compareFolders(selectedFolder, Directory.GetDirectories(dir).ToList());
-                }
-            }
+            var backupFolder = new BackupFolder(path);
+            backupFolder.Walk(path);
+            increment.SubFolders = _compareFolders(increment.SubFolders, backupFolder.SubFolders);
+        }
 
-            var files = Directory.GetFiles(path);
-            foreach (var file in files)
+        return increment;
+    }
+
+    private List<BackupFolder> _compareFolders(List<BackupFolder> source, List<BackupFolder> destination)
+    {
+        var matchingFolders = destination.FindAll(f => source.Any(s => s.Name == f.Name));
+        var folder = new BackupFolder("");
+        foreach (var matchingFolder in matchingFolders)
+        {
+            folder.SubFolders.AddRange(_compareFolders(source.Find(s => s.Name == matchingFolder.Name).SubFolders,
+                matchingFolder.SubFolders));
+            folder.Files.AddRange(_compareFiles(source.Find(s => s.Name == matchingFolder.Name),
+                matchingFolder));
+        }
+
+        return folder.SubFolders;
+    }
+
+    private List<BackupFile> _compareFiles(BackupFolder source, BackupFolder destination)
+    {
+        foreach (var file in source.Files)
+        {
+            var destinationFile = destination.Files.Find(f => f.Hash == file.Hash);
+            if (destinationFile != null)
             {
-                var name = Path.GetFileName(file);
-                var selectedFile = source.Files.Find(folderFile => folderFile.Name == name);
-                if (selectedFile != null)
-                {
-                    source.Files.Remove(selectedFile);
-                }
+                destination.Files.Remove(destinationFile);
             }
         }
 
-        return source;
+        return source.Files;
     }
 
     /// <summary>
@@ -158,7 +168,6 @@ public class TransferManager : IJobStatusPublisher
             var copyStart = DateTime.Now;
             File.Copy(_job.CurrentFileSource, _job.CurrentFileDestination, true);
             var copyEnd = DateTime.Now;
-
             _job.FilesCopied++;
             _job.FilesBytesCopied += file.Size;
             _notifySubscribersForChange();

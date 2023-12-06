@@ -9,7 +9,7 @@ public class NewBackupFolderStrategy : IBackupFolderStrategy
         string destinationPath)
     {
         destinationPath = BackupFolderSelector.GetDestinationPath(jobName, destinationPath);
-        if (folders[0].Any() || folders[2].Any())
+        if (folders[0].Any() && folders[2].Any())
         {
             return new List<List<string>>() { folders[0], new List<string>() { destinationPath }, folders[2] };
         }

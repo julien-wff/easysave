@@ -16,8 +16,8 @@ public class BackupFolder
         Name = Path.GetFileName(Path.GetDirectoryName(path))!;
     }
 
-    public List<BackupFile> Files { get; } = new();
-    public List<BackupFolder> SubFolders { get; } = new();
+    public List<BackupFile> Files { get; set; } = new();
+    public List<BackupFolder> SubFolders { get; set; } = new();
 
     /// <summary>
     /// This method recursively walks through the file tree
