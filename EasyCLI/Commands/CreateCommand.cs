@@ -1,5 +1,6 @@
 using EasyCLI.Commands.CommandFeatures;
 using EasyCLI.Commands.CommandFeatures.CommandArgType;
+using EasyCLI.Localization;
 using EasyLib;
 using EasyLib.Enums;
 
@@ -9,26 +10,26 @@ public class CreateCommand : Command
 {
     public override CommandBuilder.CommandBuilder Params { get; } = new CommandBuilder.CommandBuilder()
         .SetName("create")
-        .SetDescription("Create a new job in the state file")
+        .SetDescription(Loc.T("Commands.Create.Description"))
         .SetAliases(new[] { "new", "add" })
         .AddArg(new CommandArg()
             .SetName("name")
-            .SetDescription("Name of the job to create")
+            .SetDescription(Loc.T("Commands.Create.Args.Name.Description"))
             .SetType(new CommandArgTypeString())
             .SetRequired(true))
         .AddArg(new CommandArg()
             .SetName("source")
-            .SetDescription("Source folder to backup")
+            .SetDescription(Loc.T("Commands.Create.Args.Source.Description"))
             .SetType(new CommandArgTypePath())
             .SetRequired(true))
         .AddArg(new CommandArg()
             .SetName("destination")
-            .SetDescription("Destination folder to backup to")
+            .SetDescription(Loc.T("Commands.Create.Args.Destination.Description"))
             .SetType(new CommandArgTypePath())
             .SetRequired(true))
         .AddFlag(new CommandFlag()
             .SetName("type")
-            .SetDescription("Type of backup to perform. Valid options and full and differential")
+            .SetDescription(Loc.T("Commands.Create.Flags.Type.Description"))
             .SetType(new CommandArgTypeJobType())
             .SetDefault("full")
             .SetShortHands(new[] { "t" }));
@@ -44,7 +45,7 @@ public class CreateCommand : Command
 
         if (argsList.Count <= 3)
         {
-            Console.WriteLine("Not enough arguments provided. Use 'help create' for more information.");
+            Console.WriteLine(Loc.T("Commands.WrongArgumentCount", 3, argsList.Count - 1, "create"));
             return;
         }
 
@@ -54,7 +55,7 @@ public class CreateCommand : Command
 
         if (!Params.Args[1].Type.CheckValue())
         {
-            Console.WriteLine("Source path is not valid.");
+            Console.WriteLine(Loc.T("Checks.SourcePathInvalid"));
             return;
         }
 
@@ -62,7 +63,7 @@ public class CreateCommand : Command
 
         if (!Params.Args[2].Type.CheckValue())
         {
-            Console.WriteLine("Destination path is not valid.");
+            Console.WriteLine(Loc.T("Checks.DestinationPathInvalid"));
             return;
         }
 
@@ -74,7 +75,7 @@ public class CreateCommand : Command
             Params.Flags[0].Type.RawValue = argsList[5];
             if (!Params.Flags[0].Type.CheckValue())
             {
-                Console.WriteLine("Invalid job type. Valid options are 'full' and 'differential'.");
+                Console.WriteLine(Loc.T("Checks.InvalidJobType"));
                 return;
             }
 
@@ -87,12 +88,12 @@ public class CreateCommand : Command
         if (jobCheck != JobCheckRule.Valid)
         {
             // Translates the error message from the JobCheckRules enum
-            Console.WriteLine(Localization.JobCheckRules.GetString(jobCheck));
+            Console.WriteLine(JobCheckRules.GetString(jobCheck));
             return;
         }
 
         var job = jm.CreateJob(name, source, destination, jobType);
 
-        Console.WriteLine($"Job '{name}' created successfully with ID {job.Id}.");
+        Console.WriteLine(Loc.T("Job.Created", job.Name, job.Id));
     }
 }

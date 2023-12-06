@@ -12,17 +12,16 @@ public static class JobCheckRules
     {
         return rule switch
         {
-            EasyLib.Enums.JobCheckRule.Valid => "Check successful, no errors found.",
-            EasyLib.Enums.JobCheckRule.SourcePathInvalid => "Source path is not valid.",
-            EasyLib.Enums.JobCheckRule.DestinationPathInvalid => "Destination path is not valid.",
-            EasyLib.Enums.JobCheckRule.SourcePathDoesNotExist => "Source path does not exist.",
-            EasyLib.Enums.JobCheckRule.DestinationPathDoesNotExist => "Destination path does not exist.",
-            EasyLib.Enums.JobCheckRule.SharedRoot => "Source and destination paths share the same root.",
-            EasyLib.Enums.JobCheckRule.DuplicateId => "Job with the same ID already exists.",
-            EasyLib.Enums.JobCheckRule.DuplicateName => "Job with the same name already exists.",
-            EasyLib.Enums.JobCheckRule.DuplicatePaths =>
-                "Job with the same source and destination paths already exists.",
-            EasyLib.Enums.JobCheckRule.DestinationNotEmpty => "Destination folder is not empty.",
+            EasyLib.Enums.JobCheckRule.Valid => Loc.T("Checks.Valid"),
+            EasyLib.Enums.JobCheckRule.SourcePathInvalid => Loc.T("Checks.SourcePathInvalid"),
+            EasyLib.Enums.JobCheckRule.DestinationPathInvalid => Loc.T("Checks.DestinationPathInvalid"),
+            EasyLib.Enums.JobCheckRule.SourcePathDoesNotExist => Loc.T("Checks.SourcePathDoesNotExist"),
+            EasyLib.Enums.JobCheckRule.DestinationPathDoesNotExist => Loc.T("Checks.DestinationPathDoesNotExist"),
+            EasyLib.Enums.JobCheckRule.SharedRoot => Loc.T("Checks.SharedRoot"),
+            EasyLib.Enums.JobCheckRule.DuplicateId => Loc.T("Checks.DuplicateId"),
+            EasyLib.Enums.JobCheckRule.DuplicateName => Loc.T("Checks.DuplicateName"),
+            EasyLib.Enums.JobCheckRule.DuplicatePaths => Loc.T("Checks.DuplicatePaths"),
+            EasyLib.Enums.JobCheckRule.DestinationNotEmpty => Loc.T("Checks.DestinationNotEmpty"),
             _ => throw new ArgumentException("Invalid job check rule.")
         };
     }

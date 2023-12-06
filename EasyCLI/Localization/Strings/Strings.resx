@@ -28,4 +28,91 @@ Available commands:</value>
     <data name="Commands.Version.Version" xml:space="preserve">
         <value>Easysave version {0} on {1}</value>
     </data>
+    <data name="Commands.Usage" xml:space="preserve">
+        <value>Usage: easysave {0}</value>
+    </data>
+    <data name="Commands.Flags.InCommand" xml:space="preserve">
+        <value>[flags]</value>
+    </data>
+    <data name="Commands.Arguments" xml:space="preserve">
+        <value>Arguments:</value>
+    </data>
+    <data name="Commands.Flags" xml:space="preserve">
+        <value>Flags:</value>
+    </data>
+    <data name="Commands.Create.Description" xml:space="preserve">
+        <value>Create a new job in the state file</value>
+    </data>
+    <data name="Commands.Create.Args.Name.Description" xml:space="preserve">
+        <value>Name of the job to create</value>
+    </data>
+    <data name="Commands.Create.Args.Source.Description" xml:space="preserve">
+        <value>Source folder to backup</value>
+    </data>
+    <data name="Commands.Create.Args.Destination.Description" xml:space="preserve">
+        <value>Destination folder to backup to</value>
+    </data>
+    <data name="Commands.Create.Args.Type.Description" xml:space="preserve">
+        <value>Type of backup to perform. Valid options and full and differential</value>
+    </data>
+    <data name="Checks.SourcePathInvalid" xml:space="preserve">
+        <value>Source path is not valid.</value>
+    </data>
+    <data name="Checks.DestinationPathInvalid" xml:space="preserve">
+        <value>Destination path is not valid.</value>
+    </data>
+    <data name="Checks.InvalidJobType" xml:space="preserve">
+        <value>Invalid job type. Valid options are 'full' and 'differential'.</value>
+    </data>
+    <data name="Job.Created" xml:space="preserve">
+        <value>Job '{0}' created successfully with ID {1}.</value>
+    </data>
+    <data name="Commands.Check.Description" xml:space="preserve">
+        <value>Checks if the config is valid, and if the state matches all the rules</value>
+    </data>
+    <data name="Commands.Check.Args.Jobs.Description" xml:space="preserve">
+        <value>Jobs to check. Use format selector (1,2 or 1-3 or job1,2-4). Optional</value>
+    </data>
+    <data name="Job.FetchError" xml:space="preserve">
+        <value>Failed to fetch jobs from state file.</value>
+    </data>
+    <data name="Job.NoJobFound" xml:space="preserve">
+        <value>No jobs found.</value>
+    </data>
+    <data name="Job.JobInformation.Attributes" xml:space="preserve">
+        <value>  Source: {0}
+  Destination: {1}
+  Type: {2}
+  State: {3}</value>
+    </data>
+    <data name="Job.CheckError" xml:space="preserve">
+        <value>Job '{0}' (#{1}) is invalid: {2}</value>
+    </data>
+    <data name="Commands.Check.Result" xml:space="preserve">
+        <value>Check of {0} job(s) complete with {1} errors.</value>
+    </data>
+    <data name="Checks.Valid" xml:space="preserve">
+        <value>Check successful, no errors found.</value>
+    </data>
+    <data name="Checks.SourcePathDoesNotExist" xml:space="preserve">
+        <value>Source path does not exist.</value>
+    </data>
+    <data name="Checks.DestinationPathDoesNotExist" xml:space="preserve">
+        <value>Destination path does not exist.</value>
+    </data>
+    <data name="Checks.SharedRoot" xml:space="preserve">
+        <value>Source and destination paths share the same root.</value>
+    </data>
+    <data name="Checks.DuplicateId" xml:space="preserve">
+        <value>Job with the same ID already exists.</value>
+    </data>
+    <data name="Checks.DuplicateName" xml:space="preserve">
+        <value>Job with the same name already exists.</value>
+    </data>
+    <data name="Checks.DuplicatePaths" xml:space="preserve">
+        <value>Job with the same source and destination paths already exists.</value>
+    </data>
+    <data name="Checks.DestinationNotEmpty" xml:space="preserve">
+        <value>Destination folder is not empty.</value>
+    </data>
 </root>

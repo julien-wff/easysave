@@ -1,3 +1,5 @@
+using EasyCLI.Localization;
+
 namespace EasyCLI.Commands;
 
 /// <summary>
@@ -33,7 +35,7 @@ public abstract class Command
     public void ShowHelp()
     {
         Console.WriteLine();
-        Console.Write($"Usage: easysave {Params.Name}");
+        Console.Write(Loc.T("Commands.Usage", Params.Name));
 
         foreach (var commandArg in Params.Args)
         {
@@ -42,7 +44,7 @@ public abstract class Command
 
         if (Params.Flags.Count > 0)
         {
-            Console.Write(" [flags]");
+            Console.Write($@" {Loc.T("Commands.Flags.InCommand")}");
         }
 
         Console.WriteLine();
@@ -52,22 +54,22 @@ public abstract class Command
         if (Params.Args.Count > 0)
         {
             Console.WriteLine();
-            Console.WriteLine("Arguments:");
+            Console.WriteLine(Loc.T("Commands.Arguments"));
 
             foreach (var commandArg in Params.Args)
             {
-                Console.WriteLine($"  {commandArg.Name} - {commandArg.Description}");
+                Console.WriteLine($@"  {commandArg.Name} - {commandArg.Description}");
             }
         }
 
         if (Params.Flags.Count > 0)
         {
             Console.WriteLine();
-            Console.WriteLine("Flags:");
+            Console.WriteLine(Loc.T("Commands.Flags"));
 
             foreach (var commandFlag in Params.Flags)
             {
-                Console.WriteLine($"  --{commandFlag.Name} - {commandFlag.Description}");
+                Console.WriteLine($@"  --{commandFlag.Name} - {commandFlag.Description}");
             }
         }
     }
