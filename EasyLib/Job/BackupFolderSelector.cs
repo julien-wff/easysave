@@ -39,6 +39,12 @@ public class BackupFolderSelector
         return stateSelectedFolders;
     }
 
+    /// <summary>
+    /// Create a destination path name for the backup job.
+    /// </summary>
+    /// <param name="jobType"></param>
+    /// <param name="destinationPath"></param>
+    /// <returns></returns>
     public static string GetDestinationPath(Enum jobType, string destinationPath)
     {
         string date = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");

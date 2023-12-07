@@ -66,6 +66,10 @@ public class TransferManager : IJobStatusPublisher
         }
     }
 
+    /// <summary>
+    /// Depending on the job type, this method will call the right method to compute the difference between the source and the destination
+    /// </summary>
+    /// <param name="folders"></param>
     public void ComputeDifference(List<List<string>> folders)
     {
         _job.State = JobState.DifferenceCalculation;
@@ -81,6 +85,12 @@ public class TransferManager : IJobStatusPublisher
         }
     }
 
+    /// <summary>
+    /// Compare the source with the existing backup folders if there is any
+    /// The result is stored in the InstructionsFolder property
+    /// </summary>
+    /// <param name="Instruction"></param>
+    /// <param name="pathList"></param>
     private void _compareBackupPath(BackupFolder Instruction, List<string> pathList)
     {
         Instruction.SubFolders = _sourceFolder.SubFolders;
@@ -94,6 +104,12 @@ public class TransferManager : IJobStatusPublisher
         }
     }
 
+    /// <summary>
+    /// Recursively compare the subfolders of two lists of BackupFolder objects and returns the list of all the folders and non existing files in the destination folders
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="destination"></param>
+    /// <returns></returns>
     private List<BackupFolder> _compareFolders(List<BackupFolder> source, List<BackupFolder> destination)
     {
         foreach (var folder in destination)
@@ -109,6 +125,12 @@ public class TransferManager : IJobStatusPublisher
         return source;
     }
 
+    /// <summary>
+    /// Compare the files of two lists of BackupFile objects and returns the list of all the non existing files in the destination
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="destination"></param>
+    /// <returns></returns>
     private List<BackupFile> _compareFiles(List<BackupFile> source, List<BackupFile> destination)
     {
         source = source.Where(s => !destination.Exists(d => d.Hash == s.Hash)).ToList();
@@ -132,6 +154,11 @@ public class TransferManager : IJobStatusPublisher
         _createTree(actualJobPath, InstructionsFolder);
     }
 
+    /// <summary>
+    /// Create the folder structure for the backup
+    /// </summary>
+    /// <param name="parentPath"></param>
+    /// <param name="folder"></param>
     private void _createTree(string parentPath, BackupFolder folder)
     {
         foreach (var subFolder in folder.SubFolders)
