@@ -5,12 +5,5 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="EasySave" Height="720" Width="1280" Icon="/Assets/easysave-logo.ico">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Themes/White.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-    <Grid Background="{StaticResource BackgroundBrush}" />
+    <Grid Background="{StaticResource BackgroundBrush}"/>
 </Window>
