@@ -98,12 +98,11 @@ public class TransferManager : IJobStatusPublisher
     {
         foreach (var folder in destination)
         {
-            if (source.Exists(s => s.Name == folder.Name))
+            var sourceFolder = source.Find(s => s.Name == folder.Name);
+            if (sourceFolder != null)
             {
-                source.Find(s => s.Name == folder.Name).SubFolders =
-                    _compareFolders(source.Find(s => s.Name == folder.Name).SubFolders, folder.SubFolders);
-                source.Find(s => s.Name == folder.Name).Files =
-                    _compareFiles(source.Find(s => s.Name == folder.Name).Files, folder.Files);
+                sourceFolder.SubFolders = _compareFolders(sourceFolder.SubFolders, folder.SubFolders);
+                sourceFolder.Files = _compareFiles(sourceFolder.Files, folder.Files);
             }
         }
 
@@ -112,14 +111,7 @@ public class TransferManager : IJobStatusPublisher
 
     private List<BackupFile> _compareFiles(List<BackupFile> source, List<BackupFile> destination)
     {
-        foreach (var file in destination)
-        {
-            if (source.Exists(s => s.Hash == file.Hash))
-            {
-                source.Remove(source.Find(s => s.Hash == file.Hash));
-            }
-        }
-
+        source = source.Where(s => !destination.Exists(d => d.Hash == s.Hash)).ToList();
         return source;
     }
 

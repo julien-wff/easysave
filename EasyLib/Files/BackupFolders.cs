@@ -5,8 +5,6 @@
 /// </summary>
 public class BackupFolder
 {
-    public string Name;
-
     /// <summary>
     /// Constructor of the BackupFolder class
     /// </summary>
@@ -15,6 +13,8 @@ public class BackupFolder
     {
         Name = Path.GetFileName(Path.GetDirectoryName(path))!;
     }
+
+    public string Name { get; }
 
     public List<BackupFile> Files { get; set; } = new();
     public List<BackupFolder> SubFolders { get; set; } = new();

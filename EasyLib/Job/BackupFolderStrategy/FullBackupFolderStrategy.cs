@@ -6,10 +6,14 @@
 /// </summary>
 public class FullBackupFolderStrategy : IBackupFolderStrategy
 {
-    public List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, string jobName,
-        string destinationPath)
+    public List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, Enum jobType,
+        string destinationFolder)
     {
         return new List<List<string>>()
-            { new List<string>(), new List<string>() { lastFolderPath }, new List<string>() };
+        {
+            new List<string>(),
+            new List<string>() { lastFolderPath },
+            new List<string>()
+        };
     }
 }

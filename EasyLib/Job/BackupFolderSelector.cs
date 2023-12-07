@@ -22,24 +22,28 @@ public class BackupFolderSelector
     /// Call the SelectFolders method of the IBackupFolderStrategy object to filter the folders depending on the type and state of the backup job.
     /// </summary>
     /// <param name="folders"></param>
-    /// <param name="pausedJob"></param>
-    /// <param name="jobName"></param>
-    /// <param name="destinationPath"></param>
+    /// <param name="lastFolderPath"></param>
+    /// <param name="jobType"></param>
+    /// <param name="destinationFolder"></param>
     /// <returns></returns>
-    public List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, string jobName,
-        string destinationPath)
+    public List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, Enum jobType,
+        string destinationFolder)
     {
-        List<List<string>> typeSelectedFolders =
-            _typeSelector.SelectFolders(folders, lastFolderPath, jobName, destinationPath);
+        List<List<string>> typeSelectedFolders = _typeSelector.SelectFolders(
+            folders,
+            lastFolderPath,
+            jobType,
+            destinationFolder);
         List<List<string>> stateSelectedFolders =
-            _stateSelector.SelectFolders(typeSelectedFolders, lastFolderPath, jobName, destinationPath);
+            _stateSelector.SelectFolders(typeSelectedFolders, lastFolderPath, jobType, destinationFolder);
         return stateSelectedFolders;
     }
 
-    public static string GetDestinationPath(string jobType, string destinationPath)
+    public static string GetDestinationPath(Enum jobType, string destinationPath)
     {
         string date = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
-        string finalDestinationPath = Path.Join(destinationPath, date + "_" + jobType + @"\");
+        string finalDestinationPath =
+            Path.Join(destinationPath, date + "_" + jobType, Path.DirectorySeparatorChar.ToString());
         return finalDestinationPath;
     }
 }

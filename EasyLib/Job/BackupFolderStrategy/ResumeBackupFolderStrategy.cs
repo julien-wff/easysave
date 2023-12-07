@@ -5,12 +5,18 @@
 /// </summary>
 public class ResumeBackupFolderStrategy : IBackupFolderStrategy
 {
-    public List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, string jobName,
-        string destinationPath)
+    public List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, Enum jobType,
+        string destinationFolder)
     {
         if (!folders[0].Any())
         {
-            throw new Exception("Cant resume with no destination");
+            var destinationPath = BackupFolderSelector.GetDestinationPath(jobType, destinationFolder);
+            return new List<List<string>>()
+            {
+                new List<string>(),
+                new List<string>() { destinationPath },
+                new List<string>()
+            };
         }
         else if (folders.Count == 1)
         {

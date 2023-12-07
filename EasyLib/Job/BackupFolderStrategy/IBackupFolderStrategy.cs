@@ -7,10 +7,13 @@
 public interface IBackupFolderStrategy
 {
     /// <summary>
-    /// This method is used to filter backup folder list for backup depending on strategy
+    /// 
     /// </summary>
     /// <param name="folders"></param>
+    /// <param name="lastFolderPath"></param>
+    /// <param name="jobName"></param>
+    /// <param name="destinationFolder"></param>
     /// <returns></returns>
-    List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, string jobName,
-        string destinationPath);
+    List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, Enum jobType,
+        string destinationFolder);
 }

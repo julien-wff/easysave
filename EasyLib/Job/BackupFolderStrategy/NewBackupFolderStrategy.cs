@@ -5,22 +5,36 @@
 /// </summary>
 public class NewBackupFolderStrategy : IBackupFolderStrategy
 {
-    public List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, string jobName,
-        string destinationPath)
+    public List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, Enum jobType,
+        string destinationFolder)
     {
-        destinationPath = BackupFolderSelector.GetDestinationPath(jobName, destinationPath);
+        var destinationPath = BackupFolderSelector.GetDestinationPath(jobType, destinationFolder);
         if (folders[0].Any() && folders[2].Any())
         {
-            return new List<List<string>>() { folders[0], new List<string>() { destinationPath }, folders[2] };
+            return new List<List<string>>()
+            {
+                folders[0],
+                new List<string>() { destinationPath },
+                folders[2]
+            };
         }
         else if (folders[0].Any())
         {
-            return new List<List<string>>() { folders[0], new List<string>() { destinationPath }, new List<string>() };
+            return new List<List<string>>()
+            {
+                folders[0],
+                new List<string>() { destinationPath },
+                new List<string>()
+            };
         }
         else
         {
             return new List<List<string>>()
-                { new List<string>(), new List<string>() { destinationPath }, new List<string>() };
+            {
+                new List<string>(),
+                new List<string>() { destinationPath },
+                new List<string>()
+            };
         }
     }
 }
