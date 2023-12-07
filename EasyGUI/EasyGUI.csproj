@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+        <!-- Publish options -->
+        <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>true</SelfContained>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <PublishReadyToRunShowWarnings>true</PublishReadyToRunShowWarnings>
+        <PublishReadyToRunUseCrossgen>true</PublishReadyToRunUseCrossgen>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+        <!-- Branding -->
+        <ApplicationIcon>../assets/easysave-logo.ico</ApplicationIcon>
+        <Authors>ProSoft</Authors>
+        <Company>ProSoft</Company>
+        <Product>EasySave</Product>
+        <Copyright>Copyright © 2023 ProSoft</Copyright>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <AssemblyTitle>EasySave</AssemblyTitle>
+        <AssemblyDescription>Create, manage and execute backup jobs</AssemblyDescription>
+        <AssemblyCompany>ProSoft</AssemblyCompany>
+        <AssemblyProduct>EasySave</AssemblyProduct>
+        <AssemblyCopyright>Copyright © 2023 ProSoft</AssemblyCopyright>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\EasyLib\EasyLib.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Resource Include="Assets\easysave-logo.ico"/>
+    </ItemGroup>
+
+</Project>
