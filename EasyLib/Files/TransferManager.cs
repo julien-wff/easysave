@@ -73,55 +73,54 @@ public class TransferManager : IJobStatusPublisher
         if (folders[2].Any())
         {
             InstructionsFolder.SubFolders.Add(new BackupFolder(folders[3][0]));
-            InstructionsFolder = _compareBackupPath(InstructionsFolder.SubFolders[0], folders[0]);
+            _compareBackupPath(InstructionsFolder.SubFolders[0], folders[0]);
         }
         else
         {
-            InstructionsFolder = _compareBackupPath(InstructionsFolder, folders[0]);
+            _compareBackupPath(InstructionsFolder, folders[0]);
         }
     }
 
-    private BackupFolder _compareBackupPath(BackupFolder increment, List<string> pathList)
+    private void _compareBackupPath(BackupFolder Instruction, List<string> pathList)
     {
-        increment.SubFolders = _sourceFolder.SubFolders;
-        increment.Files = _sourceFolder.Files;
+        Instruction.SubFolders = _sourceFolder.SubFolders;
+        Instruction.Files = _sourceFolder.Files;
         foreach (var path in pathList)
         {
-            var backupFolder = new BackupFolder(path);
-            backupFolder.Walk(path);
-            increment.SubFolders = _compareFolders(increment.SubFolders, backupFolder.SubFolders);
+            var backupFolder = new BackupFolder(path + Path.DirectorySeparatorChar);
+            backupFolder.Walk(path + Path.DirectorySeparatorChar);
+            Instruction.SubFolders = _compareFolders(Instruction.SubFolders, backupFolder.SubFolders);
+            Instruction.Files = _compareFiles(Instruction.Files, backupFolder.Files);
         }
-
-        return increment;
     }
 
     private List<BackupFolder> _compareFolders(List<BackupFolder> source, List<BackupFolder> destination)
     {
-        var matchingFolders = destination.FindAll(f => source.Any(s => s.Name == f.Name));
-        var folder = new BackupFolder("");
-        foreach (var matchingFolder in matchingFolders)
+        foreach (var folder in destination)
         {
-            folder.SubFolders.AddRange(_compareFolders(source.Find(s => s.Name == matchingFolder.Name).SubFolders,
-                matchingFolder.SubFolders));
-            folder.Files.AddRange(_compareFiles(source.Find(s => s.Name == matchingFolder.Name),
-                matchingFolder));
-        }
-
-        return folder.SubFolders;
-    }
-
-    private List<BackupFile> _compareFiles(BackupFolder source, BackupFolder destination)
-    {
-        foreach (var file in source.Files)
-        {
-            var destinationFile = destination.Files.Find(f => f.Hash == file.Hash);
-            if (destinationFile != null)
+            if (source.Exists(s => s.Name == folder.Name))
             {
-                destination.Files.Remove(destinationFile);
+                source.Find(s => s.Name == folder.Name).SubFolders =
+                    _compareFolders(source.Find(s => s.Name == folder.Name).SubFolders, folder.SubFolders);
+                source.Find(s => s.Name == folder.Name).Files =
+                    _compareFiles(source.Find(s => s.Name == folder.Name).Files, folder.Files);
             }
         }
 
-        return source.Files;
+        return source;
+    }
+
+    private List<BackupFile> _compareFiles(List<BackupFile> source, List<BackupFile> destination)
+    {
+        foreach (var file in destination)
+        {
+            if (source.Exists(s => s.Hash == file.Hash))
+            {
+                source.Remove(source.Find(s => s.Hash == file.Hash));
+            }
+        }
+
+        return source;
     }
 
     /// <summary>
