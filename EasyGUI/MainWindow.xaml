@@ -3,7 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:EasyGUI.Controls"
         mc:Ignorable="d"
         Title="EasySave" Height="720" Width="1280" Icon="/Assets/easysave-logo.ico">
-    <Grid Background="{StaticResource BackgroundBrush}"/>
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <Grid Margin="16">
+            <controls:Header />
+        </Grid>
+    </Grid>
 </Window>
