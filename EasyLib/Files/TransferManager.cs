@@ -66,43 +66,75 @@ public class TransferManager : IJobStatusPublisher
         }
     }
 
-    public void ComputeDifference(List<string> folders)
+    /// <summary>
+    /// Depending on the job type, this method will call the right method to compute the difference between the source and the destination
+    /// </summary>
+    /// <param name="folders"></param>
+    public void ComputeDifference(List<List<string>> folders)
     {
         _job.State = JobState.DifferenceCalculation;
-        InstructionsFolder = _sourceFolder;
-        foreach (var folder in folders)
+        InstructionsFolder = new BackupFolder(folders[1][0]);
+        if (folders[2].Any())
         {
-            var tempFolder = new BackupFolder(folder);
-            tempFolder.Walk(folder);
-            _compareFolders(tempFolder, InstructionsFolder);
+            InstructionsFolder.SubFolders.Add(new BackupFolder(folders[3][0]));
+            _compareBackupPath(InstructionsFolder.SubFolders[0], folders[0]);
+        }
+        else
+        {
+            _compareBackupPath(InstructionsFolder, folders[0]);
         }
     }
 
-    private void _compareFolders(BackupFolder actualFolder, BackupFolder destinationFolder)
+    /// <summary>
+    /// Compare the source with the existing backup folders if there is any
+    /// The result is stored in the InstructionsFolder property
+    /// </summary>
+    /// <param name="Instruction"></param>
+    /// <param name="pathList"></param>
+    private void _compareBackupPath(BackupFolder Instruction, List<string> pathList)
     {
-        _notifySubscribersForChange();
-        foreach (var sourceFile in actualFolder.Files)
+        Instruction.SubFolders = _sourceFolder.SubFolders;
+        Instruction.Files = _sourceFolder.Files;
+        foreach (var path in pathList)
         {
-            foreach (var destinationFile in destinationFolder.Files)
+            var backupFolder = new BackupFolder(path + Path.DirectorySeparatorChar);
+            backupFolder.Walk(path + Path.DirectorySeparatorChar);
+            Instruction.SubFolders = _compareFolders(Instruction.SubFolders, backupFolder.SubFolders);
+            Instruction.Files = _compareFiles(Instruction.Files, backupFolder.Files);
+        }
+    }
+
+    /// <summary>
+    /// Recursively compare the subfolders of two lists of BackupFolder objects and returns the list of all the folders and non existing files in the destination folders
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="destination"></param>
+    /// <returns></returns>
+    private List<BackupFolder> _compareFolders(List<BackupFolder> source, List<BackupFolder> destination)
+    {
+        foreach (var folder in destination)
+        {
+            var sourceFolder = source.Find(s => s.Name == folder.Name);
+            if (sourceFolder != null)
             {
-                if (sourceFile.Hash == destinationFile.Hash)
-                {
-                    destinationFolder.Files.Remove(destinationFile);
-                }
+                sourceFolder.SubFolders = _compareFolders(sourceFolder.SubFolders, folder.SubFolders);
+                sourceFolder.Files = _compareFiles(sourceFolder.Files, folder.Files);
             }
         }
 
-        _notifySubscribersForChange();
-        foreach (var actualSubFolder in actualFolder.SubFolders)
-        {
-            foreach (var subFolder in destinationFolder.SubFolders)
-            {
-                if (actualSubFolder.Name == subFolder.Name)
-                {
-                    _compareFolders(actualSubFolder, subFolder);
-                }
-            }
-        }
+        return source;
+    }
+
+    /// <summary>
+    /// Compare the files of two lists of BackupFile objects and returns the list of all the non existing files in the destination
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="destination"></param>
+    /// <returns></returns>
+    private List<BackupFile> _compareFiles(List<BackupFile> source, List<BackupFile> destination)
+    {
+        source = source.Where(s => !destination.Exists(d => d.Hash == s.Hash)).ToList();
+        return source;
     }
 
     /// <summary>
@@ -110,39 +142,50 @@ public class TransferManager : IJobStatusPublisher
     /// </summary>
     /// <param name="destinationFolderPath"></param>
     /// <returns></returns>
-    public void CreateDestinationStructure(string destinationFolderPath)
+    public void CreateDestinationStructure()
     {
         _job.State = JobState.DestinationStructureCreation;
-        Directory.CreateDirectory(destinationFolderPath);
-        _createTree(destinationFolderPath, InstructionsFolder);
+        string actualJobPath = Path.Combine(_job.DestinationFolder, InstructionsFolder.Name);
+        if (!Directory.Exists(actualJobPath))
+        {
+            Directory.CreateDirectory(actualJobPath);
+        }
+
+        _createTree(actualJobPath, InstructionsFolder);
     }
 
+    /// <summary>
+    /// Create the folder structure for the backup
+    /// </summary>
+    /// <param name="parentPath"></param>
+    /// <param name="folder"></param>
     private void _createTree(string parentPath, BackupFolder folder)
     {
         foreach (var subFolder in folder.SubFolders)
         {
+            string actualSubFolderPath = Path.Combine(parentPath, subFolder.Name);
             _notifySubscribersForChange();
-            Directory.CreateDirectory(parentPath + Path.DirectorySeparatorChar + subFolder.Name);
-            _createTree(parentPath + Path.DirectorySeparatorChar + subFolder.Name, subFolder);
+            Directory.CreateDirectory(actualSubFolderPath);
+            _createTree(actualSubFolderPath, subFolder);
         }
     }
 
-    public void TransferFiles(string destinationFolder)
+    public void TransferFiles()
     {
         _job.State = JobState.Copy;
-        var sourceFolder = _job.SourceFolder;
-        _transferFile(sourceFolder, destinationFolder, InstructionsFolder);
+        _transferFile(InstructionsFolder, "", InstructionsFolder.Name);
     }
 
-    private void _transferFile(string sourceFolder, string destinationFolderPath, BackupFolder folder)
+    private void _transferFile(BackupFolder folder, string sourcePath, string destinationPath)
     {
         foreach (var file in folder.Files)
         {
-            var copyStart = DateTime.Now;
-            File.Copy(sourceFolder + Path.DirectorySeparatorChar + file.Name,
-                destinationFolderPath + Path.DirectorySeparatorChar + file.Name);
-            var copyEnd = DateTime.Now;
+            _job.CurrentFileSource = Path.Combine(_job.SourceFolder, sourcePath, file.Name);
+            _job.CurrentFileDestination = Path.Combine(_job.DestinationFolder, destinationPath, file.Name);
 
+            var copyStart = DateTime.Now;
+            File.Copy(_job.CurrentFileSource, _job.CurrentFileDestination, true);
+            var copyEnd = DateTime.Now;
             _job.FilesCopied++;
             _job.FilesBytesCopied += file.Size;
             _notifySubscribersForChange();
@@ -150,8 +193,8 @@ public class TransferManager : IJobStatusPublisher
             LogManager.Instance.AppendLog(new JsonLogElement
             {
                 JobName = _job.Name,
-                SourcePath = Path.Combine(sourceFolder, file.Name),
-                DestinationPath = Path.Combine(destinationFolderPath, file.Name),
+                SourcePath = Path.Combine(_job.SourceFolder, file.Name),
+                DestinationPath = Path.Combine(_job.DestinationFolder, file.Name),
                 FileSize = file.Size,
                 TransferTime = (int)(copyEnd - copyStart).TotalMilliseconds
             });
@@ -159,11 +202,8 @@ public class TransferManager : IJobStatusPublisher
 
         foreach (var subFolder in folder.SubFolders)
         {
-            _transferFile(
-                sourceFolder + Path.DirectorySeparatorChar + subFolder.Name,
-                destinationFolderPath + Path.DirectorySeparatorChar + subFolder.Name,
-                subFolder
-            );
+            _transferFile(subFolder, Path.Combine(sourcePath, subFolder.Name),
+                Path.Combine(destinationPath, subFolder.Name));
         }
     }
 

@@ -4,4 +4,5 @@ public enum JobType
 {
     Full,
     Differential,
+    Incremental,
 }

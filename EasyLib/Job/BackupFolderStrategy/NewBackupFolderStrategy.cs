@@ -5,18 +5,36 @@
 /// </summary>
 public class NewBackupFolderStrategy : IBackupFolderStrategy
 {
-    public List<string> SelectFolders(List<string> folders, string? pausedJob, string jobName, string destinationPath)
+    public List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, Enum jobType,
+        string destinationFolder)
     {
-        string date = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
-        string finalDestinationPath = Path.Join(destinationPath, date + "_" + jobName);
-        Directory.CreateDirectory(finalDestinationPath);
-        List<string> newFolders = new List<string>();
-        foreach (var path in folders)
+        var destinationPath = BackupFolderSelector.GetDestinationPath(jobType, destinationFolder);
+        if (folders[0].Any() && folders[2].Any())
         {
-            newFolders.Add(path);
+            return new List<List<string>>()
+            {
+                folders[0],
+                new List<string>() { destinationPath },
+                folders[2]
+            };
         }
-
-        newFolders.Add(finalDestinationPath);
-        return newFolders;
+        else if (folders[0].Any())
+        {
+            return new List<List<string>>()
+            {
+                folders[0],
+                new List<string>() { destinationPath },
+                new List<string>()
+            };
+        }
+        else
+        {
+            return new List<List<string>>()
+            {
+                new List<string>(),
+                new List<string>() { destinationPath },
+                new List<string>()
+            };
+        }
     }
 }
