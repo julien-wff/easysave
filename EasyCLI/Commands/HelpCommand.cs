@@ -1,5 +1,6 @@
 using EasyCLI.Commands.CommandFeatures;
 using EasyCLI.Commands.CommandFeatures.CommandArgType;
+using EasyCLI.Localization;
 
 namespace EasyCLI.Commands;
 
@@ -7,11 +8,11 @@ public class HelpCommand : Command
 {
     public override CommandBuilder.CommandBuilder Params { get; } = new CommandBuilder.CommandBuilder()
         .SetName("help")
-        .SetDescription("Display help on other commands")
+        .SetDescription(Loc.T("Commands.Help.Description"))
         .SetAliases(new[] { "h", "-h", "--help" })
         .AddArg(new CommandArg()
             .SetName("command")
-            .SetDescription("Display help of a specific command")
+            .SetDescription(Loc.T("Commands.Help.Args.Command.Description"))
             .SetType(new CommandArgTypeString())
             .SetRequired(false));
 
@@ -34,7 +35,7 @@ public class HelpCommand : Command
 
             if (command is null)
             {
-                Console.WriteLine($"Command {commandName} not found. Try 'easysave help' for more information.");
+                Console.WriteLine(Loc.T("Commands.CommandNotFound", commandName));
                 return;
             }
 
@@ -48,13 +49,7 @@ public class HelpCommand : Command
 
     private static void PrintGeneralHelp()
     {
-        Console.WriteLine("EasySave CLI Help Page");
-        Console.WriteLine();
-        Console.WriteLine("Usage: easysave [command] [arguments]");
-        Console.WriteLine();
-        Console.WriteLine("A CLI tool to backup your files");
-        Console.WriteLine();
-        Console.WriteLine("Available commands:");
+        Console.WriteLine(Loc.T("Commands.Help.GeneralHelp.Header"));
 
         var commands = CommandRunner
             .CommandRunner
@@ -70,6 +65,7 @@ public class HelpCommand : Command
             var commandName = cmdParams.Name;
             var commandDescription = cmdParams.Description;
 
+            // ReSharper disable once LocalizableElement
             Console.Write($"  {commandName}");
             Console.Write(new string(' ', longestCommandName - commandName.Length + 2));
             Console.WriteLine(commandDescription);
