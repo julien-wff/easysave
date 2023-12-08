@@ -34,6 +34,7 @@
 
     <ItemGroup>
         <Resource Include="Assets\easysave-logo.ico"/>
+        <Resource Include="Assets\Icons\add-circle-outline.png"/>
     </ItemGroup>
 
     <ItemGroup>
