@@ -26,6 +26,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\EasyCLI\EasyCLI.csproj" />
+        <ProjectReference Include="..\EasyCrypto\EasyCrypto.csproj"/>
       <ProjectReference Include="..\EasyLib\EasyLib.csproj" />
     </ItemGroup>
 

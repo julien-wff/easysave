@@ -32,7 +32,7 @@ public class FileManager
     /// <summary>
     /// Encrypts the file with xor encryption
     /// </summary>
-    public void EncryptFile()
+    public void TransformFile()
     {
         checkFile();
         var fileBytes = File.ReadAllBytes(FilePath);
