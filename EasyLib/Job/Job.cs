@@ -29,6 +29,8 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
         FilesSizeBytes = job.active_job_info?.total_file_size ?? 0;
         FilesCopied = job.active_job_info?.files_copied ?? 0;
         FilesBytesCopied = job.active_job_info?.bytes_copied ?? 0;
+        CurrentFileSource = job.active_job_info?.current_file_source ?? string.Empty;
+        CurrentFileDestination = job.active_job_info?.current_file_destination ?? string.Empty;
     }
 
     private List<IJobStatusSubscriber> Subscribers { get; } = new();
@@ -42,6 +44,8 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
     public string SourceFolder { get; } = sourceFolder;
     public JobState State { get; set; } = state;
     public JobType Type { get; } = type;
+    public string CurrentFileSource { get; set; } = string.Empty;
+    public string CurrentFileDestination { get; set; } = string.Empty;
 
     public void Subscribe(IJobStatusSubscriber subscriber)
     {
@@ -82,7 +86,9 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
                     total_file_count = FilesCount,
                     total_file_size = FilesSizeBytes,
                     files_copied = FilesCopied,
-                    bytes_copied = FilesBytesCopied
+                    bytes_copied = FilesBytesCopied,
+                    current_file_source = CurrentFileSource,
+                    current_file_destination = CurrentFileDestination
                 }
         };
     }
@@ -103,15 +109,20 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
     public bool Run()
     {
         var tm = new TransferManager(this);
+        var selector = BackupFolderSelectorFactory.Create(Type, State);
+        var folderList = Directory.GetDirectories(DestinationFolder).ToList();
+        var directories = new List<List<string>>() { folderList };
+        var lastFolder = "";
+        var folders = selector.SelectFolders(directories, lastFolder, Type, DestinationFolder);
         tm.Subscribe(this);
         _setJobState(JobState.SourceScan);
         tm.ScanSource();
         _setJobState(JobState.DifferenceCalculation);
-        tm.ComputeDifference(new List<string> { DestinationFolder });
+        tm.ComputeDifference(folders);
         _setJobState(JobState.DestinationStructureCreation);
-        tm.CreateDestinationStructure(DestinationFolder);
+        tm.CreateDestinationStructure();
         _setJobState(JobState.Copy);
-        tm.TransferFiles(DestinationFolder);
+        tm.TransferFiles();
         _setJobState(JobState.End);
         tm.Unsubscribe(this);
 
