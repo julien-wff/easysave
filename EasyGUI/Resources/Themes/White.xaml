@@ -21,9 +21,18 @@
     <Color x:Key="RedColor">#F73939</Color>
     <SolidColorBrush x:Key="RedBrush" Color="{StaticResource RedColor}"/>
 
-    <Color x:Key="OrangeColor">#F7A039</Color>
+    <Color x:Key="OrangeColor">#F77D39</Color>
     <SolidColorBrush x:Key="OrangeBrush" Color="{StaticResource OrangeColor}"/>
 
     <Color x:Key="PurpleColor">#C539F7</Color>
     <SolidColorBrush x:Key="PurpleBrush" Color="{StaticResource PurpleColor}"/>
+
+    <Color x:Key="YellowColor">#F7C239</Color>
+    <SolidColorBrush x:Key="YellowBrush" Color="{StaticResource YellowColor}"/>
+
+    <Color x:Key="TealColor">#39EBF7</Color>
+    <SolidColorBrush x:Key="TealBrush" Color="{StaticResource TealColor}"/>
+
+    <Color x:Key="MauveColor">#4839F7</Color>
+    <SolidColorBrush x:Key="MauveBrush" Color="{StaticResource MauveColor}"/>
 </ResourceDictionary>
