@@ -5,12 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:EasyGUI.Controls"
         mc:Ignorable="d"
+        KeyDown="MainWindow_OnKeyDown"
         Title="EasySave" Height="720" Width="1280" Icon="/Assets/easysave-logo.ico">
     <Grid Background="{StaticResource BackgroundBrush}">
         <StackPanel Margin="16">
             <controls:Header Margin="0,0,0,32" />
-            <controls:JobsHeader/>
-            <controls:JobsList/>
+            <controls:JobsHeader CreateButtonClick="JobsHeader_OnCreateButtonClick" />
+            <controls:JobsList />
         </StackPanel>
+
+        <controls:CreateJobPopup
+            x:Name="CreateJobPopup"
+            Visibility="Collapsed" />
     </Grid>
 </Window>
