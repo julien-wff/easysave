@@ -36,6 +36,7 @@
         <Resource Include="Assets\easysave-logo.ico"/>
         <Resource Include="Assets\Icons\add-circle-outline.png"/>
         <Resource Include="Assets\Icons\play-circle-outline.png"/>
+        <Resource Include="Assets\Icons\create-outline.png"/>
     </ItemGroup>
 
     <ItemGroup>

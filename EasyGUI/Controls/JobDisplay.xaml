@@ -39,39 +39,40 @@
                 <local:BreadCrumb
                     x:Name="FullBreadCrumb"
                     BreadCrumbText="Full"
-                    BreadCrumbColor="{StaticResource BlueBrush}" Margin="0,0,8,0"/>
+                    BreadCrumbColor="{StaticResource BlueBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="DifferentialBreadCrumb"
                     BreadCrumbText="Differential"
-                    BreadCrumbColor="{StaticResource PurpleBrush}" Margin="0,0,8,0"/>
+                    BreadCrumbColor="{StaticResource PurpleBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="IncrementalBreadCrumb"
                     BreadCrumbText="Incremental"
-                    BreadCrumbColor="{StaticResource YellowBrush}" Margin="0,0,8,0"/>
+                    BreadCrumbColor="{StaticResource YellowBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="EndBreadCrumb"
                     BreadCrumbText="End"
-                    BreadCrumbColor="{StaticResource RedBrush}" Margin="0,0,8,0"/>
+                    BreadCrumbColor="{StaticResource RedBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="SourceBreadCrumb"
                     BreadCrumbText="Source scan"
-                    BreadCrumbColor="{StaticResource MauveBrush}" Margin="0,0,8,0"/>
+                    BreadCrumbColor="{StaticResource MauveBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="StructureBreadCrumb"
                     BreadCrumbText="Destination Structure"
-                    BreadCrumbColor="{StaticResource OrangeBrush}" Margin="0,0,8,0"/>
+                    BreadCrumbColor="{StaticResource OrangeBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="DiffCalcBreadCrumb"
                     BreadCrumbText="Difference Calculation"
-                    BreadCrumbColor="{StaticResource TealBrush}" Margin="0,0,8,0"/>
+                    BreadCrumbColor="{StaticResource TealBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="CopyBreadCrumb"
                     BreadCrumbText="Copy"
-                    BreadCrumbColor="{StaticResource GreenBrush}" Margin="0,0,8,0"/>
+                    BreadCrumbColor="{StaticResource GreenBrush}" Margin="0,0,8,0" />
             </StackPanel>
 
-            <StackPanel Grid.Column="3" ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Right">
-                <local:StartButton />
+            <StackPanel Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+                <local:EditButton />
+                <local:StartButton Margin="8,0,0,0" />
             </StackPanel>
         </Grid>
     </Grid>
