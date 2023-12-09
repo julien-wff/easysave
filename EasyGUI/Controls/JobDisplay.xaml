@@ -21,20 +21,56 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <CheckBox Grid.Column="0" Margin="7,0,12,0" VerticalAlignment="Center" />
 
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1" Margin="0,0,16,0">
                 <TextBlock
                     VerticalAlignment="Center"
                     Margin="0,0,0,2"
                     Text="{Binding NameDisplay, RelativeSource={RelativeSource AncestorType={x:Type local:JobDisplay}}}" />
             </Grid>
 
-            <StackPanel Grid.Column="2" ZIndex="10" VerticalAlignment="Center">
+            <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal">
+                <local:BreadCrumb
+                    x:Name="FullBreadCrumb"
+                    BreadCrumbText="Full"
+                    BreadCrumbColor="{StaticResource BlueBrush}" Margin="0,0,8,0"/>
+                <local:BreadCrumb
+                    x:Name="DifferentialBreadCrumb"
+                    BreadCrumbText="Differential"
+                    BreadCrumbColor="{StaticResource PurpleBrush}" Margin="0,0,8,0"/>
+                <local:BreadCrumb
+                    x:Name="IncrementalBreadCrumb"
+                    BreadCrumbText="Incremental"
+                    BreadCrumbColor="{StaticResource YellowBrush}" Margin="0,0,8,0"/>
+                <local:BreadCrumb
+                    x:Name="EndBreadCrumb"
+                    BreadCrumbText="End"
+                    BreadCrumbColor="{StaticResource RedBrush}" Margin="0,0,8,0"/>
+                <local:BreadCrumb
+                    x:Name="SourceBreadCrumb"
+                    BreadCrumbText="Source scan"
+                    BreadCrumbColor="{StaticResource MauveBrush}" Margin="0,0,8,0"/>
+                <local:BreadCrumb
+                    x:Name="StructureBreadCrumb"
+                    BreadCrumbText="Destination Structure"
+                    BreadCrumbColor="{StaticResource OrangeBrush}" Margin="0,0,8,0"/>
+                <local:BreadCrumb
+                    x:Name="DiffCalcBreadCrumb"
+                    BreadCrumbText="Difference Calculation"
+                    BreadCrumbColor="{StaticResource TealBrush}" Margin="0,0,8,0"/>
+                <local:BreadCrumb
+                    x:Name="CopyBreadCrumb"
+                    BreadCrumbText="Copy"
+                    BreadCrumbColor="{StaticResource GreenBrush}" Margin="0,0,8,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="3" ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <local:StartButton />
             </StackPanel>
         </Grid>
