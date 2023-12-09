@@ -3,7 +3,7 @@ using System.Windows.Media;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 
-namespace EasyGUI.Controls;
+namespace EasyGUI.Controls.Buttons;
 
 public partial class BaseButton
 {

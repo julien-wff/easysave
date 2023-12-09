@@ -1,10 +1,10 @@
 using System.Windows;
 
-namespace EasyGUI.Controls;
+namespace EasyGUI.Controls.Buttons;
 
-public partial class CreateButton
+public partial class ValidateButton
 {
-    public CreateButton()
+    public ValidateButton()
     {
         InitializeComponent();
     }

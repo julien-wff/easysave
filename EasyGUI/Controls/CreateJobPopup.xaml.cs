@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using EasyGUI.Controls.Buttons;
 
 namespace EasyGUI.Controls;
 

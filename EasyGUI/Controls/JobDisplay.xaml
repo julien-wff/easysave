@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:EasyGUI.Controls"
              xmlns:job="clr-namespace:EasyLib.Job;assembly=EasyLib"
+             xmlns:buttons="clr-namespace:EasyGUI.Controls.Buttons"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="1280" d:DataContext="{x:Type job:Job}">
     <Grid>
@@ -71,8 +72,8 @@
             </StackPanel>
 
             <StackPanel Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
-                <local:EditButton />
-                <local:StartButton Margin="8,0,0,0" />
+                <buttons:EditButton />
+                <buttons:StartButton Margin="8,0,0,0" />
             </StackPanel>
         </Grid>
     </Grid>

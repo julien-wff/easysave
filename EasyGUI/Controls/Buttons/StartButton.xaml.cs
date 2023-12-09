@@ -1,10 +1,10 @@
 using System.Windows;
 
-namespace EasyGUI.Controls;
+namespace EasyGUI.Controls.Buttons;
 
-public partial class EditButton
+public partial class StartButton
 {
-    public EditButton()
+    public StartButton()
     {
         InitializeComponent();
     }
