@@ -90,18 +90,18 @@ public class TransferManager : IJobStatusPublisher
     /// Compare the source with the existing backup folders if there is any
     /// The result is stored in the InstructionsFolder property
     /// </summary>
-    /// <param name="Instruction"></param>
+    /// <param name="instruction"></param>
     /// <param name="pathList"></param>
-    private void _compareBackupPath(BackupFolder Instruction, List<string> pathList)
+    private void _compareBackupPath(BackupFolder instruction, List<string> pathList)
     {
-        Instruction.SubFolders = _sourceFolder.SubFolders;
-        Instruction.Files = _sourceFolder.Files;
+        instruction.SubFolders = _sourceFolder.SubFolders;
+        instruction.Files = _sourceFolder.Files;
         foreach (var path in pathList)
         {
             var backupFolder = new BackupFolder(path + Path.DirectorySeparatorChar);
             backupFolder.Walk(path + Path.DirectorySeparatorChar);
-            Instruction.SubFolders = _compareFolders(Instruction.SubFolders, backupFolder.SubFolders);
-            Instruction.Files = _compareFiles(Instruction.Files, backupFolder.Files);
+            instruction.SubFolders = _compareFolders(instruction.SubFolders, backupFolder.SubFolders);
+            instruction.Files = _compareFiles(instruction.Files, backupFolder.Files);
         }
     }
 
@@ -141,7 +141,6 @@ public class TransferManager : IJobStatusPublisher
     /// <summary>
     /// This class take the destination folder path and create the folder structure for the backup
     /// </summary>
-    /// <param name="destinationFolderPath"></param>
     /// <returns></returns>
     public void CreateDestinationStructure()
     {

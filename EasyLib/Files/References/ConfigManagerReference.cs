@@ -25,14 +25,7 @@ public class ConfigManagerReference
         // Create file and write [] if it doesn't exist
         if (!File.Exists(_configFilePath))
         {
-            JsonFileUtils.WriteJson(_configFilePath, new ConfigElement()
-            {
-                CryptedFileTypes = new List<string>(),
-                BusinnesProcesses = new List<string>(),
-                XorKey = "cryptokey",
-                LogFormat = ".json",
-                EasyCryptoPath = @"C:\EasyCrypto.exe"
-            });
+            WriteConfig();
         }
         else
         {
