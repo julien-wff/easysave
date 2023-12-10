@@ -10,4 +10,5 @@ public struct JsonLogElement
     public string SourcePath { get; set; }
     public string DestinationPath { get; set; }
     public ulong FileSize { get; set; }
+    public int CryptoTime { get; set; }
 }

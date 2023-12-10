@@ -7,6 +7,7 @@ namespace EasyLib.Files;
 /// </summary>
 public class BackupFile
 {
+    public readonly string Extension;
     public readonly string Hash;
     public readonly string Name;
     public readonly ulong Size;
@@ -17,6 +18,7 @@ public class BackupFile
         Name = fileInfo.Name;
         Size = (ulong)fileInfo.Length;
         Hash = _calculateChecksum(path);
+        Extension = fileInfo.Extension;
     }
 
     private static string _calculateChecksum(string path)

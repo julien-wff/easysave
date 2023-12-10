@@ -8,7 +8,6 @@ namespace EasyLib.Files;
 public abstract class LogManager
 {
     private static LogManagerReference? _instance;
-
     private static readonly string AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
     /// <summary>

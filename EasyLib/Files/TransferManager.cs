@@ -1,4 +1,5 @@
-﻿using EasyLib.Enums;
+﻿using System.Diagnostics;
+using EasyLib.Enums;
 using EasyLib.Events;
 using EasyLib.Json;
 
@@ -186,17 +187,44 @@ public class TransferManager : IJobStatusPublisher
             var copyStart = DateTime.Now;
             File.Copy(_job.CurrentFileSource, _job.CurrentFileDestination, true);
             var copyEnd = DateTime.Now;
+            // check if the file has to be encrypted
             _job.FilesCopied++;
             _job.FilesBytesCopied += file.Size;
             _notifySubscribersForChange();
+            var cryptoStart = DateTime.Now;
+            var cryptoEnd = cryptoStart;
+            if (ConfigManager.Instance.CryptedFileTypes
+                .Contains(file.Extension)) // check if the file extension is in the list of crypted file types
+            {
+                var fileEncrpytion = new Process() // create a new process to run the EasyCrypto.exe
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = ConfigManager.Instance.EasyCryptoPath, // take the easy crypto path from the config
+                        Arguments = "\"" + _job.CurrentFileDestination + "\"" + " " + "\"" +
+                                    ConfigManager.Instance.XorKey +
+                                    "\"", // add the file path as argument with \" to escape spaces
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true
+                    }
+                };
+                cryptoStart = DateTime.Now; // start the timer for the crypto
+                fileEncrpytion.Start();
+                fileEncrpytion.WaitForExit();
+                cryptoEnd = DateTime.Now; // end the timer for the crypto
+            }
 
             LogManager.Instance.AppendLog(new JsonLogElement
             {
                 JobName = _job.Name,
-                SourcePath = Path.Combine(_job.SourceFolder, file.Name),
-                DestinationPath = Path.Combine(_job.DestinationFolder, file.Name),
+                SourcePath = Path.Combine(_job.CurrentFileSource),
+                DestinationPath = Path.Combine(_job.CurrentFileDestination),
                 FileSize = file.Size,
-                TransferTime = (int)(copyEnd - copyStart).TotalMilliseconds
+                TransferTime = (int)(copyEnd - copyStart).TotalMilliseconds, // add the copy time to the log
+                CryptoTime =
+                    (int)(cryptoEnd - cryptoStart)
+                    .TotalMilliseconds, // add the crypto time to the log 0 if the file is not encrypted
             });
         }
 
