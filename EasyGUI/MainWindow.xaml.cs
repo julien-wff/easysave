@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using EasyLib;
+using EasyLib.Enums;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace EasyGUI;
@@ -10,12 +11,14 @@ namespace EasyGUI;
 /// </summary>
 public partial class MainWindow
 {
+    private readonly JobManager _jobManager;
+
     public MainWindow()
     {
         InitializeComponent();
 
-        var jm = new JobManager();
-        foreach (var job in jm.GetJobs())
+        _jobManager = new JobManager();
+        foreach (var job in _jobManager.GetJobs())
         {
             JobsList.Jobs.Add(job);
         }
@@ -28,6 +31,7 @@ public partial class MainWindow
         CreateJobPopup.JobSource = "";
         CreateJobPopup.JobDestination = "";
         CreateJobPopup.JobType = null;
+        CreateJobPopup.ErrorMessage = null;
         CreateJobPopup.Visibility = Visibility.Visible;
         CreateJobPopup.FocusFirstField();
     }
@@ -38,5 +42,32 @@ public partial class MainWindow
         {
             CreateJobPopup.Visibility = Visibility.Collapsed;
         }
+    }
+
+    private void CreateJobPopup_OnValidateJob(object sender, RoutedEventArgs e)
+    {
+        var name = CreateJobPopup.JobName;
+        var source = CreateJobPopup.JobSource;
+        var destination = CreateJobPopup.JobDestination;
+        var type = CreateJobPopup.JobType;
+
+        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(source) ||
+            string.IsNullOrWhiteSpace(destination) || type == null)
+        {
+            CreateJobPopup.ErrorMessage = "All fields are required";
+            return;
+        }
+
+        var result = _jobManager.CheckJobRules(-1, name, source, destination);
+
+        if (result != JobCheckRule.Valid)
+        {
+            CreateJobPopup.ErrorMessage = EnumConverter<JobCheckRule>.ConvertToString(result);
+            return;
+        }
+
+        var job = _jobManager.CreateJob(name, source, destination, type.Value);
+        JobsList.Jobs.Add(job);
+        CreateJobPopup.Visibility = Visibility.Collapsed;
     }
 }

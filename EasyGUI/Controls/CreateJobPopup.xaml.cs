@@ -7,6 +7,8 @@ namespace EasyGUI.Controls;
 
 public partial class CreateJobPopup : INotifyPropertyChanged
 {
+    public delegate void ValidateJobHandler(object sender, RoutedEventArgs e);
+
     public static readonly DependencyProperty PopupTitleProperty = DependencyProperty.Register(
         nameof(PopupTitle),
         typeof(string),
@@ -35,11 +37,11 @@ public partial class CreateJobPopup : INotifyPropertyChanged
         new PropertyMetadata(default(string))
     );
 
-    public static readonly DependencyProperty JobTypeProperty = DependencyProperty.Register(
-        nameof(JobType),
-        typeof(JobType),
+    public static readonly DependencyProperty ErrorMessageProperty = DependencyProperty.Register(
+        nameof(ErrorMessage),
+        typeof(string),
         typeof(CreateJobPopup),
-        new PropertyMetadata(default(JobType))
+        new PropertyMetadata(default(string))
     );
 
     public CreateJobPopup()
@@ -109,7 +111,20 @@ public partial class CreateJobPopup : INotifyPropertyChanged
         }
     }
 
+    public string? ErrorMessage
+    {
+        get => (string)GetValue(ErrorMessageProperty);
+        set
+        {
+            SetValue(ErrorMessageProperty, value);
+            ErrorMessageTextBlock.Visibility = value is not null ? Visibility.Visible : Visibility.Collapsed;
+            OnPropertyChanged();
+        }
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    public event ValidateJobHandler? ValidateJob;
 
     public void FocusFirstField()
     {
@@ -124,5 +139,10 @@ public partial class CreateJobPopup : INotifyPropertyChanged
     private void CancelButton_OnClick(object sender, RoutedEventArgs e)
     {
         Visibility = Visibility.Collapsed;
+    }
+
+    private void ValidateButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        ValidateJob?.Invoke(this, e);
     }
 }

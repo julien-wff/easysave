@@ -16,6 +16,7 @@
 
         <controls:CreateJobPopup
             x:Name="CreateJobPopup"
+            ValidateJob="CreateJobPopup_OnValidateJob"
             Visibility="Collapsed" />
     </Grid>
 </Window>

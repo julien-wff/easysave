@@ -18,6 +18,13 @@
                         Margin="0,0,0,16"
                         Text="{Binding PopupTitle, RelativeSource={RelativeSource AncestorType=UserControl}}" />
 
+                    <TextBlock
+                        Visibility="Collapsed"
+                        x:Name="ErrorMessageTextBlock"
+                        Text="{Binding ErrorMessage, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Margin="0,0,0,16"
+                        Foreground="{StaticResource RedBrush}"/>
+
                     <TextBlock Margin="0,0,0,4">Job Name</TextBlock>
                     <TextBox x:Name="JobNameTextBox"
                              Text="{Binding JobName, RelativeSource={RelativeSource AncestorType=UserControl}}"
@@ -47,7 +54,7 @@
                         </Grid.ColumnDefinitions>
 
                         <buttons:CancelButton Grid.Column="0" Click="CancelButton_OnClick" />
-                        <buttons:ValidateButton Grid.Column="1" HorizontalAlignment="Right" />
+                        <buttons:ValidateButton Grid.Column="1" Click="ValidateButton_OnClick" HorizontalAlignment="Right" />
                     </Grid>
                 </StackPanel>
             </Border>
