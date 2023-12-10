@@ -113,6 +113,11 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
         var folderList = Directory.GetDirectories(DestinationFolder).ToList();
         var directories = new List<List<string>>() { folderList };
         var lastFolder = "";
+        if (folderList.Any())
+        {
+            lastFolder = folderList[^1] + Path.DirectorySeparatorChar;
+        }
+
         var folders = selector.SelectFolders(directories, lastFolder, Type, DestinationFolder);
         tm.Subscribe(this);
         _setJobState(JobState.SourceScan);
