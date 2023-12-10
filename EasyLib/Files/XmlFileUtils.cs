@@ -13,7 +13,8 @@ public static class XmlFileUtils
     /// <param name="log"></param>
     public static void AddXmlLog(string xmlFilePath, LogElement log)
     {
-        if (!File.Exists(xmlFilePath) || new FileInfo(xmlFilePath).Length <= 3)
+        if (!File.Exists(xmlFilePath) ||
+            new FileInfo(xmlFilePath).Length <= 3) // create the first log if the file was not existing
         {
             var xmlSettings = new XmlWriterSettings
             {
@@ -39,10 +40,10 @@ public static class XmlFileUtils
         }
         else
         {
+            // Find the last return char
             using var fs = new FileStream(xmlFilePath, FileMode.Open, FileAccess.ReadWrite);
             fs.Seek(-1, SeekOrigin.End);
 
-            // Open JSON list
             var foundReturnChar = false;
             while (fs.Position > 0 && !foundReturnChar)
             {
@@ -59,18 +60,21 @@ public static class XmlFileUtils
                 }
             }
 
-            // Add comma and new line
+            // Add new line
             fs.WriteByte((byte)'\n');
 
-            // Serialize and write object
+            // create the log with the right format
+
             var logLine = "\t<Log \n\t\t JobName=\"" + log.JobName + "\" \n\t\t TransferTime=\"" + log.TransferTime +
                           "\" \n\t\t SourcePath=\"" + log.SourcePath + "\" \n\t\t DestinationPath=\"" +
                           log.DestinationPath + "\" \n\t\t FileSize=\"" + log.FileSize + "\" \n\t\t CryptoTime=\"" +
                           log.CryptoTime + "\" /> \n </Logs>";
             var bytes = Encoding.UTF8.GetBytes(logLine);
+
+            // write the log to the file
             fs.Write(bytes);
 
-            fs.Close();
+            fs.Close(); // close the file
         }
     }
 }

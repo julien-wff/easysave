@@ -1,6 +1,6 @@
 ﻿namespace EasyLib.Json;
 
-public struct JsonConfig
+public struct ConfigElement
 {
     public List<string>? CryptedFileTypes { get; init; }
     public List<string>? BusinnesProcesses { get; init; }

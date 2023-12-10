@@ -9,7 +9,8 @@ public class LogManagerReferencesTests
     private static string GetLogFilePath(string appDataDir)
     {
         var stateDirectory = Path.Combine(appDataDir, "easysave");
-        return Path.Combine(stateDirectory, "logs", DateTime.Now.ToString("yyyy-MM-dd") + ".json");
+        return Path.Combine(stateDirectory, "logs",
+            DateTime.Now.ToString("yyyy-MM-dd") + ConfigManager.Instance.LogFormat);
     }
 
     [Fact]
