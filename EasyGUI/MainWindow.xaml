@@ -11,7 +11,7 @@
         <StackPanel Margin="16">
             <controls:Header Margin="0,0,0,32" />
             <controls:JobsHeader CreateButtonClick="JobsHeader_OnCreateButtonClick" />
-            <controls:JobsList />
+            <controls:JobsList x:Name="JobsList" />
         </StackPanel>
 
         <controls:CreateJobPopup

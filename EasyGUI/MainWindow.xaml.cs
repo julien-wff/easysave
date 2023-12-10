@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using EasyLib;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace EasyGUI;
@@ -12,6 +13,12 @@ public partial class MainWindow
     public MainWindow()
     {
         InitializeComponent();
+
+        var jm = new JobManager();
+        foreach (var job in jm.GetJobs())
+        {
+            JobsList.Jobs.Add(job);
+        }
     }
 
     private void JobsHeader_OnCreateButtonClick(object sender, RoutedEventArgs e)
