@@ -25,4 +25,5 @@ public struct ConfigElement
     }
 
     public string? EasyCryptoPath { get; init; }
+    public string CompanySoftwareProcessPath { get; init; }
 }
