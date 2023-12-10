@@ -35,26 +35,35 @@ public class ConfigManagerReference
 
     public List<string> CryptedFileTypes { get; set; } = new();
     public List<string> BusinnesProcesses { get; set; } = new();
+    public string XorKey { get; set; } = "cryptokey";
+    public string LogFormat { get; set; } = "json";
+    public string EasyCryptoPath { get; set; } = @"C:\EasyCrypto.exe";
 
     /// <summary>
     /// Read the config file
     /// </summary>
-    public void ReadConfig()
+    private void ReadConfig()
     {
         var jsonConfig = JsonFileUtils.ReadJson<JsonConfig>(_configFilePath);
         CryptedFileTypes = jsonConfig.CryptedFileTypes ?? new List<string>();
         BusinnesProcesses = jsonConfig.BusinnesProcesses ?? new List<string>();
+        XorKey = jsonConfig.XorKey ?? "cryptokey";
+        LogFormat = jsonConfig.LogFormat ?? "json";
+        EasyCryptoPath = jsonConfig.EasyCryptoPath ?? @"C:\EasyCrypto.exe";
     }
 
     /// <summary>
     /// Write the config file
     /// </summary>
-    public void writeConfig()
+    public void WriteConfig()
     {
         var jsonConfig = new JsonConfig
         {
             CryptedFileTypes = CryptedFileTypes,
-            BusinnesProcesses = BusinnesProcesses
+            BusinnesProcesses = BusinnesProcesses,
+            XorKey = XorKey,
+            LogFormat = LogFormat,
+            EasyCryptoPath = EasyCryptoPath
         };
         JsonFileUtils.WriteJson(_configFilePath, jsonConfig);
     }
