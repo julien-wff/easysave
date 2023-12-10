@@ -3,7 +3,7 @@
 /// <summary>
 /// Data structure used by JsonFileUtils for the json log
 /// </summary>
-public struct JsonLogElement
+public struct LogElement
 {
     public string JobName { get; set; }
     public int TransferTime { get; set; }

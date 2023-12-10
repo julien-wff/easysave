@@ -14,11 +14,11 @@ public struct JsonConfig
         {
             switch (value)
             {
-                case "xml":
-                    _logFormat = "xml";
+                case ".xml":
+                    _logFormat = ".xml";
                     break;
                 default:
-                    _logFormat = "json";
+                    _logFormat = ".json";
                     break;
             }
         }

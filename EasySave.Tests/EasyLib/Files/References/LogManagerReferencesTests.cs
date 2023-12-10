@@ -44,7 +44,7 @@ public class LogManagerReferencesTests
     {
         // Arrange
         var appDataDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-        var log = new JsonLogElement
+        var log = new LogElement
         {
             JobName = "test",
             TransferTime = 15,
@@ -59,7 +59,7 @@ public class LogManagerReferencesTests
 
         // Assert
         var logFilePath = logManager.LogFilePath;
-        var jsonLogs = JsonFileUtils.ReadJson<List<JsonLogElement>>(logFilePath);
+        var jsonLogs = JsonFileUtils.ReadJson<List<LogElement>>(logFilePath);
         jsonLogs.Should().NotBeNullOrEmpty();
         var jsonLogElement = jsonLogs![0];
         Assert.Equal(log.JobName, jsonLogElement.JobName);

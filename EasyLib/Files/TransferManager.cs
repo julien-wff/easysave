@@ -201,9 +201,7 @@ public class TransferManager : IJobStatusPublisher
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = ConfigManager.Instance.EasyCryptoPath, // take the easy crypto path from the config
-                        Arguments = "\"" + _job.CurrentFileDestination + "\"" + " " + "\"" +
-                                    ConfigManager.Instance.XorKey +
-                                    "\"", // add the file path as argument with \" to escape spaces
+                        ArgumentList = { _job.CurrentFileDestination, ConfigManager.Instance.XorKey },
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
                         CreateNoWindow = true
@@ -215,7 +213,7 @@ public class TransferManager : IJobStatusPublisher
                 cryptoEnd = DateTime.Now; // end the timer for the crypto
             }
 
-            LogManager.Instance.AppendLog(new JsonLogElement
+            LogManager.Instance.AppendLog(new LogElement
             {
                 JobName = _job.Name,
                 SourcePath = Path.Combine(_job.CurrentFileSource),
