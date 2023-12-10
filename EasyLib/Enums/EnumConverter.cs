@@ -7,7 +7,7 @@ public static class EnumConverter<T> where T : Enum
 
     static EnumConverter()
     {
-        foreach (T enumValue in Enum.GetValues(typeof(JobState)))
+        foreach (T enumValue in Enum.GetValues(typeof(T)))
         {
             var jobStateStr = enumValue.ToString();
             StringToEnumMap[jobStateStr] = enumValue;
