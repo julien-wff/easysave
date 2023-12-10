@@ -1,4 +1,5 @@
-﻿using EasyLib.Json;
+﻿using System.Diagnostics;
+using EasyLib.Json;
 
 namespace EasyLib.Files.References;
 
@@ -38,6 +39,7 @@ public class ConfigManagerReference
     public string XorKey { get; set; } = "cryptokey";
     public string LogFormat { get; set; } = ".json";
     public string EasyCryptoPath { get; set; } = @"C:\EasyCrypto.exe";
+    public string CompanySoftwareProcessPath { get; set; }
 
     /// <summary>
     /// Read the config file
@@ -50,6 +52,7 @@ public class ConfigManagerReference
         XorKey = jsonConfig.XorKey ?? "cryptokey";
         LogFormat = jsonConfig.LogFormat ?? ".json";
         EasyCryptoPath = jsonConfig.EasyCryptoPath ?? @"C:\EasyCrypto.exe";
+        CompanySoftwareProcessPath = jsonConfig.CompanySoftwareProcessPath ?? "";
     }
 
     /// <summary>
@@ -63,8 +66,21 @@ public class ConfigManagerReference
             BusinnesProcesses = BusinnesProcesses,
             XorKey = XorKey,
             LogFormat = LogFormat,
-            EasyCryptoPath = EasyCryptoPath
+            EasyCryptoPath = EasyCryptoPath,
+            CompanySoftwareProcessPath = CompanySoftwareProcessPath
         };
         JsonFileUtils.WriteJson(_configFilePath, jsonConfig);
+    }
+
+    public bool CheckProcessRunning()
+    {
+        if (string.IsNullOrEmpty(CompanySoftwareProcessPath))
+        {
+            return false;
+        }
+
+        var processName = Path.GetFileNameWithoutExtension(CompanySoftwareProcessPath);
+        var processes = Process.GetProcessesByName(processName);
+        return processes.Length > 0;
     }
 }
