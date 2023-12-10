@@ -33,6 +33,13 @@
                         FolderPath="{Binding JobDestination, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
                         Margin="0,0,0,16" />
 
+                    <TextBlock Margin="0,0,0,4">Job Destination Folder</TextBlock>
+                    <ComboBox Margin="0,0,0,16" x:Name="JobTypeComboBox">
+                        <ComboBoxItem>Full</ComboBoxItem>
+                        <ComboBoxItem>Differential</ComboBoxItem>
+                        <ComboBoxItem>Incremental</ComboBoxItem>
+                    </ComboBox>
+
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />

@@ -20,6 +20,7 @@ public partial class MainWindow
         CreateJobPopup.JobName = "";
         CreateJobPopup.JobSource = "";
         CreateJobPopup.JobDestination = "";
+        CreateJobPopup.JobType = null;
         CreateJobPopup.Visibility = Visibility.Visible;
         CreateJobPopup.FocusFirstField();
     }

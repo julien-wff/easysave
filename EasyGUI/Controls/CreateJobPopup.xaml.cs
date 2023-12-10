@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using EasyLib.Enums;
 
 namespace EasyGUI.Controls;
 
@@ -32,6 +33,13 @@ public partial class CreateJobPopup : INotifyPropertyChanged
         typeof(string),
         typeof(CreateJobPopup),
         new PropertyMetadata(default(string))
+    );
+
+    public static readonly DependencyProperty JobTypeProperty = DependencyProperty.Register(
+        nameof(JobType),
+        typeof(JobType),
+        typeof(CreateJobPopup),
+        new PropertyMetadata(default(JobType))
     );
 
     public CreateJobPopup()
@@ -75,6 +83,28 @@ public partial class CreateJobPopup : INotifyPropertyChanged
         set
         {
             SetValue(JobDestinationProperty, value);
+            OnPropertyChanged();
+        }
+    }
+
+    public JobType? JobType
+    {
+        get => JobTypeComboBox.SelectedIndex switch
+        {
+            0 => EasyLib.Enums.JobType.Full,
+            1 => EasyLib.Enums.JobType.Differential,
+            2 => EasyLib.Enums.JobType.Incremental,
+            _ => null
+        };
+        set
+        {
+            JobTypeComboBox.SelectedIndex = value switch
+            {
+                EasyLib.Enums.JobType.Full => 0,
+                EasyLib.Enums.JobType.Differential => 1,
+                EasyLib.Enums.JobType.Incremental => 2,
+                _ => -1
+            };
             OnPropertyChanged();
         }
     }
