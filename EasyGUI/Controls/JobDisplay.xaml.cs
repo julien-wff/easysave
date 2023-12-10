@@ -27,6 +27,7 @@ public partial class JobDisplay : INotifyPropertyChanged
     public Job? Job => DataContext as Job;
 
     public string NameDisplay => Job != null ? $"#{Job.Id} - {Job.Name}" : string.Empty;
+    public string JobPaths => Job != null ? $"{Job.SourceFolder} \u2192 {Job.DestinationFolder}" : string.Empty;
 
     public event PropertyChangedEventHandler? PropertyChanged;
     public event EventHandler<JobEventArgs> JobStarted;
