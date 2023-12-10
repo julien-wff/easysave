@@ -25,7 +25,7 @@ public class ConfigManagerReference
         // Create file and write [] if it doesn't exist
         if (!File.Exists(_configFilePath))
         {
-            JsonFileUtils.WriteJson(_configFilePath, new JsonConfig());
+            WriteConfig();
         }
         else
         {
@@ -36,7 +36,7 @@ public class ConfigManagerReference
     public List<string> CryptedFileTypes { get; set; } = new();
     public List<string> BusinnesProcesses { get; set; } = new();
     public string XorKey { get; set; } = "cryptokey";
-    public string LogFormat { get; set; } = "json";
+    public string LogFormat { get; set; } = ".json";
     public string EasyCryptoPath { get; set; } = @"C:\EasyCrypto.exe";
 
     /// <summary>
@@ -44,11 +44,11 @@ public class ConfigManagerReference
     /// </summary>
     private void ReadConfig()
     {
-        var jsonConfig = JsonFileUtils.ReadJson<JsonConfig>(_configFilePath);
+        var jsonConfig = JsonFileUtils.ReadJson<ConfigElement>(_configFilePath);
         CryptedFileTypes = jsonConfig.CryptedFileTypes ?? new List<string>();
         BusinnesProcesses = jsonConfig.BusinnesProcesses ?? new List<string>();
         XorKey = jsonConfig.XorKey ?? "cryptokey";
-        LogFormat = jsonConfig.LogFormat ?? "json";
+        LogFormat = jsonConfig.LogFormat ?? ".json";
         EasyCryptoPath = jsonConfig.EasyCryptoPath ?? @"C:\EasyCrypto.exe";
     }
 
@@ -57,7 +57,7 @@ public class ConfigManagerReference
     /// </summary>
     public void WriteConfig()
     {
-        var jsonConfig = new JsonConfig
+        var jsonConfig = new ConfigElement
         {
             CryptedFileTypes = CryptedFileTypes,
             BusinnesProcesses = BusinnesProcesses,

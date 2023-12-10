@@ -1,6 +1,6 @@
 ﻿namespace EasyLib.Json;
 
-public struct JsonConfig
+public struct ConfigElement
 {
     public List<string>? CryptedFileTypes { get; init; }
     public List<string>? BusinnesProcesses { get; init; }
@@ -14,11 +14,11 @@ public struct JsonConfig
         {
             switch (value)
             {
-                case "xml":
-                    _logFormat = "xml";
+                case ".xml":
+                    _logFormat = ".xml";
                     break;
                 default:
-                    _logFormat = "json";
+                    _logFormat = ".json";
                     break;
             }
         }

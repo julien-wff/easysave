@@ -9,7 +9,8 @@ public class LogManagerReferencesTests
     private static string GetLogFilePath(string appDataDir)
     {
         var stateDirectory = Path.Combine(appDataDir, "easysave");
-        return Path.Combine(stateDirectory, "logs", DateTime.Now.ToString("yyyy-MM-dd") + ".json");
+        return Path.Combine(stateDirectory, "logs",
+            DateTime.Now.ToString("yyyy-MM-dd") + ConfigManager.Instance.LogFormat);
     }
 
     [Fact]
@@ -44,7 +45,7 @@ public class LogManagerReferencesTests
     {
         // Arrange
         var appDataDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-        var log = new JsonLogElement
+        var log = new LogElement
         {
             JobName = "test",
             TransferTime = 15,
@@ -59,7 +60,7 @@ public class LogManagerReferencesTests
 
         // Assert
         var logFilePath = logManager.LogFilePath;
-        var jsonLogs = JsonFileUtils.ReadJson<List<JsonLogElement>>(logFilePath);
+        var jsonLogs = JsonFileUtils.ReadJson<List<LogElement>>(logFilePath);
         jsonLogs.Should().NotBeNullOrEmpty();
         var jsonLogElement = jsonLogs![0];
         Assert.Equal(log.JobName, jsonLogElement.JobName);

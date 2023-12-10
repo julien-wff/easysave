@@ -11,13 +11,14 @@ public class FileManagerTests
         var appDataPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
         File.WriteAllText(appDataPath, "test");
         // Act
-        var fileManager = new FileManager(appDataPath, "key");
-
-        fileManager.TransformFile();
+        Program.Main(new[] { appDataPath, "key" });
 
         // Assert
         Assert.True(File.Exists(appDataPath));
         Assert.NotEqual("test", File.ReadAllText(appDataPath));
+
+        // Cleanup
+        File.Delete(appDataPath);
     }
 
     [Fact]
@@ -27,13 +28,34 @@ public class FileManagerTests
         var appDataPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
         File.WriteAllText(appDataPath, "This is some test data");
         // Act
-        var fileManager = new FileManager(appDataPath, "key");
 
-        fileManager.TransformFile();
-        fileManager.TransformFile();
+        Program.Main(new[] { appDataPath, "key" });
+        Program.Main(new[] { appDataPath, "key" });
 
         // Assert
         Assert.True(File.Exists(appDataPath));
         Assert.Equal("This is some test data", File.ReadAllText(appDataPath));
+
+        // Cleanup
+        File.Delete(appDataPath);
+    }
+
+    [Fact]
+    public void DecryptFileWithWrongKeyTest()
+    {
+        // Arrange
+        var appDataPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+        File.WriteAllText(appDataPath, "This is some test data");
+        // Act
+
+        Program.Main(new[] { appDataPath, "key" });
+        Program.Main(new[] { appDataPath, "notTheKey" });
+
+        // Assert
+        Assert.True(File.Exists(appDataPath));
+        Assert.NotEqual("This is some test data", File.ReadAllText(appDataPath));
+
+        // Cleanup
+        File.Delete(appDataPath);
     }
 }
