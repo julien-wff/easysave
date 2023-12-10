@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using EasyGUI.Events;
 using EasyLib;
 using EasyLib.Enums;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -69,5 +70,11 @@ public partial class MainWindow
         var job = _jobManager.CreateJob(name, source, destination, type.Value);
         JobsList.Jobs.Add(job);
         CreateJobPopup.Visibility = Visibility.Collapsed;
+    }
+
+    private void JobsList_OnJobStarted(object? sender, JobEventArgs e)
+    {
+        JobRunPopup.PopupTitle = "Running 1 job";
+        JobRunPopup.Visibility = Visibility.Visible;
     }
 }

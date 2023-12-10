@@ -2,13 +2,13 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
+using EasyGUI.Events;
 using EasyLib.Enums;
-using EasyLib.Events;
 using EasyLib.Job;
 
 namespace EasyGUI.Controls;
 
-public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
+public partial class JobDisplay : INotifyPropertyChanged
 {
     public JobDisplay()
     {
@@ -29,6 +29,7 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
     public string NameDisplay => Job != null ? $"#{Job.Id} - {Job.Name}" : string.Empty;
 
     public event PropertyChangedEventHandler? PropertyChanged;
+    public event EventHandler<JobEventArgs> JobStarted;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
@@ -50,5 +51,13 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
     private static void SetBreadcrumbVisibility(UIElement breadCrumb, bool visible)
     {
         breadCrumb.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    private void StartButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (Job == null)
+            return;
+
+        JobStarted.Invoke(this, new JobEventArgs(Job));
     }
 }
