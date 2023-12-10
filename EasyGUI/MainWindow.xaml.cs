@@ -18,6 +18,8 @@ public partial class MainWindow
     {
         CreateJobPopup.PopupTitle = "Create a new job";
         CreateJobPopup.JobName = "";
+        CreateJobPopup.JobSource = "";
+        CreateJobPopup.JobDestination = "";
         CreateJobPopup.Visibility = Visibility.Visible;
         CreateJobPopup.FocusFirstField();
     }

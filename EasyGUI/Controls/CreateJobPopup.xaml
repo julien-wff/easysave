@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:buttons="clr-namespace:EasyGUI.Controls.Buttons"
+             xmlns:controls="clr-namespace:EasyGUI.Controls"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1280">
     <Grid>
@@ -21,6 +22,16 @@
                     <TextBox x:Name="JobNameTextBox"
                              Text="{Binding JobName, RelativeSource={RelativeSource AncestorType=UserControl}}"
                              Margin="0,0,0,16" />
+
+                    <TextBlock Margin="0,0,0,4">Job Source Folder</TextBlock>
+                    <controls:FolderSelector
+                        FolderPath="{Binding JobSource, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                        Margin="0,0,0,16" />
+
+                    <TextBlock Margin="0,0,0,4">Job Destination Folder</TextBlock>
+                    <controls:FolderSelector
+                        FolderPath="{Binding JobDestination, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                        Margin="0,0,0,16" />
 
                     <Grid>
                         <Grid.ColumnDefinitions>

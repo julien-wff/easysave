@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using EasyGUI.Controls.Buttons;
 
 namespace EasyGUI.Controls;
 
@@ -10,15 +9,29 @@ public partial class CreateJobPopup : INotifyPropertyChanged
     public static readonly DependencyProperty PopupTitleProperty = DependencyProperty.Register(
         nameof(PopupTitle),
         typeof(string),
-        typeof(CreateButton),
-        new PropertyMetadata("Title")
+        typeof(CreateJobPopup),
+        new PropertyMetadata(default(string))
     );
 
     public static readonly DependencyProperty JobNameProperty = DependencyProperty.Register(
         nameof(JobName),
         typeof(string),
-        typeof(CreateButton),
-        new PropertyMetadata("Job name")
+        typeof(CreateJobPopup),
+        new PropertyMetadata(default(string))
+    );
+
+    public static readonly DependencyProperty JobSourceProperty = DependencyProperty.Register(
+        nameof(JobSource),
+        typeof(string),
+        typeof(CreateJobPopup),
+        new PropertyMetadata(default(string))
+    );
+
+    public static readonly DependencyProperty JobDestinationProperty = DependencyProperty.Register(
+        nameof(JobDestination),
+        typeof(string),
+        typeof(CreateJobPopup),
+        new PropertyMetadata(default(string))
     );
 
     public CreateJobPopup()
@@ -42,6 +55,26 @@ public partial class CreateJobPopup : INotifyPropertyChanged
         set
         {
             SetValue(JobNameProperty, value);
+            OnPropertyChanged();
+        }
+    }
+
+    public string JobSource
+    {
+        get => (string)GetValue(JobSourceProperty);
+        set
+        {
+            SetValue(JobSourceProperty, value);
+            OnPropertyChanged();
+        }
+    }
+
+    public string JobDestination
+    {
+        get => (string)GetValue(JobDestinationProperty);
+        set
+        {
+            SetValue(JobDestinationProperty, value);
             OnPropertyChanged();
         }
     }
