@@ -12,7 +12,7 @@ public class ConfigCommand : Command
         .SetDescription(Loc.T("Commands.Config.Description"))
         .SetAliases(new[] { "conf", "cfg", "c" })
         .AddArg(new CommandArg()
-            .SetName("setting")
+            .SetName("show")
             .SetDescription(Loc.T("Commands.Config.Args.Key.Description"))
             .SetType(new CommandArgTypeString())
             .SetRequired(true));
@@ -25,23 +25,29 @@ public class ConfigCommand : Command
     public override void Run(IEnumerable<string> args)
     {
         var argsList = args.ToList();
+        if (argsList.Count > 2)
+        {
+            Console.WriteLine(Loc.T("Commands.Config.Args.Key.TooManyArgs"));
+            return;
+        }
+
+        if (argsList.Count == 1)
+        {
+            Console.WriteLine(Loc.T("Not enough arguments. See 'easysave help config' for more information."));
+            return;
+        }
+
         switch (argsList[1])
         {
-            case "list":
+            case "show":
                 var settings = ConfigManager.Instance.GetStringProperties();
+                Console.WriteLine("config.json path :" + Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "easysave"));
                 Console.WriteLine(settings);
                 break;
-            case "CryptedFileTypes":
-                if (argsList.Count == 2)
-                {
-                    Console.WriteLine(ConfigManager.Instance.CryptedFileTypes);
-                }
-                else
-                {
-                    ConfigManager.Instance.CryptedFileTypes = argsList[2].Split(',').ToList();
-                    ConfigManager.Instance.WriteConfig();
-                }
-
+            default:
+                Console.WriteLine("Invalid argument. See 'easysave help config' for more information.");
                 break;
         }
     }
