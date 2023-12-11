@@ -6,10 +6,10 @@ namespace EasySave.Tests.EasyLib.Files;
 
 public class TransferManagerTests
 {
-    public List<string> createTestFiles(string tempDirPath, string testPath)
+    private static List<string> CreateTestFiles(string tempDirPath, string testPath)
     {
-        string sourcePath = tempDirPath + testPath + @"SourcePath\";
-        string destinationPath = tempDirPath + testPath + @"DestinationPath\";
+        var sourcePath = tempDirPath + testPath + @"SourcePath\";
+        var destinationPath = tempDirPath + testPath + @"DestinationPath\";
         Directory.CreateDirectory(sourcePath);
         Directory.CreateDirectory(destinationPath);
         Directory.CreateDirectory(sourcePath + @"dir1\");
@@ -20,20 +20,20 @@ public class TransferManagerTests
         File.WriteAllText(sourcePath + @"dir2\fil2.txt", "file2");
         File.WriteAllText(sourcePath + @"dir1\dir3\file3.txt", "file3");
 
-        return new List<string>() { sourcePath, destinationPath };
+        return [sourcePath, destinationPath];
     }
 
     [Fact]
     public void TestTransferManager()
     {
         // Arrange
-        string tempDirPath = Path.GetTempPath();
-        string testPath = @"SourceScanTests\";
+        var tempDirPath = Path.GetTempPath();
+        const string testPath = @"SourceScanTests\";
 
         const string jobName = "job1";
         const JobType jobType = JobType.Full;
 
-        var paths = createTestFiles(tempDirPath, testPath);
+        var paths = CreateTestFiles(tempDirPath, testPath);
         // Act
         var job = new Job(jobName, paths[0], paths[1], jobType);
         var transferManager = new TransferManager(job);
@@ -49,8 +49,8 @@ public class TransferManagerTests
         // Assert
         Assert.Equal((uint)4, job.FilesCount);
         Assert.Equal(Directory.GetDirectories(paths[0]).Length,
-            Directory.GetDirectories(Directory.GetDirectories(paths[1]).Last()).Length);
+            Directory.GetDirectories(Directory.GetDirectories(paths[1])[-1]).Length);
         Assert.Equivalent(Directory.GetFiles(paths[0]).Length,
-            Directory.GetFiles(Directory.GetDirectories(paths[1]).Last()).Length);
+            Directory.GetFiles(Directory.GetDirectories(paths[1])[-1]).Length);
     }
 }
