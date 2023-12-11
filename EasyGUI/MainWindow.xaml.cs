@@ -74,8 +74,20 @@ public partial class MainWindow
             return;
         }
 
-        var job = _jobManager.CreateJob(name, source, destination, type.Value);
-        JobsList.Jobs.Add(job);
+        if (id == -1)
+        {
+            var job = _jobManager.CreateJob(name, source, destination, type.Value);
+            Jobs.Add(job);
+        }
+        else
+        {
+            var job = Jobs.First(j => j.Id == id);
+            var jobIndex = Jobs.IndexOf(job);
+            _jobManager.EditJob(job, name, source, destination, type.Value);
+            Jobs.Remove(job);
+            Jobs.Insert(jobIndex, job);
+        }
+
         CreateJobPopup.Visibility = Visibility.Collapsed;
     }
 
