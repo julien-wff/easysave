@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:buttons="clr-namespace:EasyGUI.Controls.Buttons"
              mc:Ignorable="d"
+             Loaded="JobsHeader_OnLoaded"
              d:DesignHeight="100" d:DesignWidth="1280">
     <Grid VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
@@ -12,7 +13,12 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <CheckBox Grid.Column="0" Margin="7,0,0,0" VerticalAlignment="Center" />
+        <CheckBox
+            Checked="ToggleButton_OnChecked"
+            Unchecked="ToggleButton_OnUnchecked"
+            Grid.Column="0"
+            Margin="7,0,0,0"
+            VerticalAlignment="Center" />
 
         <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
             <buttons:CreateButton Click="CreateButton_OnClick" />
