@@ -157,6 +157,38 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     }
 
     /// <summary>
+    /// Edit a job details
+    /// </summary>
+    /// <param name="job">Job to edit</param>
+    /// <param name="name">New name</param>
+    /// <param name="source">New source folder</param>
+    /// <param name="destination">New destination folder</param>
+    /// <param name="type">New backup type</param>
+    /// <returns></returns>
+    public JobCheckRule EditJob(Job.Job job, string name, string source, string destination, JobType? type)
+    {
+        var check = CheckJobRules((int)job.Id, name, source, destination, false);
+        if (check != JobCheckRule.Valid)
+        {
+            return check;
+        }
+
+        job.Cancel();
+
+        job.Name = name;
+        job.SourceFolder = source;
+        job.DestinationFolder = destination;
+
+        if (type != null)
+        {
+            job.Type = type.Value;
+        }
+
+        StateManager.Instance.WriteJobs(_jobs);
+        return JobCheckRule.Valid;
+    }
+
+    /// <summary>
     /// Start the execution of the specified jobs. If the jobs are paused, they are resumed.
     /// </summary>
     /// <param name="jobIds">IDs of the jobs to start</param>
