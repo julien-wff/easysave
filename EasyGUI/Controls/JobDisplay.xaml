@@ -7,7 +7,9 @@
              xmlns:job="clr-namespace:EasyLib.Job;assembly=EasyLib"
              xmlns:buttons="clr-namespace:EasyGUI.Controls.Buttons"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="1280" d:DataContext="{x:Type job:Job}">
+             d:DesignHeight="300" d:DesignWidth="1280"
+             Loaded="JobDisplay_OnLoaded"
+             d:DataContext="{x:Type job:Job}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

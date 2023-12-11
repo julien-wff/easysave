@@ -29,7 +29,9 @@
 
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="{x:Type job:Job}">
-                        <local:JobDisplay DataContext="{Binding}" JobStarted="JobDisplay_OnJobStarted" />
+                        <local:JobDisplay
+                            Job="{Binding}"
+                            JobStarted="JobDisplay_OnJobStarted" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
 
