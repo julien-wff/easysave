@@ -192,10 +192,10 @@ public class TransferManager : IJobStatusPublisher
             _notifySubscribersForChange();
             var cryptoStart = DateTime.Now;
             var cryptoEnd = cryptoStart;
-            if (ConfigManager.Instance.CryptedFileTypes
+            if (ConfigManager.Instance.EncryptedFileTypes
                 .Contains(file.Extension)) // check if the file extension is in the list of crypted file types
             {
-                var fileEncrpytion = new Process() // create a new process to run the EasyCrypto.exe
+                var fileEncryption = new Process() // create a new process to run the EasyCrypto.exe
                 {
                     StartInfo = new ProcessStartInfo
                     {
@@ -207,8 +207,8 @@ public class TransferManager : IJobStatusPublisher
                     }
                 };
                 cryptoStart = DateTime.Now; // start the timer for the crypto
-                fileEncrpytion.Start();
-                fileEncrpytion.WaitForExit();
+                fileEncryption.Start();
+                fileEncryption.WaitForExit();
                 cryptoEnd = DateTime.Now; // end the timer for the crypto
             }
 
