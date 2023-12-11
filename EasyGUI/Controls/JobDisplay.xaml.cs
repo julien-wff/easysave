@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -16,6 +17,22 @@ public partial class JobDisplay : INotifyPropertyChanged
         new PropertyMetadata(default(Job))
     );
 
+    public static readonly DependencyProperty SelectedJobsProperty = DependencyProperty.Register(
+        nameof(SelectedJobs),
+        typeof(ObservableCollection<Job>),
+        typeof(JobDisplay),
+        new PropertyMetadata(default(ObservableCollection<Job>))
+    );
+
+    public static readonly DependencyProperty JobSelectedProperty = DependencyProperty.Register(
+        nameof(JobSelected),
+        typeof(bool),
+        typeof(JobDisplay),
+        new PropertyMetadata(default(bool))
+    );
+
+    private bool _updatingCheckbox;
+
     public JobDisplay()
     {
         InitializeComponent();
@@ -32,6 +49,30 @@ public partial class JobDisplay : INotifyPropertyChanged
         }
     }
 
+    public ObservableCollection<Job> SelectedJobs
+    {
+        get => (ObservableCollection<Job>)GetValue(SelectedJobsProperty);
+        set
+        {
+            _updatingCheckbox = true;
+            SetValue(SelectedJobsProperty, value);
+            OnPropertyChanged();
+            _updatingCheckbox = false;
+        }
+    }
+
+    public bool JobSelected
+    {
+        get => (bool)GetValue(JobSelectedProperty);
+        set
+        {
+            _updatingCheckbox = true;
+            SetValue(JobSelectedProperty, value);
+            OnPropertyChanged();
+            _updatingCheckbox = false;
+        }
+    }
+
     public string NameDisplay => $"#{Job.Id} - {Job.Name}";
     public string JobPaths => $"{Job.SourceFolder} \u2192 {Job.DestinationFolder}";
 
@@ -41,6 +82,23 @@ public partial class JobDisplay : INotifyPropertyChanged
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        if (propertyName == nameof(SelectedJobs) && !_updatingCheckbox)
+        {
+            JobSelected = SelectedJobs.Contains(Job);
+        }
+
+        if (propertyName == nameof(JobSelected) && !_updatingCheckbox)
+        {
+            if (JobSelected)
+            {
+                SelectedJobs.Add(Job);
+            }
+            else
+            {
+                SelectedJobs.Remove(Job);
+            }
+        }
     }
 
     private void UpdateBreadcrumbs()
@@ -68,5 +126,6 @@ public partial class JobDisplay : INotifyPropertyChanged
     private void JobDisplay_OnLoaded(object sender, RoutedEventArgs e)
     {
         UpdateBreadcrumbs();
+        SelectedJobs.CollectionChanged += (_, _) => OnPropertyChanged(nameof(SelectedJobs));
     }
 }

@@ -29,7 +29,11 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <CheckBox Grid.Column="0" Margin="7,0,12,0" VerticalAlignment="Center" />
+            <CheckBox
+                IsChecked="{Binding JobSelected, RelativeSource={RelativeSource AncestorType={x:Type local:JobDisplay}}}"
+                Grid.Column="0"
+                Margin="7,0,12,0"
+                VerticalAlignment="Center" />
 
             <Grid Grid.Column="1" Margin="0,0,16,0">
                 <TextBlock

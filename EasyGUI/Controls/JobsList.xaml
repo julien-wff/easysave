@@ -31,6 +31,7 @@
                     <DataTemplate DataType="{x:Type job:Job}">
                         <local:JobDisplay
                             Job="{Binding}"
+                            SelectedJobs="{Binding SelectedJobs, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             JobStarted="JobDisplay_OnJobStarted" />
                     </DataTemplate>
                 </ListView.ItemTemplate>

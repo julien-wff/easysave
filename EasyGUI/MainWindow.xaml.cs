@@ -28,6 +28,7 @@ public partial class MainWindow
     }
 
     public ObservableCollection<Job> Jobs { get; } = new();
+    public ObservableCollection<Job> SelectedJobs { get; } = new();
 
     private void JobsHeader_OnCreateButtonClick(object sender, RoutedEventArgs e)
     {

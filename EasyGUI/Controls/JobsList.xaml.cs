@@ -16,6 +16,13 @@ public partial class JobsList : INotifyPropertyChanged
         new PropertyMetadata(default(ObservableCollection<Job>))
     );
 
+    public static readonly DependencyProperty SelectedJobsProperty = DependencyProperty.Register(
+        nameof(SelectedJobs),
+        typeof(ObservableCollection<Job>),
+        typeof(JobsList),
+        new PropertyMetadata(default(ObservableCollection<Job>))
+    );
+
     public JobsList()
     {
         DataContext = this;
@@ -28,6 +35,16 @@ public partial class JobsList : INotifyPropertyChanged
         set
         {
             SetValue(JobsProperty, value);
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<Job> SelectedJobs
+    {
+        get => (ObservableCollection<Job>)GetValue(SelectedJobsProperty);
+        set
+        {
+            SetValue(SelectedJobsProperty, value);
             OnPropertyChanged();
         }
     }
