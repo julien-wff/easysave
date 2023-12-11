@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+                xmlns="">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="CreateButton_Create" xml:space="preserve">
+        <value>Créer</value>
+    </data>
+    <data name="CancelButton_Cancel" xml:space="preserve">
+        <value>Annuler</value>
+    </data>
+    <data name="EditButton_Edit" xml:space="preserve">
+        <value>Modifier</value>
+    </data>
+    <data name="StartButton_Start" xml:space="preserve">
+        <value>Démarrer</value>
+    </data>
+    <data name="ValidateButton_Validate" xml:space="preserve">
+        <value>Valider</value>
+    </data>
+    <data name="JobType_Full" xml:space="preserve">
+        <value>Complète</value>
+    </data>
+    <data name="JobType_Differential" xml:space="preserve">
+        <value>Différentielle</value>
+    </data>
+    <data name="JobType_Incremental" xml:space="preserve">
+        <value>Incrémentielle</value>
+    </data>
+    <data name="JobState_Copy" xml:space="preserve">
+        <value>Copie</value>
+    </data>
+    <data name="JobState_DestinationStructureCreation" xml:space="preserve">
+        <value>Structure de destination</value>
+    </data>
+    <data name="JobState_DifferenceCalculation" xml:space="preserve">
+        <value>Calcul de la différence</value>
+    </data>
+    <data name="JobState_End" xml:space="preserve">
+        <value>Terminé</value>
+    </data>
+    <data name="JobState_SourceScan" xml:space="preserve">
+        <value>Scan source</value>
+    </data>
+    <data name="JobRunPopup_FreezeNote" xml:space="preserve">
+        <value>Note : l'application peut ne pas répondre, veuillez ne rien faire</value>
+    </data>
+    <data name="JobCreatePopup_JobName" xml:space="preserve">
+        <value>Nom</value>
+    </data>
+    <data name="JobCreatePopup_JobSource" xml:space="preserve">
+        <value>Dossier source</value>
+    </data>
+    <data name="JobCreatePopup_JobType" xml:space="preserve">
+        <value>Type de sauvegarde</value>
+    </data>
+    <data name="JobCreatePopup_JobDestination" xml:space="preserve">
+        <value>Dossier de destination</value>
+    </data>
+    <data name="CreateJobPopup_PopupTitle_CreateJob" xml:space="preserve">
+        <value>Créer une nouvelle tâche</value>
+    </data>
+    <data name="CreateJobPopup_PopupTitle_AllFieldsRequired" xml:space="preserve">
+        <value>Tous les champs sont requis</value>
+    </data>
+    <data name="CreateJobPopup_PopupTitle_EditingJob" xml:space="preserve">
+        <value>Édition de la tâche #{0}</value>
+    </data>
+    <data name="JobRunPopup_PopupTitle_JobsRunning" xml:space="preserve">
+        <value>Exécution de {0} tâche(s)</value>
+    </data>
+</root>

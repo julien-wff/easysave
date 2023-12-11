@@ -1,0 +1,105 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+        <UseWindowsForms>true</UseWindowsForms>
+        <!-- Publish options -->
+        <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>true</SelfContained>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <PublishReadyToRunShowWarnings>true</PublishReadyToRunShowWarnings>
+        <PublishReadyToRunUseCrossgen>true</PublishReadyToRunUseCrossgen>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+        <!-- Branding -->
+        <ApplicationIcon>../assets/easysave-logo.ico</ApplicationIcon>
+        <Authors>ProSoft</Authors>
+        <Company>ProSoft</Company>
+        <Product>EasySave</Product>
+        <Copyright>Copyright © 2023 ProSoft</Copyright>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <AssemblyTitle>EasySave</AssemblyTitle>
+        <AssemblyDescription>Create, manage and execute backup jobs</AssemblyDescription>
+        <AssemblyCompany>ProSoft</AssemblyCompany>
+        <AssemblyProduct>EasySave</AssemblyProduct>
+        <AssemblyCopyright>Copyright © 2023 ProSoft</AssemblyCopyright>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\EasyLib\EasyLib.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Resource Include="Assets\easysave-logo.ico"/>
+        <Resource Include="Assets\Icons\add-circle-outline.png"/>
+        <Resource Include="Assets\Icons\play-circle-outline.png"/>
+        <Resource Include="Assets\Icons\create-outline.png"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Page Update="Resources\GlobalStyles.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\Buttons\BaseButton.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\Buttons\CancelButton.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\Buttons\CreateButton.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\Buttons\EditButton.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\Buttons\StartButton.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\Buttons\ValidateButton.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\Strings.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Strings.fr.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Strings.fr.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Resources\Strings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Strings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Strings.fr.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Strings.fr.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+</Project>

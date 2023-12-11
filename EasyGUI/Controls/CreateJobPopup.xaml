@@ -1,0 +1,71 @@
+<UserControl x:Class="EasyGUI.Controls.CreateJobPopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:buttons="clr-namespace:EasyGUI.Controls.Buttons"
+             xmlns:controls="clr-namespace:EasyGUI.Controls"
+             xmlns:resx="clr-namespace:EasyGUI.Resources"
+             mc:Ignorable="d"
+             d:DesignHeight="720" d:DesignWidth="1280">
+    <Grid>
+        <Grid Background="Black" Opacity=".75" ZIndex="10" />
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" ZIndex="11" Width="350">
+            <Border Background="{StaticResource BackgroundBrush}" Padding="16" CornerRadius="16">
+                <StackPanel>
+                    <TextBlock
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="0,0,0,16"
+                        Text="{Binding PopupTitle, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+
+                    <TextBlock
+                        Visibility="Collapsed"
+                        x:Name="ErrorMessageTextBlock"
+                        Text="{Binding ErrorMessage, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Margin="0,0,0,16"
+                        Foreground="{StaticResource RedBrush}" />
+
+                    <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.JobCreatePopup_JobName}" />
+                    <TextBox x:Name="JobNameTextBox"
+                             Text="{Binding JobName, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                             Margin="0,0,0,16" />
+
+                    <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.JobCreatePopup_JobSource}" />
+                    <controls:FolderSelector
+                        FolderPath="{Binding JobSource, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                        Margin="0,0,0,16" />
+
+                    <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.JobCreatePopup_JobDestination}" />
+                    <controls:FolderSelector
+                        FolderPath="{Binding JobDestination, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                        Margin="0,0,0,16" />
+
+                    <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.JobCreatePopup_JobType}" />
+                    <ComboBox Margin="0,0,0,16" x:Name="JobTypeComboBox">
+                        <ComboBoxItem>
+                            <TextBlock Text="{x:Static resx:Strings.JobType_Full}" />
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="{x:Static resx:Strings.JobType_Differential}" />
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="{x:Static resx:Strings.JobType_Incremental}" />
+                        </ComboBoxItem>
+                    </ComboBox>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <buttons:CancelButton Grid.Column="0" Click="CancelButton_OnClick" />
+                        <buttons:ValidateButton Grid.Column="1" Click="ValidateButton_OnClick"
+                                                HorizontalAlignment="Right" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

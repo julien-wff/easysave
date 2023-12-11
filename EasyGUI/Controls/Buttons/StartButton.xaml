@@ -1,0 +1,14 @@
+<UserControl x:Class="EasyGUI.Controls.Buttons.StartButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:resx="clr-namespace:EasyGUI.Resources"
+             xmlns:buttons="clr-namespace:EasyGUI.Controls.Buttons"
+             mc:Ignorable="d"
+             d:DesignHeight="50" d:DesignWidth="150">
+    <buttons:BaseButton ButtonText="{x:Static resx:Strings.StartButton_Start}"
+                         Click="Button_OnClick"
+                         ButtonColor="{StaticResource GreenBrush}"
+                         ButtonIcon="/Assets/Icons/play-circle-outline.png"/>
+</UserControl>

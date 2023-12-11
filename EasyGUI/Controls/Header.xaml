@@ -1,0 +1,34 @@
+<UserControl x:Class="EasyGUI.Controls.Header"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="50" d:DesignWidth="1280">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Image Grid.Column="0" Source="/Assets/easysave-logo.ico" Height="32" Width="32" Margin="0,0,16,0" />
+        <TextBlock Grid.Column="1"
+                   Text="EasySave"
+                   FontFamily="Segoe UI Variable, Arial"
+                   FontStyle="Italic"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center" />
+        <TextBlock Grid.Column="2"
+                   Text="By ProSoft"
+                   FontFamily="Segoe UI Variable, Arial"
+                   FontStyle="Italic"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center" />
+    </Grid>
+</UserControl>

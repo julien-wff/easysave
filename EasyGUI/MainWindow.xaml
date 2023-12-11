@@ -1,0 +1,33 @@
+﻿<Window x:Class="EasyGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:EasyGUI.Controls"
+        mc:Ignorable="d"
+        KeyDown="MainWindow_OnKeyDown"
+        Title="EasySave" Height="720" Width="1280" Icon="/Assets/easysave-logo.ico">
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <StackPanel Margin="16">
+            <controls:Header Margin="0,0,0,32" />
+            <controls:JobsHeader
+                Jobs="{Binding Jobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                SelectedJobs="{Binding SelectedJobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                CreateButtonClick="JobsHeader_OnCreateButtonClick"
+                StartButtonClick="JobsHeader_OnStartButtonClick" />
+            <controls:JobsList
+                Jobs="{Binding Jobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                SelectedJobs="{Binding SelectedJobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                JobEdited="JobsList_OnJobEdited"
+                JobStarted="JobsList_OnJobStarted" />
+        </StackPanel>
+
+        <controls:CreateJobPopup
+            x:Name="CreateJobPopup"
+            ValidateJob="CreateJobPopup_OnValidateJob"
+            Visibility="Collapsed" />
+        <controls:JobRunPopup
+            x:Name="JobRunPopup"
+            Visibility="Collapsed" />
+    </Grid>
+</Window>
