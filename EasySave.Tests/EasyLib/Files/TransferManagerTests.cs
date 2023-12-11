@@ -49,8 +49,8 @@ public class TransferManagerTests
         // Assert
         Assert.Equal((uint)4, job.FilesCount);
         Assert.Equal(Directory.GetDirectories(paths[0]).Length,
-            Directory.GetDirectories(Directory.GetDirectories(paths[1])[-1]).Length);
+            Directory.GetDirectories(Directory.GetDirectories(paths[1]).Last()).Length);
         Assert.Equivalent(Directory.GetFiles(paths[0]).Length,
-            Directory.GetFiles(Directory.GetDirectories(paths[1])[-1]).Length);
+            Directory.GetFiles(Directory.GetDirectories(paths[1]).Last()).Length);
     }
 }
