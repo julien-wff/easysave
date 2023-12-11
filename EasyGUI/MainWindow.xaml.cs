@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using EasyGUI.Events;
 using EasyLib;
 using EasyLib.Enums;
+using EasyLib.Job;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace EasyGUI;
@@ -21,9 +23,11 @@ public partial class MainWindow
         _jobManager = new JobManager();
         foreach (var job in _jobManager.GetJobs())
         {
-            JobsList.Jobs.Add(job);
+            Jobs.Add(job);
         }
     }
+
+    public ObservableCollection<Job> Jobs { get; } = new();
 
     private void JobsHeader_OnCreateButtonClick(object sender, RoutedEventArgs e)
     {

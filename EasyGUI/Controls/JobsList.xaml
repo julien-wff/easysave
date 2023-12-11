@@ -9,7 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="1280">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ListView ItemsSource="{Binding Jobs}"
+            <ListView ItemsSource="{Binding Jobs, RelativeSource={RelativeSource AncestorType=UserControl}}"
                       Background="Transparent"
                       BorderBrush="Transparent"
                       BorderThickness="0">
