@@ -11,6 +11,7 @@
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <PublishTrimmed>true</PublishTrimmed>
         <!-- Branding -->
+        <ApplicationIcon>../assets/easycrypto.ico</ApplicationIcon>
         <Authors>ProSoft</Authors>
         <Company>ProSoft</Company>
         <Product>EasyCrypto</Product>

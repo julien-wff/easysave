@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text;
 using EasyLib.Json;
 
 namespace EasyLib.Files.References;
@@ -35,7 +36,6 @@ public class ConfigManagerReference
     }
 
     public List<string> CryptedFileTypes { get; set; } = new();
-    public List<string> BusinnesProcesses { get; set; } = new();
     public string XorKey { get; set; } = "cryptokey";
     public string LogFormat { get; set; } = ".json";
     public string EasyCryptoPath { get; set; } = @"C:\EasyCrypto.exe";
@@ -48,7 +48,6 @@ public class ConfigManagerReference
     {
         var jsonConfig = JsonFileUtils.ReadJson<ConfigElement>(_configFilePath);
         CryptedFileTypes = jsonConfig.CryptedFileTypes ?? new List<string>();
-        BusinnesProcesses = jsonConfig.BusinnesProcesses ?? new List<string>();
         XorKey = jsonConfig.XorKey ?? "cryptokey";
         LogFormat = jsonConfig.LogFormat ?? ".json";
         EasyCryptoPath = jsonConfig.EasyCryptoPath ?? @"C:\EasyCrypto.exe";
@@ -63,7 +62,6 @@ public class ConfigManagerReference
         var jsonConfig = new ConfigElement
         {
             CryptedFileTypes = CryptedFileTypes,
-            BusinnesProcesses = BusinnesProcesses,
             XorKey = XorKey,
             LogFormat = LogFormat,
             EasyCryptoPath = EasyCryptoPath,
@@ -82,5 +80,16 @@ public class ConfigManagerReference
         var processName = Path.GetFileNameWithoutExtension(CompanySoftwareProcessPath);
         var processes = Process.GetProcessesByName(processName);
         return processes.Length > 0;
+    }
+
+    public string GetStringProperties()
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine($"CryptedFileTypes: {string.Join(", ", CryptedFileTypes)}");
+        sb.AppendLine($"XorKey: {XorKey}");
+        sb.AppendLine($"LogFormat: {LogFormat}");
+        sb.AppendLine($"EasyCryptoPath: {EasyCryptoPath}");
+        sb.AppendLine($"CompanySoftwareProcessPath: {CompanySoftwareProcessPath}");
+        return sb.ToString();
     }
 }
