@@ -1,4 +1,4 @@
-using EasyCLI.Commands.CommandFeatures;
+﻿using EasyCLI.Commands.CommandFeatures;
 using EasyCLI.Display;
 using EasyCLI.Localization;
 using EasyLib;
@@ -8,17 +8,17 @@ using EasyLib.Job;
 
 namespace EasyCLI.Commands;
 
-public class RunCommand : Command, IJobStatusSubscriber
+public class ResumeCommand : Command, IJobStatusSubscriber
 {
     private DateTime _lastConsoleUpdate = DateTime.UtcNow;
 
     public override CommandBuilder.CommandBuilder Params { get; } = new CommandBuilder.CommandBuilder()
-        .SetName("run")
-        .SetDescription("Run selected jobs")
-        .SetAliases(new[] { "start", "execute", "exe", "launch" })
+        .SetName("resume")
+        .SetDescription("resume selected jobs")
+        .SetAliases(new[] { "continue", "restart" })
         .AddArg(new CommandArg()
             .SetName("jobs")
-            .SetDescription("Jobs to run. Use format selector (1,2 or 1-3 or job1,2-4). Optional")
+            .SetDescription("Jobs to resume. Use format selector (1,2 or 1-3 or job1,2-4). Optional")
             .SetRequired(true));
 
     public void OnJobProgress(Job job)
@@ -84,16 +84,16 @@ public class RunCommand : Command, IJobStatusSubscriber
                 return;
             }
 
-            if (job.State is not JobState.End)
+            if (job.State is JobState.End)
             {
                 Console.WriteLine(
-                    $"Job #{job.Id} - {job.Name} is already running. Please resume or discard it instead.");
+                    $"Job #{job.Id} - {job.Name} is not running. Please run it instead.");
                 return;
             }
         }
 
         jm.Subscribe(this);
-        Console.WriteLine($"Starting {jobs.Count} job(s)...");
+        Console.WriteLine($"Re-Starting {jobs.Count} job(s)...");
         Console.WriteLine();
         var executedJobs = jm.ExecuteJobs(jobs);
         jm.Unsubscribe(this);

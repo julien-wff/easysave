@@ -190,7 +190,6 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
         return success;
     }
 
-
     /// <summary>
     /// Create a new job
     /// </summary>

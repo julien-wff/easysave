@@ -18,6 +18,7 @@ public static class Program
             .RegisterCommand(new RunCommand())
             .RegisterCommand(new DiscardCommand())
             .RegisterCommand(new ConfigCommand())
+            .RegisterCommand(new ResumeCommand())
             .RunWithArgs(args);
     }
 }
