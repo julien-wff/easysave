@@ -24,14 +24,9 @@ public partial class JobDisplay : INotifyPropertyChanged
         new PropertyMetadata(default(ObservableCollection<Job>))
     );
 
-    public static readonly DependencyProperty JobSelectedProperty = DependencyProperty.Register(
-        nameof(JobSelected),
-        typeof(bool),
-        typeof(JobDisplay),
-        new PropertyMetadata(default(bool))
-    );
+    private bool _isJobSelectedLocked;
 
-    private bool _updatingCheckbox;
+    private bool _selectedJobsLocked;
 
     public JobDisplay()
     {
@@ -54,22 +49,8 @@ public partial class JobDisplay : INotifyPropertyChanged
         get => (ObservableCollection<Job>)GetValue(SelectedJobsProperty);
         set
         {
-            _updatingCheckbox = true;
             SetValue(SelectedJobsProperty, value);
             OnPropertyChanged();
-            _updatingCheckbox = false;
-        }
-    }
-
-    public bool JobSelected
-    {
-        get => (bool)GetValue(JobSelectedProperty);
-        set
-        {
-            _updatingCheckbox = true;
-            SetValue(JobSelectedProperty, value);
-            OnPropertyChanged();
-            _updatingCheckbox = false;
         }
     }
 
@@ -83,21 +64,11 @@ public partial class JobDisplay : INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        if (propertyName == nameof(SelectedJobs) && !_updatingCheckbox)
+        if (propertyName == nameof(SelectedJobs) && !_selectedJobsLocked)
         {
-            JobSelected = SelectedJobs.Contains(Job);
-        }
-
-        if (propertyName == nameof(JobSelected) && !_updatingCheckbox)
-        {
-            if (JobSelected)
-            {
-                SelectedJobs.Add(Job);
-            }
-            else
-            {
-                SelectedJobs.Remove(Job);
-            }
+            _isJobSelectedLocked = true;
+            JobCheckBox.IsChecked = SelectedJobs.Contains(Job);
+            _isJobSelectedLocked = false;
         }
     }
 
@@ -127,5 +98,25 @@ public partial class JobDisplay : INotifyPropertyChanged
     {
         UpdateBreadcrumbs();
         SelectedJobs.CollectionChanged += (_, _) => OnPropertyChanged(nameof(SelectedJobs));
+    }
+
+    private void JobCheckBox_OnChecked(object sender, RoutedEventArgs e)
+    {
+        if (_isJobSelectedLocked)
+            return;
+
+        _selectedJobsLocked = true;
+        SelectedJobs.Add(Job);
+        _selectedJobsLocked = false;
+    }
+
+    private void JobCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+    {
+        if (_isJobSelectedLocked)
+            return;
+
+        _selectedJobsLocked = true;
+        SelectedJobs.Remove(Job);
+        _selectedJobsLocked = false;
     }
 }

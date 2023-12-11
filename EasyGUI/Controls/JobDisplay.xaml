@@ -30,7 +30,9 @@
             </Grid.ColumnDefinitions>
 
             <CheckBox
-                IsChecked="{Binding JobSelected, RelativeSource={RelativeSource AncestorType={x:Type local:JobDisplay}}}"
+                x:Name="JobCheckBox"
+                Checked="JobCheckBox_OnChecked"
+                Unchecked="JobCheckBox_OnUnchecked"
                 Grid.Column="0"
                 Margin="7,0,12,0"
                 VerticalAlignment="Center" />
