@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using EasyLib.Enums;
 using EasyLib.Job;
 
 namespace EasyGUI.Controls;
@@ -70,6 +71,19 @@ public partial class JobsHeader : INotifyPropertyChanged
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        if (propertyName == nameof(SelectedJobs))
+        {
+            UpdateButtonsDisplay();
+        }
+    }
+
+    private void UpdateButtonsDisplay()
+    {
+        StartButton.Visibility =
+            SelectedJobs.Count > 1 && SelectedJobs.All(j => j.State is JobState.End or JobState.Paused)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
     }
 
     private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
@@ -89,5 +103,11 @@ public partial class JobsHeader : INotifyPropertyChanged
     private void JobsHeader_OnLoaded(object sender, RoutedEventArgs e)
     {
         SelectedJobs.CollectionChanged += (_, _) => OnPropertyChanged(nameof(SelectedJobs));
+        UpdateButtonsDisplay();
+    }
+
+    private void StartButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        throw new NotImplementedException();
     }
 }
