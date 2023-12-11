@@ -9,32 +9,31 @@ public class NewBackupFolderStrategy : IBackupFolderStrategy
         string destinationFolder)
     {
         var destinationPath = BackupFolderSelector.GetDestinationPath(jobType, destinationFolder);
-        if (folders[0].Any() && folders[2].Any())
+        if (folders[0].Count != 0 && folders[2].Count != 0)
         {
-            return new List<List<string>>()
-            {
+            return
+            [
                 folders[0],
-                new List<string>() { destinationPath },
+                [destinationPath],
                 folders[2]
-            };
+            ];
         }
-        else if (folders[0].Any())
+
+        if (folders[0].Count != 0)
         {
-            return new List<List<string>>()
-            {
+            return
+            [
                 folders[0],
-                new List<string>() { destinationPath },
-                new List<string>()
-            };
+                [destinationPath],
+                []
+            ];
         }
-        else
-        {
-            return new List<List<string>>()
-            {
-                new List<string>(),
-                new List<string>() { destinationPath },
-                new List<string>()
-            };
-        }
+
+        return
+        [
+            [],
+            [destinationPath],
+            []
+        ];
     }
 }

@@ -21,7 +21,7 @@ public class TransferManager : IJobStatusPublisher
         InstructionsFolder = new BackupFolder(_job.DestinationFolder);
     }
 
-    public BackupFolder InstructionsFolder { get; private set; }
+    private BackupFolder InstructionsFolder { get; set; }
 
     public void Subscribe(IJobStatusSubscriber subscriber)
     {
@@ -75,7 +75,7 @@ public class TransferManager : IJobStatusPublisher
     {
         _job.State = JobState.DifferenceCalculation;
         InstructionsFolder = new BackupFolder(folders[1][0]);
-        if (folders[2].Any())
+        if (folders[2].Count != 0)
         {
             InstructionsFolder.SubFolders.Add(new BackupFolder(folders[3][0]));
             _compareBackupPath(InstructionsFolder.SubFolders[0], folders[0]);
@@ -116,11 +116,12 @@ public class TransferManager : IJobStatusPublisher
         foreach (var folder in destination)
         {
             var sourceFolder = source.Find(s => s.Name == folder.Name);
-            if (sourceFolder != null)
-            {
-                sourceFolder.SubFolders = _compareFolders(sourceFolder.SubFolders, folder.SubFolders);
-                sourceFolder.Files = _compareFiles(sourceFolder.Files, folder.Files);
-            }
+
+            if (sourceFolder == null)
+                continue;
+
+            sourceFolder.SubFolders = _compareFolders(sourceFolder.SubFolders, folder.SubFolders);
+            sourceFolder.Files = _compareFiles(sourceFolder.Files, folder.Files);
         }
 
         return source;
@@ -132,7 +133,7 @@ public class TransferManager : IJobStatusPublisher
     /// <param name="source"></param>
     /// <param name="destination"></param>
     /// <returns></returns>
-    private List<BackupFile> _compareFiles(List<BackupFile> source, List<BackupFile> destination)
+    private static List<BackupFile> _compareFiles(List<BackupFile> source, List<BackupFile> destination)
     {
         source = source.Where(s => !destination.Exists(d => d.Hash == s.Hash)).ToList();
         return source;
@@ -145,7 +146,7 @@ public class TransferManager : IJobStatusPublisher
     public void CreateDestinationStructure()
     {
         _job.State = JobState.DestinationStructureCreation;
-        string actualJobPath = Path.Combine(_job.DestinationFolder, InstructionsFolder.Name);
+        var actualJobPath = Path.Combine(_job.DestinationFolder, InstructionsFolder.Name);
         if (!Directory.Exists(actualJobPath))
         {
             Directory.CreateDirectory(actualJobPath);
@@ -163,7 +164,7 @@ public class TransferManager : IJobStatusPublisher
     {
         foreach (var subFolder in folder.SubFolders)
         {
-            string actualSubFolderPath = Path.Combine(parentPath, subFolder.Name);
+            var actualSubFolderPath = Path.Combine(parentPath, subFolder.Name);
             _notifySubscribersForChange();
             Directory.CreateDirectory(actualSubFolderPath);
             _createTree(actualSubFolderPath, subFolder);
@@ -193,7 +194,7 @@ public class TransferManager : IJobStatusPublisher
             var cryptoStart = DateTime.Now;
             var cryptoEnd = cryptoStart;
             if (ConfigManager.Instance.EncryptedFileTypes
-                .Contains(file.Extension)) // check if the file extension is in the list of crypted file types
+                .Contains(file.Extension)) // check if the file extension is in the list of encrypted file types
             {
                 var fileEncryption = new Process() // create a new process to run the EasyCrypto.exe
                 {

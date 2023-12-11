@@ -11,23 +11,21 @@ public class ResumeBackupFolderStrategy : IBackupFolderStrategy
         if (lastFolderPath == "")
         {
             var destinationPath = BackupFolderSelector.GetDestinationPath(jobType, destinationFolder);
-            return new List<List<string>>()
-            {
-                new List<string>(),
-                new List<string>() { destinationPath },
-                new List<string>()
-            };
+            return
+            [
+                [],
+                [destinationPath],
+                []
+            ];
         }
-        else
-        {
-            folders[0].Append(lastFolderPath);
-            Console.WriteLine(folders[0]);
-            return new List<List<string>>()
-            {
-                folders[0],
-                new List<string>() { lastFolderPath },
-                new List<string>()
-            };
-        }
+
+        folders[0].Append(lastFolderPath);
+        Console.WriteLine(folders[0]);
+        return
+        [
+            folders[0],
+            [lastFolderPath],
+            []
+        ];
     }
 }
