@@ -53,6 +53,8 @@ public partial class JobsList : INotifyPropertyChanged
 
     public event EventHandler<JobEventArgs> JobStarted;
 
+    public event EventHandler<JobEventArgs> JobEdited;
+
     private void JobDisplay_OnJobStarted(object? sender, JobEventArgs e)
     {
         JobStarted.Invoke(this, e);
@@ -61,5 +63,10 @@ public partial class JobsList : INotifyPropertyChanged
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private void JobDisplay_OnJobEdited(object? sender, JobEventArgs e)
+    {
+        JobEdited.Invoke(this, e);
     }
 }

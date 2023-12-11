@@ -32,6 +32,7 @@ public partial class MainWindow
 
     private void JobsHeader_OnCreateButtonClick(object sender, RoutedEventArgs e)
     {
+        CreateJobPopup.JobId = -1;
         CreateJobPopup.PopupTitle = "Create a new job";
         CreateJobPopup.JobName = "";
         CreateJobPopup.JobSource = "";
@@ -52,6 +53,7 @@ public partial class MainWindow
 
     private void CreateJobPopup_OnValidateJob(object sender, RoutedEventArgs e)
     {
+        var id = CreateJobPopup.JobId;
         var name = CreateJobPopup.JobName;
         var source = CreateJobPopup.JobSource;
         var destination = CreateJobPopup.JobDestination;
@@ -64,7 +66,7 @@ public partial class MainWindow
             return;
         }
 
-        var result = _jobManager.CheckJobRules(-1, name, source, destination);
+        var result = _jobManager.CheckJobRules(id, name, source, destination);
 
         if (result != JobCheckRule.Valid)
         {
@@ -101,5 +103,18 @@ public partial class MainWindow
             _jobManager.ExecuteJobs(jobs);
             JobRunPopup.Visibility = Visibility.Collapsed;
         });
+    }
+
+    private void JobsList_OnJobEdited(object? sender, JobEventArgs e)
+    {
+        var job = e.Job;
+        CreateJobPopup.JobId = (int)job.Id;
+        CreateJobPopup.PopupTitle = $"Edit job #{job.Id}";
+        CreateJobPopup.JobName = job.Name;
+        CreateJobPopup.JobSource = job.SourceFolder;
+        CreateJobPopup.JobDestination = job.DestinationFolder;
+        CreateJobPopup.JobType = job.Type;
+        CreateJobPopup.ErrorMessage = null;
+        CreateJobPopup.Visibility = Visibility.Visible;
     }
 }

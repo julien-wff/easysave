@@ -122,6 +122,8 @@ public partial class CreateJobPopup : INotifyPropertyChanged
         }
     }
 
+    public int JobId { get; set; }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public event ValidateJobHandler? ValidateJob;

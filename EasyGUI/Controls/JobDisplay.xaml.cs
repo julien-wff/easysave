@@ -59,6 +59,7 @@ public partial class JobDisplay : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
     public event EventHandler<JobEventArgs> JobStarted;
+    public event EventHandler<JobEventArgs> JobEdited;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
@@ -118,5 +119,10 @@ public partial class JobDisplay : INotifyPropertyChanged
         _selectedJobsLocked = true;
         SelectedJobs.Remove(Job);
         _selectedJobsLocked = false;
+    }
+
+    private void EditButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        JobEdited.Invoke(this, new JobEventArgs(Job));
     }
 }
