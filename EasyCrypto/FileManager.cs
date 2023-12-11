@@ -6,27 +6,21 @@ namespace EasyCrypto;
 /// File manager class
 /// This class is used to encrypt and decrypt files
 /// </summary>
-public class FileManager
+public class FileManager(string path, string key)
 {
-    public FileManager(string path, string key)
-    {
-        FilePath = path;
-        Key = key;
-    }
-
-    public string FilePath { get; }
-    public string Key { get; }
+    private string FilePath { get; } = path;
+    private string Key { get; } = key;
 
     /// <summary>
     /// check if the file exists
     /// </summary>
-    private void checkFile()
+    private void CheckFile()
     {
-        if (!File.Exists(FilePath))
-        {
-            Console.WriteLine("File not found.");
-            Environment.Exit(1);
-        }
+        if (File.Exists(FilePath))
+            return;
+
+        Console.WriteLine("File not found.");
+        Environment.Exit(1);
     }
 
     /// <summary>
@@ -34,10 +28,10 @@ public class FileManager
     /// </summary>
     public void TransformFile()
     {
-        checkFile();
+        CheckFile();
         var fileBytes = File.ReadAllBytes(FilePath);
         var keyBytes = ConvertToByte(Key);
-        fileBytes = xorMethod(fileBytes, keyBytes);
+        fileBytes = XorMethod(fileBytes, keyBytes);
         File.WriteAllBytes(FilePath, fileBytes);
     }
 
@@ -46,7 +40,7 @@ public class FileManager
     /// </summary>
     /// <param name="text"></param>
     /// <returns></returns>
-    private byte[] ConvertToByte(string text)
+    private static byte[] ConvertToByte(string text)
     {
         return Encoding.UTF8.GetBytes(text);
     }
@@ -54,15 +48,15 @@ public class FileManager
     /// <summary>
     /// Compare the bytes of the file with the bytes of the key and create a new byte array using the xor method
     /// </summary>
-    /// <param name="fileBytes"></param>
-    /// <param name="keyBytes"></param>
-    /// <returns></returns>
-    private byte[] xorMethod(byte[] fileBytes, byte[] keyBytes)
+    /// <param name="fileBytes">Bytes of the file to convert</param>
+    /// <param name="keyBytes">Key to use</param>
+    /// <returns>Bytes of the encrypted file</returns>
+    private static byte[] XorMethod(IReadOnlyList<byte> fileBytes, IReadOnlyList<byte> keyBytes)
     {
-        var result = new byte[fileBytes.Length];
-        for (var i = 0; i < fileBytes.Length; i++)
+        var result = new byte[fileBytes.Count];
+        for (var i = 0; i < fileBytes.Count; i++)
         {
-            result[i] = (byte)(fileBytes[i] ^ keyBytes[i % keyBytes.Length]);
+            result[i] = (byte)(fileBytes[i] ^ keyBytes[i % keyBytes.Count]);
         }
 
         return result;
