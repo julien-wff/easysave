@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using EasyLib.Enums;
 using EasyLib.Events;
 using EasyLib.Files;
@@ -108,6 +109,16 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
     /// <returns>True when the job is complete</returns>
     public bool Run()
     {
+        if (ConfigManager.Instance.CheckProcessRunning())
+        {
+            var processName = Path.GetFileNameWithoutExtension(ConfigManager.Instance.CompanySoftwareProcessPath);
+            var processes = Process.GetProcessesByName(processName);
+            foreach (var process in processes)
+            {
+                process.WaitForExit();
+            }
+        }
+
         var tm = new TransferManager(this);
         var selector = BackupFolderSelectorFactory.Create(Type, State);
         var folderList = Directory.GetDirectories(DestinationFolder).ToList();
