@@ -99,15 +99,6 @@ public class Job(
     }
 
     /// <summary>
-    /// Check if the job is valid (name, source and destination reachable, etc.)
-    /// </summary>
-    /// <returns>True if the job is valid</returns>
-    public bool Check()
-    {
-        return true;
-    }
-
-    /// <summary>
     /// Run the backup job
     /// </summary>
     /// <returns>True when the job is complete</returns>
@@ -128,7 +119,7 @@ public class Job(
         var folderList = Directory.GetDirectories(DestinationFolder).ToList();
         var directories = new List<List<string>>() { folderList };
         var lastFolder = "";
-        if (folderList.Any())
+        if (folderList.Count != 0)
         {
             lastFolder = folderList[^1] + Path.DirectorySeparatorChar;
         }
@@ -172,17 +163,17 @@ public class Job(
         return true;
     }
 
-    private void _notifySubscribersForChangeState(JobState state)
+    private void _notifySubscribersForChangeState(JobState subState)
     {
         foreach (var subscriber in Subscribers)
         {
-            subscriber.OnJobStateChange(state, this);
+            subscriber.OnJobStateChange(subState, this);
         }
     }
 
-    private void _setJobState(JobState state)
+    private void _setJobState(JobState pubState)
     {
-        State = state;
-        _notifySubscribersForChangeState(state);
+        State = pubState;
+        _notifySubscribersForChangeState(pubState);
     }
 }
