@@ -14,6 +14,7 @@ public static class Program
             .RegisterCommand(new ListCommand())
             .RegisterCommand(new CheckCommand())
             .RegisterCommand(new CreateCommand())
+            .RegisterCommand(new EditCommand())
             .RegisterCommand(new DeleteCommand())
             .RegisterCommand(new RunCommand())
             .RegisterCommand(new DiscardCommand())
