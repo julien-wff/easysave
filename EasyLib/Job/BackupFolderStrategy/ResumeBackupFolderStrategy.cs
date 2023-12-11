@@ -19,7 +19,7 @@ public class ResumeBackupFolderStrategy : IBackupFolderStrategy
             ];
         }
 
-        folders[0].Append(lastFolderPath);
+        folders[0] = folders[0].Append(lastFolderPath).ToList();
         Console.WriteLine(folders[0]);
         return
         [
