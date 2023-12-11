@@ -16,6 +16,13 @@ public partial class JobsHeader : INotifyPropertyChanged
         typeof(JobsHeader)
     );
 
+    private static readonly RoutedEvent StartButtonClickEvent = EventManager.RegisterRoutedEvent(
+        nameof(StartButtonClick),
+        RoutingStrategy.Bubble,
+        typeof(RoutedEventHandler),
+        typeof(JobsHeader)
+    );
+
     private static readonly DependencyProperty JobsProperty = DependencyProperty.Register(
         nameof(Jobs),
         typeof(ObservableCollection<Job>),
@@ -63,6 +70,12 @@ public partial class JobsHeader : INotifyPropertyChanged
         remove => RemoveHandler(CreateButtonClickEvent, value);
     }
 
+    public event RoutedEventHandler StartButtonClick
+    {
+        add => AddHandler(StartButtonClickEvent, value);
+        remove => RemoveHandler(StartButtonClickEvent, value);
+    }
+
     private void CreateButton_OnClick(object sender, RoutedEventArgs e)
     {
         RaiseEvent(new RoutedEventArgs(CreateButtonClickEvent));
@@ -108,6 +121,6 @@ public partial class JobsHeader : INotifyPropertyChanged
 
     private void StartButton_OnClick(object sender, RoutedEventArgs e)
     {
-        throw new NotImplementedException();
+        RaiseEvent(new RoutedEventArgs(StartButtonClickEvent));
     }
 }

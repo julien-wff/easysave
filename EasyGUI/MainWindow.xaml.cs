@@ -79,7 +79,27 @@ public partial class MainWindow
 
     private void JobsList_OnJobStarted(object? sender, JobEventArgs e)
     {
-        JobRunPopup.PopupTitle = "Running 1 job";
+        var job = e.Job;
+        var jobs = new List<Job> { job };
+        RunJobs(jobs);
+    }
+
+    private void JobsHeader_OnStartButtonClick(object sender, RoutedEventArgs e)
+    {
+        var jobs = SelectedJobs.ToList();
+        RunJobs(jobs);
+    }
+
+    private void RunJobs(IReadOnlyCollection<Job> jobs)
+    {
+        JobRunPopup.PopupTitle = $"Running {jobs.Count} job(s)";
         JobRunPopup.Visibility = Visibility.Visible;
+
+        Dispatcher.InvokeAsync(async () =>
+        {
+            await Task.Delay(100);
+            _jobManager.ExecuteJobs(jobs);
+            JobRunPopup.Visibility = Visibility.Collapsed;
+        });
     }
 }

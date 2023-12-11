@@ -13,7 +13,8 @@
             <controls:JobsHeader
                 Jobs="{Binding Jobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                 SelectedJobs="{Binding SelectedJobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                CreateButtonClick="JobsHeader_OnCreateButtonClick" />
+                CreateButtonClick="JobsHeader_OnCreateButtonClick"
+                StartButtonClick="JobsHeader_OnStartButtonClick" />
             <controls:JobsList
                 x:Name="JobsList"
                 Jobs="{Binding Jobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
@@ -27,6 +28,6 @@
             Visibility="Collapsed" />
         <controls:JobRunPopup
             x:Name="JobRunPopup"
-            Visibility="Collapsed"/>
+            Visibility="Collapsed" />
     </Grid>
 </Window>
