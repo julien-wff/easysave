@@ -1,4 +1,5 @@
-﻿using EasyLib.Enums;
+﻿using System.Diagnostics;
+using EasyLib.Enums;
 using EasyLib.Events;
 using EasyLib.Json;
 
@@ -89,18 +90,18 @@ public class TransferManager : IJobStatusPublisher
     /// Compare the source with the existing backup folders if there is any
     /// The result is stored in the InstructionsFolder property
     /// </summary>
-    /// <param name="Instruction"></param>
+    /// <param name="instruction"></param>
     /// <param name="pathList"></param>
-    private void _compareBackupPath(BackupFolder Instruction, List<string> pathList)
+    private void _compareBackupPath(BackupFolder instruction, List<string> pathList)
     {
-        Instruction.SubFolders = _sourceFolder.SubFolders;
-        Instruction.Files = _sourceFolder.Files;
+        instruction.SubFolders = _sourceFolder.SubFolders;
+        instruction.Files = _sourceFolder.Files;
         foreach (var path in pathList)
         {
             var backupFolder = new BackupFolder(path + Path.DirectorySeparatorChar);
             backupFolder.Walk(path + Path.DirectorySeparatorChar);
-            Instruction.SubFolders = _compareFolders(Instruction.SubFolders, backupFolder.SubFolders);
-            Instruction.Files = _compareFiles(Instruction.Files, backupFolder.Files);
+            instruction.SubFolders = _compareFolders(instruction.SubFolders, backupFolder.SubFolders);
+            instruction.Files = _compareFiles(instruction.Files, backupFolder.Files);
         }
     }
 
@@ -140,7 +141,6 @@ public class TransferManager : IJobStatusPublisher
     /// <summary>
     /// This class take the destination folder path and create the folder structure for the backup
     /// </summary>
-    /// <param name="destinationFolderPath"></param>
     /// <returns></returns>
     public void CreateDestinationStructure()
     {
@@ -186,17 +186,42 @@ public class TransferManager : IJobStatusPublisher
             var copyStart = DateTime.Now;
             File.Copy(_job.CurrentFileSource, _job.CurrentFileDestination, true);
             var copyEnd = DateTime.Now;
+            // check if the file has to be encrypted
             _job.FilesCopied++;
             _job.FilesBytesCopied += file.Size;
             _notifySubscribersForChange();
+            var cryptoStart = DateTime.Now;
+            var cryptoEnd = cryptoStart;
+            if (ConfigManager.Instance.CryptedFileTypes
+                .Contains(file.Extension)) // check if the file extension is in the list of crypted file types
+            {
+                var fileEncrpytion = new Process() // create a new process to run the EasyCrypto.exe
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = ConfigManager.Instance.EasyCryptoPath, // take the easy crypto path from the config
+                        ArgumentList = { _job.CurrentFileDestination, ConfigManager.Instance.XorKey },
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true
+                    }
+                };
+                cryptoStart = DateTime.Now; // start the timer for the crypto
+                fileEncrpytion.Start();
+                fileEncrpytion.WaitForExit();
+                cryptoEnd = DateTime.Now; // end the timer for the crypto
+            }
 
-            LogManager.Instance.AppendLog(new JsonLogElement
+            LogManager.Instance.AppendLog(new LogElement
             {
                 JobName = _job.Name,
-                SourcePath = Path.Combine(_job.SourceFolder, file.Name),
-                DestinationPath = Path.Combine(_job.DestinationFolder, file.Name),
+                SourcePath = Path.Combine(_job.CurrentFileSource),
+                DestinationPath = Path.Combine(_job.CurrentFileDestination),
                 FileSize = file.Size,
-                TransferTime = (int)(copyEnd - copyStart).TotalMilliseconds
+                TransferTime = (int)(copyEnd - copyStart).TotalMilliseconds, // add the copy time to the log
+                CryptoTime =
+                    (int)(cryptoEnd - cryptoStart)
+                    .TotalMilliseconds, // add the crypto time to the log 0 if the file is not encrypted
             });
         }
 

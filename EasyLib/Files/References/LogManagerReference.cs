@@ -18,13 +18,14 @@ public class LogManagerReference
     public LogManagerReference(string appDataPath)
     {
         // AppData dir and append easysave/logs/
-        var stateDirectory = Path.Combine(appDataPath, "easysave", "logs");
-        LogFilePath = Path.Combine(stateDirectory, DateTime.Now.ToString("yyyy-MM-dd") + ".json");
+        var logDirectory = Path.Combine(appDataPath, "easysave", "logs");
+        LogFilePath = Path.Combine(logDirectory,
+            DateTime.Now.ToString("yyyy-MM-dd") + ConfigManager.Instance.LogFormat);
 
         // Create directory if it doesn't exist
-        if (!Directory.Exists(stateDirectory))
+        if (!Directory.Exists(logDirectory))
         {
-            Directory.CreateDirectory(stateDirectory);
+            Directory.CreateDirectory(logDirectory);
         }
 
         // Create file and write [] if it doesn't exist
@@ -37,9 +38,16 @@ public class LogManagerReference
     /// <summary>
     /// Append the log to the log file
     /// </summary>
-    /// <param name="jsonLog"></param>
-    public void AppendLog(JsonLogElement jsonLog)
+    /// <param name="log"></param>
+    public void AppendLog(LogElement log)
     {
-        JsonFileUtils.AppendJsonToList(LogFilePath, jsonLog);
+        if (ConfigManager.Instance.LogFormat == ".xml")
+        {
+            XmlFileUtils.AddXmlLog(LogFilePath, log);
+        }
+        else
+        {
+            JsonFileUtils.AppendJsonToList(LogFilePath, log);
+        }
     }
 }

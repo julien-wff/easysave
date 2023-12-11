@@ -4,7 +4,12 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        var fileManager = new FileManager(args[0], "test");
+        foreach (var arg in args)
+        {
+            Console.WriteLine(arg);
+        }
+
+        var fileManager = new FileManager(args[0], args[1]);
         fileManager.TransformFile();
     }
 }

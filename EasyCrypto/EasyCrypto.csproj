@@ -5,6 +5,23 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <!-- Publish options -->
+        <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>true</SelfContained>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <PublishTrimmed>true</PublishTrimmed>
+        <!-- Branding -->
+        <ApplicationIcon>../assets/easycrypto.ico</ApplicationIcon>
+        <Authors>ProSoft</Authors>
+        <Company>ProSoft</Company>
+        <Product>EasyCrypto</Product>
+        <Copyright>Copyright © 2023 ProSoft</Copyright>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <AssemblyTitle>EasyCrypto</AssemblyTitle>
+        <AssemblyDescription>Encrypt given files</AssemblyDescription>
+        <AssemblyCompany>ProSoft</AssemblyCompany>
+        <AssemblyProduct>EasyCrypto</AssemblyProduct>
+        <AssemblyCopyright>Copyright © 2023 ProSoft</AssemblyCopyright>
     </PropertyGroup>
 
 </Project>

@@ -8,7 +8,7 @@ public class ResumeBackupFolderStrategy : IBackupFolderStrategy
     public List<List<string>> SelectFolders(List<List<string>> folders, string lastFolderPath, Enum jobType,
         string destinationFolder)
     {
-        if (!folders[0].Any())
+        if (lastFolderPath == "")
         {
             var destinationPath = BackupFolderSelector.GetDestinationPath(jobType, destinationFolder);
             return new List<List<string>>()
@@ -18,15 +18,16 @@ public class ResumeBackupFolderStrategy : IBackupFolderStrategy
                 new List<string>()
             };
         }
-        else if (folders.Count == 1)
-        {
-            var finalDestinationFolder = folders;
-            finalDestinationFolder[0].Add(lastFolderPath);
-            return finalDestinationFolder;
-        }
         else
         {
-            return folders;
+            folders[0].Append(lastFolderPath);
+            Console.WriteLine(folders[0]);
+            return new List<List<string>>()
+            {
+                folders[0],
+                new List<string>() { lastFolderPath },
+                new List<string>()
+            };
         }
     }
 }

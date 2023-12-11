@@ -115,4 +115,31 @@ Available commands:</value>
     <data name="Checks.DestinationNotEmpty" xml:space="preserve">
         <value>Destination folder is not empty.</value>
     </data>
+    <data name="Commands.Edit.Description" xml:space="preserve">
+        <value>Edit a job from the state file.</value>
+    </data>
+    <data name="Commands.Edit.Args.Id.Description" xml:space="preserve">
+        <value>Task ID</value>
+    </data>
+    <data name="Commands.Edit.Args.Name.Description" xml:space="preserve">
+        <value>New name of the task</value>
+    </data>
+    <data name="Commands.Edit.Args.Source.Description" xml:space="preserve">
+        <value>New source folder</value>
+    </data>
+    <data name="Commands.Edit.Args.Destination.Description" xml:space="preserve">
+        <value>New destination folder</value>
+    </data>
+    <data name="Commands.Edit.Flags.Type.Description" xml:space="preserve">
+        <value>New type of the  (full, differential or incremental)</value>
+    </data>
+    <data name="Checks.InvalidJobId" xml:space="preserve">
+        <value>Invalid job ID</value>
+    </data>
+    <data name="Checks.JobNotFound" xml:space="preserve">
+        <value>Cannot find job with ID #{0}</value>
+    </data>
+    <data name="Job.Edited" xml:space="preserve">
+        <value>The job #{0} ({1}) has been edited successfully</value>
+    </data>
 </root>

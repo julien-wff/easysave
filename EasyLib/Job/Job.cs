@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using EasyLib.Enums;
 using EasyLib.Events;
 using EasyLib.Files;
@@ -13,7 +14,11 @@ namespace EasyLib.Job;
 /// <param name="destinationFolder">Backup destination</param>
 /// <param name="type">Backup type (full, differential)</param>
 /// <param name="state">Current state</param>
-public class Job(string name, string sourceFolder, string destinationFolder, JobType type,
+public class Job(
+    string name,
+    string sourceFolder,
+    string destinationFolder,
+    JobType type,
     JobState state = JobState.End) : IJobStatusPublisher, IJobStatusSubscriber
 {
     /// <summary>
@@ -34,16 +39,16 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
     }
 
     private List<IJobStatusSubscriber> Subscribers { get; } = new();
-    public string DestinationFolder { get; } = destinationFolder;
+    public string DestinationFolder { get; set; } = destinationFolder;
     public ulong FilesBytesCopied { get; set; }
     public uint FilesCopied { get; set; }
     public uint FilesCount { get; set; }
     public ulong FilesSizeBytes { get; set; }
     public uint Id { get; init; }
-    public string Name { get; } = name;
-    public string SourceFolder { get; } = sourceFolder;
+    public string Name { get; set; } = name;
+    public string SourceFolder { get; set; } = sourceFolder;
     public JobState State { get; set; } = state;
-    public JobType Type { get; } = type;
+    public JobType Type { get; set; } = type;
     public string CurrentFileSource { get; set; } = string.Empty;
     public string CurrentFileDestination { get; set; } = string.Empty;
 
@@ -108,11 +113,26 @@ public class Job(string name, string sourceFolder, string destinationFolder, Job
     /// <returns>True when the job is complete</returns>
     public bool Run()
     {
+        if (ConfigManager.Instance.CheckProcessRunning())
+        {
+            var processName = Path.GetFileNameWithoutExtension(ConfigManager.Instance.CompanySoftwareProcessPath);
+            var processes = Process.GetProcessesByName(processName);
+            foreach (var process in processes)
+            {
+                process.WaitForExit();
+            }
+        }
+
         var tm = new TransferManager(this);
         var selector = BackupFolderSelectorFactory.Create(Type, State);
         var folderList = Directory.GetDirectories(DestinationFolder).ToList();
         var directories = new List<List<string>>() { folderList };
         var lastFolder = "";
+        if (folderList.Any())
+        {
+            lastFolder = folderList[^1] + Path.DirectorySeparatorChar;
+        }
+
         var folders = selector.SelectFolders(directories, lastFolder, Type, DestinationFolder);
         tm.Subscribe(this);
         _setJobState(JobState.SourceScan);
