@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:resx="clr-namespace:EasyGUI.Resources"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1280">
     <Grid>
@@ -16,9 +17,10 @@
                         Margin="0,0,0,16"
                         Text="{Binding PopupTitle, RelativeSource={RelativeSource AncestorType=UserControl}}" />
 
-                    <TextBlock FontSize="14" TextWrapping="Wrap">
-                        Note: the app may become unresponsive and freeze
-                    </TextBlock>
+                    <TextBlock
+                        FontSize="14"
+                        TextWrapping="Wrap"
+                        Text="{x:Static resx:Strings.JobRunPopup_FreezeNote}" />
                 </StackPanel>
             </Border>
         </Grid>

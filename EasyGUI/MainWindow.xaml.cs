@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using EasyGUI.Events;
+using EasyGUI.Resources;
 using EasyLib;
 using EasyLib.Enums;
 using EasyLib.Job;
@@ -33,7 +34,7 @@ public partial class MainWindow
     private void JobsHeader_OnCreateButtonClick(object sender, RoutedEventArgs e)
     {
         CreateJobPopup.JobId = -1;
-        CreateJobPopup.PopupTitle = "Create a new job";
+        CreateJobPopup.PopupTitle = Strings.ResourceManager.GetString("CreateJobPopup_PopupTitle_CreateJob")!;
         CreateJobPopup.JobName = "";
         CreateJobPopup.JobSource = "";
         CreateJobPopup.JobDestination = "";
@@ -62,7 +63,8 @@ public partial class MainWindow
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(source) ||
             string.IsNullOrWhiteSpace(destination) || type == null)
         {
-            CreateJobPopup.ErrorMessage = "All fields are required";
+            CreateJobPopup.ErrorMessage =
+                Strings.ResourceManager.GetString("CreateJobPopup_PopupTitle_AllFieldsRequired")!;
             return;
         }
 
@@ -106,7 +108,8 @@ public partial class MainWindow
 
     private void RunJobs(IReadOnlyCollection<Job> jobs)
     {
-        JobRunPopup.PopupTitle = $"Running {jobs.Count} job(s)";
+        var titleString = Strings.ResourceManager.GetString("JobRunPopup_PopupTitle_JobsRunning")!;
+        JobRunPopup.PopupTitle = string.Format(titleString, jobs.Count);
         JobRunPopup.Visibility = Visibility.Visible;
 
         Dispatcher.InvokeAsync(async () =>
@@ -119,9 +122,10 @@ public partial class MainWindow
 
     private void JobsList_OnJobEdited(object? sender, JobEventArgs e)
     {
+        var titleString = Strings.ResourceManager.GetString("CreateJobPopup_PopupTitle_EditingJob")!;
         var job = e.Job;
         CreateJobPopup.JobId = (int)job.Id;
-        CreateJobPopup.PopupTitle = $"Edit job #{job.Id}";
+        CreateJobPopup.PopupTitle = string.Format(titleString, job.Id);
         CreateJobPopup.JobName = job.Name;
         CreateJobPopup.JobSource = job.SourceFolder;
         CreateJobPopup.JobDestination = job.DestinationFolder;

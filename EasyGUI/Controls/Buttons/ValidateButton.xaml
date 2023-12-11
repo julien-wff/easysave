@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:resx="clr-namespace:EasyGUI.Resources"
              mc:Ignorable="d"
              d:DesignHeight="32" d:DesignWidth="150">
     <Grid>
@@ -26,7 +27,7 @@
             </Button.Template>
 
             <TextBlock Foreground="{StaticResource TextWhiteBrush}"
-                       Text="Validate"
+                       Text="{x:Static resx:Strings.ValidateButton_Validate}"
                        VerticalAlignment="Center"
                        Margin="16,0,16,0" />
         </Button>

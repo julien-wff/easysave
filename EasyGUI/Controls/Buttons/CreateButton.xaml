@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:buttons="clr-namespace:EasyGUI.Controls.Buttons"
+             xmlns:resx="clr-namespace:EasyGUI.Resources"
              mc:Ignorable="d"
              d:DesignHeight="50" d:DesignWidth="150">
-    <buttons:BaseButton ButtonText="Create"
-                         Click="Button_OnClick"
-                         ButtonColor="{StaticResource PurpleBrush}"
-                         ButtonIcon="/Assets/Icons/add-circle-outline.png"/>
+    <buttons:BaseButton ButtonText="{x:Static resx:Strings.CreateButton_Create}"
+                        Click="Button_OnClick"
+                        ButtonColor="{StaticResource PurpleBrush}"
+                        ButtonIcon="/Assets/Icons/add-circle-outline.png" />
 </UserControl>

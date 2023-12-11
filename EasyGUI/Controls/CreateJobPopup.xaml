@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:buttons="clr-namespace:EasyGUI.Controls.Buttons"
              xmlns:controls="clr-namespace:EasyGUI.Controls"
+             xmlns:resx="clr-namespace:EasyGUI.Resources"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1280">
     <Grid>
@@ -23,28 +24,34 @@
                         x:Name="ErrorMessageTextBlock"
                         Text="{Binding ErrorMessage, RelativeSource={RelativeSource AncestorType=UserControl}}"
                         Margin="0,0,0,16"
-                        Foreground="{StaticResource RedBrush}"/>
+                        Foreground="{StaticResource RedBrush}" />
 
-                    <TextBlock Margin="0,0,0,4">Job Name</TextBlock>
+                    <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.JobCreatePopup_JobName}" />
                     <TextBox x:Name="JobNameTextBox"
                              Text="{Binding JobName, RelativeSource={RelativeSource AncestorType=UserControl}}"
                              Margin="0,0,0,16" />
 
-                    <TextBlock Margin="0,0,0,4">Job Source Folder</TextBlock>
+                    <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.JobCreatePopup_JobSource}" />
                     <controls:FolderSelector
                         FolderPath="{Binding JobSource, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
                         Margin="0,0,0,16" />
 
-                    <TextBlock Margin="0,0,0,4">Job Destination Folder</TextBlock>
+                    <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.JobCreatePopup_JobDestination}" />
                     <controls:FolderSelector
                         FolderPath="{Binding JobDestination, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
                         Margin="0,0,0,16" />
 
-                    <TextBlock Margin="0,0,0,4">Job Type</TextBlock>
+                    <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.JobCreatePopup_JobType}" />
                     <ComboBox Margin="0,0,0,16" x:Name="JobTypeComboBox">
-                        <ComboBoxItem>Full</ComboBoxItem>
-                        <ComboBoxItem>Differential</ComboBoxItem>
-                        <ComboBoxItem>Incremental</ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="{x:Static resx:Strings.JobType_Full}" />
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="{x:Static resx:Strings.JobType_Differential}" />
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="{x:Static resx:Strings.JobType_Incremental}" />
+                        </ComboBoxItem>
                     </ComboBox>
 
                     <Grid>
@@ -54,7 +61,8 @@
                         </Grid.ColumnDefinitions>
 
                         <buttons:CancelButton Grid.Column="0" Click="CancelButton_OnClick" />
-                        <buttons:ValidateButton Grid.Column="1" Click="ValidateButton_OnClick" HorizontalAlignment="Right" />
+                        <buttons:ValidateButton Grid.Column="1" Click="ValidateButton_OnClick"
+                                                HorizontalAlignment="Right" />
                     </Grid>
                 </StackPanel>
             </Border>

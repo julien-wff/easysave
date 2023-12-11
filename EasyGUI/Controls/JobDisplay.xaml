@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:EasyGUI.Controls"
              xmlns:job="clr-namespace:EasyLib.Job;assembly=EasyLib"
              xmlns:buttons="clr-namespace:EasyGUI.Controls.Buttons"
+             xmlns:resx="clr-namespace:EasyGUI.Resources"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="1280"
              Loaded="JobDisplay_OnLoaded"
@@ -47,35 +48,35 @@
             <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal">
                 <local:BreadCrumb
                     x:Name="FullBreadCrumb"
-                    BreadCrumbText="Full"
+                    BreadCrumbText="{x:Static resx:Strings.JobType_Full}"
                     BreadCrumbColor="{StaticResource BlueBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="DifferentialBreadCrumb"
-                    BreadCrumbText="Differential"
+                    BreadCrumbText="{x:Static resx:Strings.JobType_Differential}"
                     BreadCrumbColor="{StaticResource PurpleBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="IncrementalBreadCrumb"
-                    BreadCrumbText="Incremental"
+                    BreadCrumbText="{x:Static resx:Strings.JobType_Incremental}"
                     BreadCrumbColor="{StaticResource YellowBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="EndBreadCrumb"
-                    BreadCrumbText="End"
+                    BreadCrumbText="{x:Static resx:Strings.JobState_End}"
                     BreadCrumbColor="{StaticResource RedBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="SourceBreadCrumb"
-                    BreadCrumbText="Source scan"
+                    BreadCrumbText="{x:Static resx:Strings.JobState_SourceScan}"
                     BreadCrumbColor="{StaticResource MauveBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="StructureBreadCrumb"
-                    BreadCrumbText="Destination Structure"
+                    BreadCrumbText="{x:Static resx:Strings.JobState_DestinationStructureCreation}"
                     BreadCrumbColor="{StaticResource OrangeBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="DiffCalcBreadCrumb"
-                    BreadCrumbText="Difference Calculation"
+                    BreadCrumbText="{x:Static resx:Strings.JobState_DifferenceCalculation}"
                     BreadCrumbColor="{StaticResource TealBrush}" Margin="0,0,8,0" />
                 <local:BreadCrumb
                     x:Name="CopyBreadCrumb"
-                    BreadCrumbText="Copy"
+                    BreadCrumbText="{x:Static resx:Strings.JobState_Copy}"
                     BreadCrumbColor="{StaticResource GreenBrush}" Margin="0,0,8,0" />
             </StackPanel>
 
