@@ -58,8 +58,8 @@ public partial class JobDisplay : INotifyPropertyChanged
     public string JobPaths => $"{Job.SourceFolder} \u2192 {Job.DestinationFolder}";
 
     public event PropertyChangedEventHandler? PropertyChanged;
-    public event EventHandler<JobEventArgs> JobStarted;
-    public event EventHandler<JobEventArgs> JobEdited;
+    public event EventHandler<JobEventArgs>? JobStarted;
+    public event EventHandler<JobEventArgs>? JobEdited;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
@@ -92,7 +92,7 @@ public partial class JobDisplay : INotifyPropertyChanged
 
     private void StartButton_OnClick(object sender, RoutedEventArgs e)
     {
-        JobStarted.Invoke(this, new JobEventArgs(Job));
+        JobStarted?.Invoke(this, new JobEventArgs(Job));
     }
 
     private void JobDisplay_OnLoaded(object sender, RoutedEventArgs e)
@@ -123,6 +123,6 @@ public partial class JobDisplay : INotifyPropertyChanged
 
     private void EditButton_OnClick(object sender, RoutedEventArgs e)
     {
-        JobEdited.Invoke(this, new JobEventArgs(Job));
+        JobEdited?.Invoke(this, new JobEventArgs(Job));
     }
 }

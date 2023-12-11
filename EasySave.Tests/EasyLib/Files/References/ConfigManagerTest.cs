@@ -5,7 +5,7 @@ namespace EasySave.Tests.EasyLib.Files.References;
 public class ConfigManagerTest
 {
     [Fact]
-    public void TestSinglton()
+    public void TestSingleton()
     {
         var instance1 = ConfigManager.Instance;
         var instance2 = ConfigManager.Instance;
@@ -17,8 +17,7 @@ public class ConfigManagerTest
     public void TestConfigManager()
     {
         // Assert
-        Assert.True(ConfigManager.Instance.CryptedFileTypes.Count == 0);
-        Assert.True(ConfigManager.Instance.XorKey == "cryptokey");
+        Assert.True(ConfigManager.Instance.EncryptedFileTypes.Count == 0);
         Assert.True(ConfigManager.Instance.LogFormat == ".json");
     }
 }
