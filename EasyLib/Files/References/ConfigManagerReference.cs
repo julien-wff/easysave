@@ -36,7 +36,7 @@ public class ConfigManagerReference
         }
     }
 
-    public string Language { get; private set; } = CultureInfo.CurrentCulture.ToString();
+    public CultureInfo Language { get; private set; } = CultureInfo.CurrentCulture;
     public List<string> EncryptedFileTypes { get; private set; } = new();
     public string XorKey { get; private set; } = GenerateRandomKey();
     public string LogFormat { get; private set; } = ".json";
@@ -83,7 +83,7 @@ public class ConfigManagerReference
         LogFormat = jsonConfig.LogFormat ?? ".json";
         EasyCryptoPath = jsonConfig.EasyCryptoPath;
         CompanySoftwareProcessPath = jsonConfig.CompanySoftwareProcessPath;
-        Language = jsonConfig.Language;
+        Language = CultureInfo.GetCultureInfo(jsonConfig.Language);
 
         // If the key was null, write the new key
         if (xorKey == null)
@@ -104,7 +104,7 @@ public class ConfigManagerReference
             LogFormat = LogFormat,
             EasyCryptoPath = EasyCryptoPath,
             CompanySoftwareProcessPath = CompanySoftwareProcessPath,
-            Language = Language
+            Language = Language.ToString()
         };
         JsonFileUtils.WriteJson(_configFilePath, jsonConfig);
     }

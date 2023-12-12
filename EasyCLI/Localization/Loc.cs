@@ -1,26 +1,15 @@
-using System.Globalization;
 using System.Resources;
+using EasyLib.Files;
 
 namespace EasyCLI.Localization;
 
 public static class Loc
 {
-    private static readonly string AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-    private static readonly string AppLangFile = Path.Combine(AppDataPath, "EasySave", "LANG");
     private static readonly ResourceManager ResourceManager = GetResourceManager();
 
     private static ResourceManager GetResourceManager()
     {
-        if (File.Exists(AppLangFile))
-        {
-            var lang = File.ReadAllText(AppLangFile);
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(lang);
-        }
-        else
-        {
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.InstalledUICulture;
-        }
-
+        Thread.CurrentThread.CurrentUICulture = ConfigManager.Instance.Language;
         return Strings.Strings.ResourceManager;
     }
 
