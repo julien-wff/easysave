@@ -294,6 +294,15 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Encryption key.
+        /// </summary>
+        public static string SettingsPopup_XorKey {
+            get {
+                return ResourceManager.GetString("SettingsPopup_XorKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         public static string StartButton_Start {

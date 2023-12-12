@@ -17,6 +17,13 @@ public partial class SettingsPopup : INotifyPropertyChanged
         new PropertyMetadata(default(string))
     );
 
+    private static readonly DependencyProperty XorKeyProperty = DependencyProperty.Register(
+        nameof(XorKey),
+        typeof(string),
+        typeof(SettingsPopup),
+        new PropertyMetadata(default(CultureInfo))
+    );
+
     private string? _baseCulture;
 
     public SettingsPopup()
@@ -30,6 +37,16 @@ public partial class SettingsPopup : INotifyPropertyChanged
         set
         {
             SetValue(EncryptedFileTypesProperty, value);
+            OnPropertyChanged();
+        }
+    }
+
+    public string XorKey
+    {
+        get => (string)GetValue(XorKeyProperty);
+        set
+        {
+            SetValue(XorKeyProperty, value);
             OnPropertyChanged();
         }
     }
@@ -59,6 +76,8 @@ public partial class SettingsPopup : INotifyPropertyChanged
             ", ",
             ConfigManager.Instance.EncryptedFileTypes.Select(ext => ext[1..])
         );
+
+        XorKey = ConfigManager.Instance.XorKey;
     }
 
     private void ValidateButton_OnClick(object sender, RoutedEventArgs e)
@@ -78,6 +97,9 @@ public partial class SettingsPopup : INotifyPropertyChanged
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .Select(ext => "." + ext)
             .ToList();
+
+        // Update xor key
+        ConfigManager.Instance.XorKey = XorKey;
 
         // Save config
         ConfigManager.Instance.WriteConfig();

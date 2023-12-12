@@ -107,4 +107,7 @@
     <data name="SettingsPopup_EncryptedFileTypes" xml:space="preserve">
         <value>Extensions de fichiers à chiffrer (sans le point, séparés par des virgules)</value>
     </data>
+    <data name="SettingsPopup_XorKey" xml:space="preserve">
+        <value>Clé de chiffrement</value>
+    </data>
 </root>
