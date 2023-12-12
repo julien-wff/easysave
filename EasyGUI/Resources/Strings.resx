@@ -105,7 +105,7 @@
         <value>English</value>
     </data>
     <data name="SettingsPopup_EncryptedFileTypes" xml:space="preserve">
-        <value>Files extentions to encrypt (without the dot, comma-separated)</value>
+        <value>Files extensions to encrypt (without the dot, comma-separated)</value>
     </data>
     <data name="SettingsPopup_XorKey" xml:space="preserve">
         <value>Encryption key</value>
