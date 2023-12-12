@@ -249,6 +249,15 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company software process executable.
+        /// </summary>
+        public static string SettingsPopup_CompanySoftwareProcess {
+            get {
+                return ResourceManager.GetString("SettingsPopup_CompanySoftwareProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EasyCrypto path.
         /// </summary>
         public static string SettingsPopup_EasyCryptoPath {

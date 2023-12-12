@@ -31,6 +31,13 @@ public partial class SettingsPopup : INotifyPropertyChanged
         new PropertyMetadata(default(string))
     );
 
+    private static readonly DependencyProperty CompanySoftwareProcessProperty = DependencyProperty.Register(
+        nameof(CompanySoftwareProcess),
+        typeof(string),
+        typeof(SettingsPopup),
+        new PropertyMetadata(default(string))
+    );
+
     private string? _baseCulture;
 
     public SettingsPopup()
@@ -64,6 +71,16 @@ public partial class SettingsPopup : INotifyPropertyChanged
         set
         {
             SetValue(EasyCryptoPathProperty, value);
+            OnPropertyChanged();
+        }
+    }
+
+    public string CompanySoftwareProcess
+    {
+        get => (string)GetValue(CompanySoftwareProcessProperty);
+        set
+        {
+            SetValue(CompanySoftwareProcessProperty, value);
             OnPropertyChanged();
         }
     }
@@ -104,6 +121,7 @@ public partial class SettingsPopup : INotifyPropertyChanged
         };
 
         EasyCryptoPath = ConfigManager.Instance.EasyCryptoPath ?? "";
+        CompanySoftwareProcess = ConfigManager.Instance.CompanySoftwareProcessPath ?? "";
     }
 
     private void ValidateButton_OnClick(object sender, RoutedEventArgs e)
@@ -137,6 +155,11 @@ public partial class SettingsPopup : INotifyPropertyChanged
 
         // Update EasyCrypto path
         ConfigManager.Instance.EasyCryptoPath = string.IsNullOrWhiteSpace(EasyCryptoPath) ? null : EasyCryptoPath;
+
+        // Update company software process
+        ConfigManager.Instance.CompanySoftwareProcessPath = string.IsNullOrWhiteSpace(CompanySoftwareProcess)
+            ? null
+            : CompanySoftwareProcess;
 
         // Save config
         ConfigManager.Instance.WriteConfig();

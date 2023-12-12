@@ -116,4 +116,7 @@
     <data name="SettingsPopup_EasyCryptoPath" xml:space="preserve">
         <value>EasyCrypto path</value>
     </data>
+    <data name="SettingsPopup_CompanySoftwareProcess" xml:space="preserve">
+        <value>Company software process executable</value>
+    </data>
 </root>

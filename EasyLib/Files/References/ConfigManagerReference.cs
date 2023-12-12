@@ -41,7 +41,7 @@ public class ConfigManagerReference
     public string XorKey { get; set; } = GenerateRandomKey();
     public string LogFormat { get; set; } = ".json";
     public string? EasyCryptoPath { get; set; }
-    public string? CompanySoftwareProcessPath { get; private set; }
+    public string? CompanySoftwareProcessPath { get; set; }
 
     private static string GenerateRandomKey()
     {
