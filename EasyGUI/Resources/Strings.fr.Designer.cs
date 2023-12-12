@@ -240,6 +240,51 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paramètres.
+        /// </summary>
+        public static string SettingsButton_Settings {
+            get {
+                return ResourceManager.GetString("SettingsButton_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anglais.
+        /// </summary>
+        public static string SettingsPopup_English {
+            get {
+                return ResourceManager.GetString("SettingsPopup_English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Français.
+        /// </summary>
+        public static string SettingsPopup_French {
+            get {
+                return ResourceManager.GetString("SettingsPopup_French", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Langue.
+        /// </summary>
+        public static string SettingsPopup_Language {
+            get {
+                return ResourceManager.GetString("SettingsPopup_Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paramètres.
+        /// </summary>
+        public static string SettingsPopup_Settings {
+            get {
+                return ResourceManager.GetString("SettingsPopup_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Démarrer.
         /// </summary>
         public static string StartButton_Start {

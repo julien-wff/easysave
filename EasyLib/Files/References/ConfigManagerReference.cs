@@ -36,7 +36,7 @@ public class ConfigManagerReference
         }
     }
 
-    public CultureInfo Language { get; private set; } = CultureInfo.CurrentCulture;
+    public CultureInfo Language { get; set; } = CultureInfo.CurrentCulture;
     public List<string> EncryptedFileTypes { get; private set; } = new();
     public string XorKey { get; private set; } = GenerateRandomKey();
     public string LogFormat { get; private set; } = ".json";
@@ -97,7 +97,7 @@ public class ConfigManagerReference
     /// <summary>
     /// Write the config file
     /// </summary>
-    private void WriteConfig()
+    public void WriteConfig()
     {
         var jsonConfig = new ConfigElement
         {
