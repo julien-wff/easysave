@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using EasyLib.Json;
 
@@ -35,6 +36,7 @@ public class ConfigManagerReference
         }
     }
 
+    public string Language { get; private set; } = CultureInfo.CurrentCulture.ToString();
     public List<string> EncryptedFileTypes { get; private set; } = new();
     public string XorKey { get; private set; } = GenerateRandomKey();
     public string LogFormat { get; private set; } = ".json";
@@ -81,6 +83,7 @@ public class ConfigManagerReference
         LogFormat = jsonConfig.LogFormat ?? ".json";
         EasyCryptoPath = jsonConfig.EasyCryptoPath;
         CompanySoftwareProcessPath = jsonConfig.CompanySoftwareProcessPath;
+        Language = jsonConfig.Language;
 
         // If the key was null, write the new key
         if (xorKey == null)
@@ -100,7 +103,8 @@ public class ConfigManagerReference
             XorKey = XorKey,
             LogFormat = LogFormat,
             EasyCryptoPath = EasyCryptoPath,
-            CompanySoftwareProcessPath = CompanySoftwareProcessPath
+            CompanySoftwareProcessPath = CompanySoftwareProcessPath,
+            Language = Language
         };
         JsonFileUtils.WriteJson(_configFilePath, jsonConfig);
     }
@@ -124,6 +128,7 @@ public class ConfigManagerReference
     public string GetStringProperties()
     {
         var sb = new StringBuilder();
+        sb.AppendLine($"Language: {Language}");
         sb.AppendLine($"EncryptedFileTypes: {string.Join(", ", EncryptedFileTypes)}");
         sb.AppendLine($"XorKey: {XorKey}");
         sb.AppendLine($"LogFormat: {LogFormat}");
