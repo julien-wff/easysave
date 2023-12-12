@@ -32,13 +32,17 @@
                              Margin="0,0,0,16" />
 
                     <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.JobCreatePopup_JobSource}" />
-                    <controls:FolderSelector
-                        FolderPath="{Binding JobSource, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                    <controls:PathSelector
+                        PathType="Folder"
+                        SelectedPath="{Binding JobSource, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                        InitialDirectory="{Binding JobSource, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=OneWay}"
                         Margin="0,0,0,16" />
 
                     <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.JobCreatePopup_JobDestination}" />
-                    <controls:FolderSelector
-                        FolderPath="{Binding JobDestination, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                    <controls:PathSelector
+                        PathType="Folder"
+                        SelectedPath="{Binding JobDestination, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                        InitialDirectory="{Binding JobDestination, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=OneWay}"
                         Margin="0,0,0,16" />
 
                     <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.JobCreatePopup_JobType}" />
