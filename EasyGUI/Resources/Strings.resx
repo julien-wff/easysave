@@ -89,4 +89,19 @@
     <data name="JobRunPopup_PopupTitle_JobsRunning" xml:space="preserve">
         <value>Running {0} job(s)</value>
     </data>
+    <data name="SettingsButton_Settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="SettingsPopup_Settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="SettingsPopup_Language" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="SettingsPopup_French" xml:space="preserve">
+        <value>French</value>
+    </data>
+    <data name="SettingsPopup_English" xml:space="preserve">
+        <value>English</value>
+    </data>
 </root>

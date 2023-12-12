@@ -89,4 +89,19 @@
     <data name="JobRunPopup_PopupTitle_JobsRunning" xml:space="preserve">
         <value>Exécution de {0} tâche(s)</value>
     </data>
+    <data name="SettingsButton_Settings" xml:space="preserve">
+        <value>Paramètres</value>
+    </data>
+    <data name="SettingsPopup_Settings" xml:space="preserve">
+        <value>Paramètres</value>
+    </data>
+    <data name="SettingsPopup_Language" xml:space="preserve">
+        <value>Langue</value>
+    </data>
+    <data name="SettingsPopup_French" xml:space="preserve">
+        <value>Français</value>
+    </data>
+    <data name="SettingsPopup_English" xml:space="preserve">
+        <value>Anglais</value>
+    </data>
 </root>
