@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using EasyLib.Files;
 
 namespace EasyGUI;
 
@@ -26,6 +27,8 @@ public partial class App
             Trace.WriteLine($"The application terminated unexpectedly during startup. Exception: {ex}");
             throw;
         }
+
+        Thread.CurrentThread.CurrentUICulture = ConfigManager.Instance.Language;
     }
 
     protected override void OnExit(ExitEventArgs e)

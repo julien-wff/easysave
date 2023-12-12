@@ -2,6 +2,7 @@
 
 public struct ConfigElement
 {
+    public string Language { get; init; }
     public List<string>? EncryptedFileTypes { get; init; }
     public string? XorKey { get; init; }
     private readonly string _logFormat;

@@ -41,9 +41,11 @@ public class ConfigCommand : Command
         {
             case "show":
                 var settings = ConfigManager.Instance.GetStringProperties();
-                Console.WriteLine("config.json path :" + Path.Combine(
+                Console.WriteLine("Config path: " + Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "easysave"));
+                    "easysave",
+                    "config.json"
+                ));
                 Console.WriteLine(settings);
                 break;
             default:
