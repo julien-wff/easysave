@@ -249,6 +249,15 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chemin d&apos;EasyCrypto.
+        /// </summary>
+        public static string SettingsPopup_EasyCryptoPath {
+            get {
+                return ResourceManager.GetString("SettingsPopup_EasyCryptoPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extensions de fichiers à chiffrer (sans le point, séparés par des virgules).
         /// </summary>
         public static string SettingsPopup_EncryptedFileTypes {
