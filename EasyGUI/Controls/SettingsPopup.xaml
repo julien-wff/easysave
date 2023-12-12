@@ -1,0 +1,91 @@
+<UserControl x:Class="EasyGUI.Controls.SettingsPopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:resx="clr-namespace:EasyGUI.Resources"
+             xmlns:buttons="clr-namespace:EasyGUI.Controls.Buttons"
+             xmlns:controls="clr-namespace:EasyGUI.Controls"
+             mc:Ignorable="d"
+             Loaded="SettingsPopup_OnLoaded"
+             d:DesignHeight="720" d:DesignWidth="1280">
+    <Grid>
+        <Grid Background="Black" Opacity=".75" ZIndex="10" />
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" ZIndex="11" Width="350">
+            <Border Background="{StaticResource BackgroundBrush}" Padding="16" CornerRadius="16">
+                <StackPanel>
+                    <TextBlock
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="0,0,0,16"
+                        Text="{x:Static resx:Strings.SettingsButton_Settings}" />
+
+                    <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.SettingsPopup_Language}" />
+                    <ComboBox Margin="0,0,0,16" x:Name="LanguageComboBox">
+                        <ComboBoxItem>
+                            <TextBlock Text="{x:Static resx:Strings.SettingsPopup_English}" />
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="{x:Static resx:Strings.SettingsPopup_French}" />
+                        </ComboBoxItem>
+                    </ComboBox>
+
+                    <TextBlock
+                        TextWrapping="Wrap"
+                        Margin="0,0,0,4"
+                        Text="{x:Static resx:Strings.SettingsPopup_EncryptedFileTypes}" />
+                    <TextBox
+                        Text="{Binding EncryptedFileTypes, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Margin="0,0,0,16" />
+
+                    <TextBlock
+                        Margin="0,0,0,4"
+                        Text="{x:Static resx:Strings.SettingsPopup_XorKey}" />
+                    <TextBox
+                        Text="{Binding XorKey, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Margin="0,0,0,16" />
+
+                    <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.SettingsPopup_LogType}" />
+                    <ComboBox Margin="0,0,0,16" x:Name="LogTypeComboBox">
+                        <ComboBoxItem>
+                            <TextBlock Text="json" />
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="xml" />
+                        </ComboBoxItem>
+                    </ComboBox>
+
+                    <TextBlock
+                        Margin="0,0,0,4"
+                        Text="{x:Static resx:Strings.SettingsPopup_EasyCryptoPath}" />
+                    <controls:PathSelector
+                        PathType="File"
+                        Margin="0,0,0,16"
+                        SelectedPath="{Binding EasyCryptoPath, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        InitialDirectory="{Binding EasyCryptoPath, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Filter="exe files (*.exe)|*.exe" />
+
+                    <TextBlock
+                        Margin="0,0,0,4"
+                        Text="{x:Static resx:Strings.SettingsPopup_CompanySoftwareProcess}" />
+                    <TextBox
+                        Text="{Binding CompanySoftwareProcess, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Margin="0,0,0,16" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <buttons:CancelButton Grid.Column="0" Click="CancelButton_OnClick" />
+                        <buttons:ValidateButton
+                            Grid.Column="1"
+                            Click="ValidateButton_OnClick"
+                            HorizontalAlignment="Right" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -50,6 +50,11 @@ public partial class MainWindow
         {
             CreateJobPopup.Visibility = Visibility.Collapsed;
         }
+
+        if (e.Key == Key.Escape && SettingsPopup.Visibility == Visibility.Visible)
+        {
+            SettingsPopup.Visibility = Visibility.Collapsed;
+        }
     }
 
     private void CreateJobPopup_OnValidateJob(object sender, RoutedEventArgs e)
@@ -132,5 +137,10 @@ public partial class MainWindow
         CreateJobPopup.JobType = job.Type;
         CreateJobPopup.ErrorMessage = null;
         CreateJobPopup.Visibility = Visibility.Visible;
+    }
+
+    private void JobsHeader_OnSettingsButtonClick(object sender, RoutedEventArgs e)
+    {
+        SettingsPopup.Visibility = Visibility.Visible;
     }
 }

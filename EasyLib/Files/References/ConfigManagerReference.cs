@@ -36,12 +36,12 @@ public class ConfigManagerReference
         }
     }
 
-    public CultureInfo Language { get; private set; } = CultureInfo.CurrentCulture;
-    public List<string> EncryptedFileTypes { get; private set; } = new();
-    public string XorKey { get; private set; } = GenerateRandomKey();
-    public string LogFormat { get; private set; } = ".json";
-    public string? EasyCryptoPath { get; private set; }
-    public string? CompanySoftwareProcessPath { get; private set; }
+    public CultureInfo Language { get; set; } = CultureInfo.CurrentCulture;
+    public List<string> EncryptedFileTypes { get; set; } = [];
+    public string XorKey { get; set; } = GenerateRandomKey();
+    public string LogFormat { get; set; } = ".json";
+    public string? EasyCryptoPath { get; set; }
+    public string? CompanySoftwareProcessPath { get; set; }
     public ulong MaxFileSize { get; private set; } = 1000000;
 
     private static string GenerateRandomKey()
@@ -97,7 +97,7 @@ public class ConfigManagerReference
     /// <summary>
     /// Write the config file
     /// </summary>
-    private void WriteConfig()
+    public void WriteConfig()
     {
         var jsonConfig = new ConfigElement
         {

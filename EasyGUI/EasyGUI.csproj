@@ -38,6 +38,7 @@
         <Resource Include="Assets\Icons\add-circle-outline.png"/>
         <Resource Include="Assets\Icons\play-circle-outline.png"/>
         <Resource Include="Assets\Icons\create-outline.png"/>
+        <Resource Include="Assets\Icons\settings-outline.png"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -72,6 +73,16 @@
             <SubType>Designer</SubType>
         </Page>
         <Page Update="Controls\Buttons\ValidateButton.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\Buttons\SettingsButton.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\SettingsPopup.xaml">
             <Generator>MSBuild:Compile</Generator>
             <XamlRuntime>Wpf</XamlRuntime>
             <SubType>Designer</SubType>

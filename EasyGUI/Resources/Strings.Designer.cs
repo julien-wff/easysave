@@ -240,6 +240,96 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string SettingsButton_Settings {
+            get {
+                return ResourceManager.GetString("SettingsButton_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company software process executable.
+        /// </summary>
+        public static string SettingsPopup_CompanySoftwareProcess {
+            get {
+                return ResourceManager.GetString("SettingsPopup_CompanySoftwareProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EasyCrypto path.
+        /// </summary>
+        public static string SettingsPopup_EasyCryptoPath {
+            get {
+                return ResourceManager.GetString("SettingsPopup_EasyCryptoPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files extensions to encrypt (without the dot, comma-separated).
+        /// </summary>
+        public static string SettingsPopup_EncryptedFileTypes {
+            get {
+                return ResourceManager.GetString("SettingsPopup_EncryptedFileTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        public static string SettingsPopup_English {
+            get {
+                return ResourceManager.GetString("SettingsPopup_English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to French.
+        /// </summary>
+        public static string SettingsPopup_French {
+            get {
+                return ResourceManager.GetString("SettingsPopup_French", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string SettingsPopup_Language {
+            get {
+                return ResourceManager.GetString("SettingsPopup_Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs type.
+        /// </summary>
+        public static string SettingsPopup_LogType {
+            get {
+                return ResourceManager.GetString("SettingsPopup_LogType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string SettingsPopup_Settings {
+            get {
+                return ResourceManager.GetString("SettingsPopup_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encryption key.
+        /// </summary>
+        public static string SettingsPopup_XorKey {
+            get {
+                return ResourceManager.GetString("SettingsPopup_XorKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         public static string StartButton_Start {
