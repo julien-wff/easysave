@@ -249,6 +249,15 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exécutable du logiciel métier.
+        /// </summary>
+        public static string SettingsPopup_CompanySoftwareProcess {
+            get {
+                return ResourceManager.GetString("SettingsPopup_CompanySoftwareProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chemin d&apos;EasyCrypto.
         /// </summary>
         public static string SettingsPopup_EasyCryptoPath {

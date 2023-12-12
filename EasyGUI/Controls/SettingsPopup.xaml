@@ -63,7 +63,14 @@
                         Margin="0,0,0,16"
                         SelectedPath="{Binding EasyCryptoPath, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
                         InitialDirectory="{Binding EasyCryptoPath, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        Filter="exe files (*.exe)|*.exe"/>
+                        Filter="exe files (*.exe)|*.exe" />
+
+                    <TextBlock
+                        Margin="0,0,0,4"
+                        Text="{x:Static resx:Strings.SettingsPopup_CompanySoftwareProcess}" />
+                    <TextBox
+                        Text="{Binding CompanySoftwareProcess, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Margin="0,0,0,16" />
 
                     <Grid>
                         <Grid.ColumnDefinitions>
