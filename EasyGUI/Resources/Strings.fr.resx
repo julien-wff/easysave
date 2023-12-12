@@ -104,4 +104,7 @@
     <data name="SettingsPopup_English" xml:space="preserve">
         <value>Anglais</value>
     </data>
+    <data name="SettingsPopup_EncryptedFileTypes" xml:space="preserve">
+        <value>Extensions de fichiers à chiffrer (sans le point, séparés par des virgules)</value>
+    </data>
 </root>

@@ -10,11 +10,28 @@ namespace EasyGUI.Controls;
 
 public partial class SettingsPopup : INotifyPropertyChanged
 {
+    private static readonly DependencyProperty EncryptedFileTypesProperty = DependencyProperty.Register(
+        nameof(EncryptedFileTypes),
+        typeof(string),
+        typeof(SettingsPopup),
+        new PropertyMetadata(default(string))
+    );
+
     private string? _baseCulture;
 
     public SettingsPopup()
     {
         InitializeComponent();
+    }
+
+    public string EncryptedFileTypes
+    {
+        get => (string)GetValue(EncryptedFileTypesProperty);
+        set
+        {
+            SetValue(EncryptedFileTypesProperty, value);
+            OnPropertyChanged();
+        }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -37,6 +54,11 @@ public partial class SettingsPopup : INotifyPropertyChanged
             "fr-FR" => 1,
             _ => 0
         };
+
+        EncryptedFileTypes = string.Join(
+            ", ",
+            ConfigManager.Instance.EncryptedFileTypes.Select(ext => ext[1..])
+        );
     }
 
     private void ValidateButton_OnClick(object sender, RoutedEventArgs e)
@@ -49,6 +71,13 @@ public partial class SettingsPopup : INotifyPropertyChanged
             _ => CultureInfo.DefaultThreadCurrentCulture
         })!;
         ConfigManager.Instance.Language = culture;
+
+        // Update encrypted file types
+        ConfigManager.Instance.EncryptedFileTypes = EncryptedFileTypes.Split(",")
+            .Select(s => s.Trim())
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .Select(ext => "." + ext)
+            .ToList();
 
         // Save config
         ConfigManager.Instance.WriteConfig();
