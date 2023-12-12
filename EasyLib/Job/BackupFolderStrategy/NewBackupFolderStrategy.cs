@@ -25,7 +25,7 @@ public class NewBackupFolderStrategy : IBackupFolderStrategy
             [
                 folders[0],
                 [destinationPath],
-                []
+                folders[2]
             ];
         }
 

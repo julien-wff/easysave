@@ -21,6 +21,8 @@ public class Job(
     JobType type,
     JobState state = JobState.End) : IJobStatusPublisher, IJobStatusSubscriber
 {
+    public static readonly Semaphore MaxSizeFileCopying = new Semaphore(1, 1);
+
     /// <summary>
     /// Create a job instance from a JsonJob object
     /// </summary>
@@ -114,7 +116,7 @@ public class Job(
             }
         }
 
-        var tm = new TransferManager(this);
+        var transferManager = new TransferManager(this);
         var selector = BackupFolderSelectorFactory.Create(Type, State);
         var folderList = Directory.GetDirectories(DestinationFolder).ToList();
         var directories = new List<List<string>>() { folderList };
@@ -125,19 +127,25 @@ public class Job(
         }
 
         var folders = selector.SelectFolders(directories, lastFolder, Type, DestinationFolder);
-        tm.Subscribe(this);
-        _setJobState(JobState.SourceScan);
-        tm.ScanSource();
-        _setJobState(JobState.DifferenceCalculation);
-        tm.ComputeDifference(folders);
-        _setJobState(JobState.DestinationStructureCreation);
-        tm.CreateDestinationStructure();
-        _setJobState(JobState.Copy);
-        tm.TransferFiles();
-        _setJobState(JobState.End);
-        tm.Unsubscribe(this);
 
+        Thread thread = new Thread(() => JobSteps(transferManager, folders));
+        thread.Start();
         return true;
+    }
+
+    public void JobSteps(TransferManager transferManager, List<List<string>> folders)
+    {
+        transferManager.Subscribe(this);
+        _setJobState(JobState.SourceScan);
+        transferManager.ScanSource();
+        _setJobState(JobState.DifferenceCalculation);
+        transferManager.ComputeDifference(folders);
+        _setJobState(JobState.DestinationStructureCreation);
+        transferManager.CreateDestinationStructure();
+        _setJobState(JobState.Copy);
+        transferManager.TransferFiles();
+        _setJobState(JobState.End);
+        transferManager.Unsubscribe(this);
     }
 
     /// <summary>
