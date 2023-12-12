@@ -110,4 +110,7 @@
     <data name="SettingsPopup_XorKey" xml:space="preserve">
         <value>Encryption key</value>
     </data>
+    <data name="SettingsPopup_LogType" xml:space="preserve">
+        <value>Logs type</value>
+    </data>
 </root>

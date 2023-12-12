@@ -39,7 +39,7 @@ public class ConfigManagerReference
     public CultureInfo Language { get; set; } = CultureInfo.CurrentCulture;
     public List<string> EncryptedFileTypes { get; set; } = [];
     public string XorKey { get; set; } = GenerateRandomKey();
-    public string LogFormat { get; private set; } = ".json";
+    public string LogFormat { get; set; } = ".json";
     public string? EasyCryptoPath { get; private set; }
     public string? CompanySoftwareProcessPath { get; private set; }
 
