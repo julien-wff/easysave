@@ -40,7 +40,7 @@ public class ConfigManagerReference
     public List<string> EncryptedFileTypes { get; set; } = [];
     public string XorKey { get; set; } = GenerateRandomKey();
     public string LogFormat { get; set; } = ".json";
-    public string? EasyCryptoPath { get; private set; }
+    public string? EasyCryptoPath { get; set; }
     public string? CompanySoftwareProcessPath { get; private set; }
 
     private static string GenerateRandomKey()

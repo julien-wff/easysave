@@ -113,4 +113,7 @@
     <data name="SettingsPopup_LogType" xml:space="preserve">
         <value>Type des logs</value>
     </data>
+    <data name="SettingsPopup_EasyCryptoPath" xml:space="preserve">
+        <value>Chemin d'EasyCrypto</value>
+    </data>
 </root>

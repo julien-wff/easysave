@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:resx="clr-namespace:EasyGUI.Resources"
              xmlns:buttons="clr-namespace:EasyGUI.Controls.Buttons"
+             xmlns:controls="clr-namespace:EasyGUI.Controls"
              mc:Ignorable="d"
              Loaded="SettingsPopup_OnLoaded"
              d:DesignHeight="720" d:DesignWidth="1280">
@@ -53,6 +54,16 @@
                             <TextBlock Text="xml" />
                         </ComboBoxItem>
                     </ComboBox>
+
+                    <TextBlock
+                        Margin="0,0,0,4"
+                        Text="{x:Static resx:Strings.SettingsPopup_EasyCryptoPath}" />
+                    <controls:PathSelector
+                        PathType="File"
+                        Margin="0,0,0,16"
+                        SelectedPath="{Binding EasyCryptoPath, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        InitialDirectory="{Binding EasyCryptoPath, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Filter="exe files (*.exe)|*.exe"/>
 
                     <Grid>
                         <Grid.ColumnDefinitions>

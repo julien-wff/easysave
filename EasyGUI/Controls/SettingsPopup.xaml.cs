@@ -24,6 +24,13 @@ public partial class SettingsPopup : INotifyPropertyChanged
         new PropertyMetadata(default(CultureInfo))
     );
 
+    private static readonly DependencyProperty EasyCryptoPathProperty = DependencyProperty.Register(
+        nameof(EasyCryptoPath),
+        typeof(string),
+        typeof(SettingsPopup),
+        new PropertyMetadata(default(string))
+    );
+
     private string? _baseCulture;
 
     public SettingsPopup()
@@ -47,6 +54,16 @@ public partial class SettingsPopup : INotifyPropertyChanged
         set
         {
             SetValue(XorKeyProperty, value);
+            OnPropertyChanged();
+        }
+    }
+
+    public string EasyCryptoPath
+    {
+        get => (string)GetValue(EasyCryptoPathProperty);
+        set
+        {
+            SetValue(EasyCryptoPathProperty, value);
             OnPropertyChanged();
         }
     }
@@ -85,6 +102,8 @@ public partial class SettingsPopup : INotifyPropertyChanged
             ".xml" => 1,
             _ => 0
         };
+
+        EasyCryptoPath = ConfigManager.Instance.EasyCryptoPath ?? "";
     }
 
     private void ValidateButton_OnClick(object sender, RoutedEventArgs e)
@@ -115,6 +134,9 @@ public partial class SettingsPopup : INotifyPropertyChanged
             1 => ".xml",
             _ => ".json"
         };
+
+        // Update EasyCrypto path
+        ConfigManager.Instance.EasyCryptoPath = string.IsNullOrWhiteSpace(EasyCryptoPath) ? null : EasyCryptoPath;
 
         // Save config
         ConfigManager.Instance.WriteConfig();
