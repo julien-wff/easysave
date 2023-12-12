@@ -42,6 +42,7 @@ public class ConfigManagerReference
     public string LogFormat { get; private set; } = ".json";
     public string? EasyCryptoPath { get; private set; }
     public string? CompanySoftwareProcessPath { get; private set; }
+    public ulong MaxFileSize { get; private set; } = 1000000;
 
     private static string GenerateRandomKey()
     {
@@ -84,6 +85,7 @@ public class ConfigManagerReference
         EasyCryptoPath = jsonConfig.EasyCryptoPath;
         CompanySoftwareProcessPath = jsonConfig.CompanySoftwareProcessPath;
         Language = CultureInfo.GetCultureInfo(jsonConfig.Language);
+        MaxFileSize = jsonConfig.MaxFileSize;
 
         // If the key was null, write the new key
         if (xorKey == null)
@@ -104,7 +106,8 @@ public class ConfigManagerReference
             LogFormat = LogFormat,
             EasyCryptoPath = EasyCryptoPath,
             CompanySoftwareProcessPath = CompanySoftwareProcessPath,
-            Language = Language.ToString()
+            Language = Language.ToString(),
+            MaxFileSize = MaxFileSize
         };
         JsonFileUtils.WriteJson(_configFilePath, jsonConfig);
     }

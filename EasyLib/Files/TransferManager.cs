@@ -183,10 +183,26 @@ public class TransferManager : IJobStatusPublisher
         {
             _job.CurrentFileSource = Path.Combine(_job.SourceFolder, sourcePath, file.Name);
             _job.CurrentFileDestination = Path.Combine(_job.DestinationFolder, destinationPath, file.Name);
+            DateTime copyStart;
+            DateTime copyEnd;
+            if (file.Size >= ConfigManager.Instance.MaxFileSize)
+            {
+                Console.WriteLine("Waiting for a free thread" + _job.Name);
+                Job.Job.MaxSizeFileCopying.WaitOne();
+                Console.WriteLine("Starting copy" + _job.Name);
+                copyStart = DateTime.Now;
+                File.Copy(_job.CurrentFileSource, _job.CurrentFileDestination, true);
+                copyEnd = DateTime.Now;
+                Job.Job.MaxSizeFileCopying.Release();
+                Console.WriteLine("Copy done Release" + _job.Name);
+            }
+            else
+            {
+                copyStart = DateTime.Now;
+                File.Copy(_job.CurrentFileSource, _job.CurrentFileDestination, true);
+                copyEnd = DateTime.Now;
+            }
 
-            var copyStart = DateTime.Now;
-            File.Copy(_job.CurrentFileSource, _job.CurrentFileDestination, true);
-            var copyEnd = DateTime.Now;
             // check if the file has to be encrypted
             _job.FilesCopied++;
             _job.FilesBytesCopied += file.Size;
