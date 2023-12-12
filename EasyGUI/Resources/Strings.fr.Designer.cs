@@ -285,6 +285,15 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Type des logs.
+        /// </summary>
+        public static string SettingsPopup_LogType {
+            get {
+                return ResourceManager.GetString("SettingsPopup_LogType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paramètres.
         /// </summary>
         public static string SettingsPopup_Settings {

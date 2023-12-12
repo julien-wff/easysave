@@ -249,7 +249,7 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Files extentions to encrypt (without the dot, comma-separated).
+        ///   Looks up a localized string similar to Files extensions to encrypt (without the dot, comma-separated).
         /// </summary>
         public static string SettingsPopup_EncryptedFileTypes {
             get {
@@ -281,6 +281,15 @@ namespace EasyGUI.Resources {
         public static string SettingsPopup_Language {
             get {
                 return ResourceManager.GetString("SettingsPopup_Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs type.
+        /// </summary>
+        public static string SettingsPopup_LogType {
+            get {
+                return ResourceManager.GetString("SettingsPopup_LogType", resourceCulture);
             }
         }
         

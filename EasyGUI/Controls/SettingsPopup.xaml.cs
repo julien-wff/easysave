@@ -78,6 +78,13 @@ public partial class SettingsPopup : INotifyPropertyChanged
         );
 
         XorKey = ConfigManager.Instance.XorKey;
+
+        LogTypeComboBox.SelectedIndex = ConfigManager.Instance.LogFormat switch
+        {
+            ".json" => 0,
+            ".xml" => 1,
+            _ => 0
+        };
     }
 
     private void ValidateButton_OnClick(object sender, RoutedEventArgs e)
@@ -101,9 +108,18 @@ public partial class SettingsPopup : INotifyPropertyChanged
         // Update xor key
         ConfigManager.Instance.XorKey = XorKey;
 
+        // Update log format
+        ConfigManager.Instance.LogFormat = LogTypeComboBox.SelectedIndex switch
+        {
+            0 => ".json",
+            1 => ".xml",
+            _ => ".json"
+        };
+
         // Save config
         ConfigManager.Instance.WriteConfig();
 
+        // Hide popup
         Visibility = Visibility.Collapsed;
 
         // Reload window if the language changed

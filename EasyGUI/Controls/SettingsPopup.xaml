@@ -44,6 +44,16 @@
                         Text="{Binding XorKey, RelativeSource={RelativeSource AncestorType=UserControl}}"
                         Margin="0,0,0,16" />
 
+                    <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.SettingsPopup_LogType}" />
+                    <ComboBox Margin="0,0,0,16" x:Name="LogTypeComboBox">
+                        <ComboBoxItem>
+                            <TextBlock Text="json" />
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="xml" />
+                        </ComboBoxItem>
+                    </ComboBox>
+
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
