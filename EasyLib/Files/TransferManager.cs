@@ -206,7 +206,7 @@ public class TransferManager : IJobStatusPublisher
             _notifySubscribersForChange();
             var cryptoStart = DateTime.Now;
             var cryptoEnd = cryptoStart;
-            if (ConfigManager.Instance.EncryptedFileTypes
+            if (ConfigManager.Instance.EncryptedFileExtensions
                 .Contains(file.Extension)) // check if the file extension is in the list of encrypted file types
             {
                 var fileEncryption = new Process() // create a new process to run the EasyCrypto.exe

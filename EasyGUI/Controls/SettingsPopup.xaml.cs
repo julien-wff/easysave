@@ -108,7 +108,7 @@ public partial class SettingsPopup : INotifyPropertyChanged
 
         EncryptedFileTypes = string.Join(
             ", ",
-            ConfigManager.Instance.EncryptedFileTypes.Select(ext => ext[1..])
+            ConfigManager.Instance.EncryptedFileExtensions.Select(ext => ext[1..])
         );
 
         XorKey = ConfigManager.Instance.XorKey;
@@ -136,7 +136,7 @@ public partial class SettingsPopup : INotifyPropertyChanged
         ConfigManager.Instance.Language = culture;
 
         // Update encrypted file types
-        ConfigManager.Instance.EncryptedFileTypes = EncryptedFileTypes.Split(",")
+        ConfigManager.Instance.EncryptedFileExtensions = EncryptedFileTypes.Split(",")
             .Select(s => s.Trim())
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .Select(ext => "." + ext)
