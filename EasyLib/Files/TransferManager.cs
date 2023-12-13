@@ -178,10 +178,18 @@ public class TransferManager : IJobStatusPublisher
         _job.State = JobState.Copy;
         if (ConfigManager.Instance.PriorityFileExtensions.Any())
         {
+            Interlocked.Increment(ref Job.Job.CurrentPriorityRunning);
             var filteredFiles = _filterPriorityFiles(InstructionsFolder);
             PriorityFileFolder = filteredFiles[0];
             InstructionsFolder = filteredFiles[1];
             _transferFile(PriorityFileFolder, "", PriorityFileFolder.Name);
+            Interlocked.Decrement(ref Job.Job.CurrentPriorityRunning);
+            Job.Job.NotifyWaitingJobs.Set();
+        }
+
+        while (Interlocked.Read(Job.Job.CurrentPriorityRunning) > 0)
+        {
+            Job.Job.NotifyWaitingJobs.WaitOne();
         }
 
         _transferFile(InstructionsFolder, "", InstructionsFolder.Name);

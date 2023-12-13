@@ -22,6 +22,8 @@ public class Job(
     JobState state = JobState.End) : IJobStatusPublisher, IJobStatusSubscriber
 {
     public static readonly Semaphore MaxSizeFileCopying = new Semaphore(1, 1);
+    public static uint CurrentPriorityRunning = 0;
+    public static ManualResetEvent NotifyWaitingJobs = new ManualResetEvent(false);
 
     /// <summary>
     /// Create a job instance from a JsonJob object
