@@ -109,7 +109,7 @@
                 <ProgressBar x:Name="JobProgressBar" Grid.Column="0" Height="8">
                     <ProgressBar.Template>
                         <ControlTemplate TargetType="ProgressBar">
-                            <Border Background="Transparent" CornerRadius="4" Padding="0">
+                            <Border Background="{StaticResource GrayBrush}" CornerRadius="4" Padding="0">
                                 <Grid x:Name="PART_Track">
                                     <Rectangle
                                         x:Name="PART_Indicator"
