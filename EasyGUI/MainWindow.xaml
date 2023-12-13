@@ -27,9 +27,6 @@
             x:Name="CreateJobPopup"
             ValidateJob="CreateJobPopup_OnValidateJob"
             Visibility="Collapsed" />
-        <controls:JobRunPopup
-            x:Name="JobRunPopup"
-            Visibility="Collapsed" />
         <controls:SettingsPopup
             x:Name="SettingsPopup"
             Visibility="Collapsed" />

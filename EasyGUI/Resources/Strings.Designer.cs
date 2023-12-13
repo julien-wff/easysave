@@ -150,24 +150,6 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Note: the app may become unresponsive and freeze.
-        /// </summary>
-        public static string JobRunPopup_FreezeNote {
-            get {
-                return ResourceManager.GetString("JobRunPopup_FreezeNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Running {0} job(s).
-        /// </summary>
-        public static string JobRunPopup_PopupTitle_JobsRunning {
-            get {
-                return ResourceManager.GetString("JobRunPopup_PopupTitle_JobsRunning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Copy.
         /// </summary>
         public static string JobState_Copy {

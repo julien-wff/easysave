@@ -6,6 +6,9 @@
     <Color x:Key="DarkGrayColor">#78738C</Color>
     <SolidColorBrush x:Key="DarkGrayBrush" Color="{StaticResource DarkGrayColor}"/>
 
+    <Color x:Key="GrayColor">#BBB9C6</Color>
+    <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource GrayColor}"/>
+
     <Color x:Key="TextWhiteColor">#ffffff</Color>
     <SolidColorBrush x:Key="TextWhiteBrush" Color="{StaticResource TextWhiteColor}"/>
 

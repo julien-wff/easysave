@@ -113,16 +113,7 @@ public partial class MainWindow
 
     private void RunJobs(IReadOnlyCollection<Job> jobs)
     {
-        var titleString = Strings.ResourceManager.GetString("JobRunPopup_PopupTitle_JobsRunning")!;
-        JobRunPopup.PopupTitle = string.Format(titleString, jobs.Count);
-        JobRunPopup.Visibility = Visibility.Visible;
-
-        Dispatcher.InvokeAsync(async () =>
-        {
-            await Task.Delay(100);
-            _jobManager.ExecuteJobs(jobs);
-            JobRunPopup.Visibility = Visibility.Collapsed;
-        });
+        Dispatcher.Invoke(() => _jobManager.ExecuteJobs(jobs));
     }
 
     private void JobsList_OnJobEdited(object? sender, JobEventArgs e)
