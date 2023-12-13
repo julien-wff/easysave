@@ -43,7 +43,7 @@ public class ConfigManagerReference
     public string LogFormat { get; set; } = ".json";
     public string? EasyCryptoPath { get; set; }
     public string? CompanySoftwareProcessPath { get; set; }
-    public ulong MaxFileSize { get; private set; } = 1000000;
+    public ulong MaxFileSize { get; set; } = 1000000;
 
     private static string GenerateRandomKey()
     {

@@ -17,6 +17,13 @@ public partial class SettingsPopup : INotifyPropertyChanged
         new PropertyMetadata(default(string))
     );
 
+    private static readonly DependencyProperty PriorityExtensionsProperty = DependencyProperty.Register(
+        nameof(PriorityExtensions),
+        typeof(string),
+        typeof(SettingsPopup),
+        new PropertyMetadata(default(string))
+    );
+
     private static readonly DependencyProperty XorKeyProperty = DependencyProperty.Register(
         nameof(XorKey),
         typeof(string),
@@ -38,6 +45,13 @@ public partial class SettingsPopup : INotifyPropertyChanged
         new PropertyMetadata(default(string))
     );
 
+    private static readonly DependencyProperty MaxFileSizeProperty = DependencyProperty.Register(
+        nameof(MaxFileSize),
+        typeof(string),
+        typeof(SettingsPopup),
+        new PropertyMetadata(default(string))
+    );
+
     private string? _baseCulture;
 
     public SettingsPopup()
@@ -51,6 +65,16 @@ public partial class SettingsPopup : INotifyPropertyChanged
         set
         {
             SetValue(EncryptedFileTypesProperty, value);
+            OnPropertyChanged();
+        }
+    }
+
+    public string PriorityExtensions
+    {
+        get => (string)GetValue(PriorityExtensionsProperty);
+        set
+        {
+            SetValue(PriorityExtensionsProperty, value);
             OnPropertyChanged();
         }
     }
@@ -85,6 +109,16 @@ public partial class SettingsPopup : INotifyPropertyChanged
         }
     }
 
+    public string MaxFileSize
+    {
+        get => (string)GetValue(MaxFileSizeProperty);
+        set
+        {
+            SetValue(MaxFileSizeProperty, value);
+            OnPropertyChanged();
+        }
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -111,6 +145,11 @@ public partial class SettingsPopup : INotifyPropertyChanged
             ConfigManager.Instance.EncryptedFileExtensions.Select(ext => ext[1..])
         );
 
+        PriorityExtensions = string.Join(
+            ", ",
+            ConfigManager.Instance.PriorityFileExtensions.Select(ext => ext[1..])
+        );
+
         XorKey = ConfigManager.Instance.XorKey;
 
         LogTypeComboBox.SelectedIndex = ConfigManager.Instance.LogFormat switch
@@ -122,6 +161,7 @@ public partial class SettingsPopup : INotifyPropertyChanged
 
         EasyCryptoPath = ConfigManager.Instance.EasyCryptoPath ?? "";
         CompanySoftwareProcess = ConfigManager.Instance.CompanySoftwareProcessPath ?? "";
+        MaxFileSize = ConfigManager.Instance.MaxFileSize.ToString();
     }
 
     private void ValidateButton_OnClick(object sender, RoutedEventArgs e)
@@ -137,6 +177,13 @@ public partial class SettingsPopup : INotifyPropertyChanged
 
         // Update encrypted file types
         ConfigManager.Instance.EncryptedFileExtensions = EncryptedFileTypes.Split(",")
+            .Select(s => s.Trim())
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .Select(ext => "." + ext)
+            .ToList();
+
+        // Update priority extensions
+        ConfigManager.Instance.PriorityFileExtensions = PriorityExtensions.Split(",")
             .Select(s => s.Trim())
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .Select(ext => "." + ext)
@@ -160,6 +207,12 @@ public partial class SettingsPopup : INotifyPropertyChanged
         ConfigManager.Instance.CompanySoftwareProcessPath = string.IsNullOrWhiteSpace(CompanySoftwareProcess)
             ? null
             : CompanySoftwareProcess;
+
+        // Update max file size
+        if (ulong.TryParse(MaxFileSize, out var maxFileSize))
+        {
+            ConfigManager.Instance.MaxFileSize = maxFileSize;
+        }
 
         // Save config
         ConfigManager.Instance.WriteConfig();

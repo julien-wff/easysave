@@ -294,6 +294,24 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Taille minimum des fichiers volumineux (en octets).
+        /// </summary>
+        public static string SettingsPopup_MaxFileSize {
+            get {
+                return ResourceManager.GetString("SettingsPopup_MaxFileSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extensions de fichier prioritaires (sans le point, séparés par des virgules).
+        /// </summary>
+        public static string SettingsPopup_PriorityFilesExtensions {
+            get {
+                return ResourceManager.GetString("SettingsPopup_PriorityFilesExtensions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paramètres.
         /// </summary>
         public static string SettingsPopup_Settings {
