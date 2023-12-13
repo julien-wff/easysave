@@ -100,12 +100,6 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0"
-                        Background="LightGray"
-                        Height="8"
-                        VerticalAlignment="Center"
-                        CornerRadius="3" />
-
                 <ProgressBar x:Name="JobProgressBar" Grid.Column="0" Height="8">
                     <ProgressBar.Template>
                         <ControlTemplate TargetType="ProgressBar">
