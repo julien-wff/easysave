@@ -3,6 +3,7 @@ using EasyLib.Enums;
 using EasyLib.Events;
 using EasyLib.Files;
 using EasyLib.Json;
+using static System.Threading.EventResetMode;
 
 namespace EasyLib.Job;
 
@@ -23,7 +24,7 @@ public class Job(
 {
     public static readonly Semaphore MaxSizeFileCopying = new Semaphore(1, 1);
     public static uint CurrentPriorityRunning = 0;
-    public static ManualResetEvent NotifyWaitingJobs = new ManualResetEvent(false);
+    public static readonly EventWaitHandle NotifyWaitingJobs = new EventWaitHandle(initialState: false, ManualReset);
 
     /// <summary>
     /// Create a job instance from a JsonJob object

@@ -179,6 +179,7 @@ public class TransferManager : IJobStatusPublisher
         if (ConfigManager.Instance.PriorityFileExtensions.Any())
         {
             Interlocked.Increment(ref Job.Job.CurrentPriorityRunning);
+            Job.Job.NotifyWaitingJobs.Reset();
             var filteredFiles = _filterPriorityFiles(InstructionsFolder);
             PriorityFileFolder = filteredFiles[0];
             InstructionsFolder = filteredFiles[1];
@@ -190,6 +191,11 @@ public class TransferManager : IJobStatusPublisher
         while (Interlocked.Read(Job.Job.CurrentPriorityRunning) > 0)
         {
             Job.Job.NotifyWaitingJobs.WaitOne();
+            Console.WriteLine("finished waiting");
+            if (Interlocked.Read(Job.Job.CurrentPriorityRunning) > 0)
+            {
+                Job.Job.NotifyWaitingJobs.Reset();
+            }
         }
 
         _transferFile(InstructionsFolder, "", InstructionsFolder.Name);
