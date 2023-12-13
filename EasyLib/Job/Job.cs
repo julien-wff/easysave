@@ -127,9 +127,9 @@ public class Job(
         }
 
         var folders = selector.SelectFolders(directories, lastFolder, Type, DestinationFolder);
-
-        Thread thread = new Thread(() => JobSteps(transferManager, folders));
-        thread.Start();
+        JobSteps(transferManager, folders);
+        //Thread thread = new Thread(() => JobSteps(transferManager, folders));
+        //thread.Start();
         return true;
     }
 

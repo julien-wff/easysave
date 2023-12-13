@@ -187,14 +187,11 @@ public class TransferManager : IJobStatusPublisher
             DateTime copyEnd;
             if (file.Size >= ConfigManager.Instance.MaxFileSize)
             {
-                Console.WriteLine("Waiting for a free thread" + _job.Name);
                 Job.Job.MaxSizeFileCopying.WaitOne();
-                Console.WriteLine("Starting copy" + _job.Name);
                 copyStart = DateTime.Now;
                 File.Copy(_job.CurrentFileSource, _job.CurrentFileDestination, true);
                 copyEnd = DateTime.Now;
                 Job.Job.MaxSizeFileCopying.Release();
-                Console.WriteLine("Copy done Release" + _job.Name);
             }
             else
             {
