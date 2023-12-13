@@ -53,6 +53,7 @@ public class Job(
     public JobType Type { get; set; } = type;
     public string CurrentFileSource { get; set; } = string.Empty;
     public string CurrentFileDestination { get; set; } = string.Empty;
+    public bool CurrentlyRunning { get; private set; }
 
     public void Subscribe(IJobStatusSubscriber subscriber)
     {
@@ -170,6 +171,7 @@ public class Job(
     private void JobSteps(TransferManager transferManager, List<List<string>> folders)
     {
         transferManager.Subscribe(this);
+        CurrentlyRunning = true;
         _setJobState(JobState.SourceScan);
         transferManager.ScanSource();
         _setJobState(JobState.DifferenceCalculation);
@@ -178,6 +180,7 @@ public class Job(
         transferManager.CreateDestinationStructure();
         _setJobState(JobState.Copy);
         transferManager.TransferFiles();
+        CurrentlyRunning = false;
         _setJobState(JobState.End);
         transferManager.Unsubscribe(this);
     }
