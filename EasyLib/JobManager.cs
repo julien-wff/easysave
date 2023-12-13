@@ -210,8 +210,6 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
         {
             job.Subscribe(this);
             var jobSuccess = job.Run();
-            job.Unsubscribe(this);
-
             if (jobSuccess)
                 continue;
 
