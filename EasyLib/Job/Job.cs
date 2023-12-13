@@ -101,11 +101,31 @@ public class Job(
     }
 
     /// <summary>
-    /// Run the backup job
+    /// Start the backup job without cancelling it
     /// </summary>
-    /// <returns>True when the job is complete</returns>
+    /// <returns>True if the job is started correctly</returns>
+    public bool Resume()
+    {
+        return Start(true);
+    }
+
+    /// <summary>
+    /// Cancel the backup job and run
+    /// </summary>
+    /// <returns>True if the job is started correctly</returns>
     public bool Run()
     {
+        return Start(false);
+    }
+
+    /// <summary>
+    /// Run the backup job
+    /// </summary>
+    /// <param name="resume">If false, the job is cancelled first</param>
+    /// <returns>True when the job is complete</returns>
+    private bool Start(bool resume)
+    {
+        // Wait for the company software to be closed
         if (ConfigManager.Instance.CheckProcessRunning())
         {
             var processName = Path.GetFileNameWithoutExtension(ConfigManager.Instance.CompanySoftwareProcessPath);
@@ -116,23 +136,38 @@ public class Job(
             }
         }
 
+        // Reset the job stats if the job is not resumed
+        if (!resume)
+        {
+            Cancel();
+        }
+
+        // Create the transfer manager and the folder selector
         var transferManager = new TransferManager(this);
         var selector = BackupFolderSelectorFactory.Create(Type, State);
         var folderList = Directory.GetDirectories(DestinationFolder).ToList();
-        var directories = new List<List<string>>() { folderList };
+        var directories = new List<List<string>> { folderList };
         var lastFolder = "";
         if (folderList.Count != 0)
         {
             lastFolder = folderList[^1] + Path.DirectorySeparatorChar;
         }
 
+        // Select the folders to backup
         var folders = selector.SelectFolders(directories, lastFolder, Type, DestinationFolder);
-        Thread thread = new Thread(() => JobSteps(transferManager, folders));
+
+        // Run the job in a new thread
+        var thread = new Thread(() => JobSteps(transferManager, folders));
         thread.Start();
         return true;
     }
 
-    public void JobSteps(TransferManager transferManager, List<List<string>> folders)
+    /// <summary>
+    /// Run the different steps of the backup job
+    /// </summary>
+    /// <param name="transferManager">Instance of the transfer manager</param>
+    /// <param name="folders">Folders used to compute the difference</param>
+    private void JobSteps(TransferManager transferManager, List<List<string>> folders)
     {
         transferManager.Subscribe(this);
         _setJobState(JobState.SourceScan);
