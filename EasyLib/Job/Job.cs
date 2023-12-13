@@ -126,6 +126,12 @@ public class Job(
     /// <returns>True when the job is complete</returns>
     private bool Start(bool resume)
     {
+        // If the job is already running, return false
+        if (CurrentlyRunning)
+        {
+            return false;
+        }
+
         // Wait for the company software to be closed
         if (ConfigManager.Instance.CheckProcessRunning())
         {
