@@ -17,7 +17,7 @@ public class ConfigManagerTest
     public void TestConfigManager()
     {
         // Assert
-        Assert.True(ConfigManager.Instance.EncryptedFileTypes.Count == 0);
+        Assert.True(ConfigManager.Instance.EncryptedFileExtensions.Count == 0);
         Assert.True(ConfigManager.Instance.LogFormat == ".json");
     }
 }

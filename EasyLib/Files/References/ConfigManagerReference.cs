@@ -37,7 +37,8 @@ public class ConfigManagerReference
     }
 
     public CultureInfo Language { get; set; } = CultureInfo.CurrentCulture;
-    public List<string> EncryptedFileTypes { get; set; } = [];
+    public List<string> EncryptedFileExtensions { get; set; } = [];
+    public List<string> PriorityFileExtensions { get; set; } = [];
     public string XorKey { get; set; } = GenerateRandomKey();
     public string LogFormat { get; set; } = ".json";
     public string? EasyCryptoPath { get; set; }
@@ -79,13 +80,14 @@ public class ConfigManagerReference
 
         var xorKey = jsonConfig.XorKey;
 
-        EncryptedFileTypes = jsonConfig.EncryptedFileTypes ?? [];
+        EncryptedFileExtensions = jsonConfig.EncryptedFileExtensions ?? [];
         XorKey = jsonConfig.XorKey ?? GenerateRandomKey();
         LogFormat = jsonConfig.LogFormat ?? ".json";
         EasyCryptoPath = jsonConfig.EasyCryptoPath;
         CompanySoftwareProcessPath = jsonConfig.CompanySoftwareProcessPath;
         Language = CultureInfo.GetCultureInfo(jsonConfig.Language);
         MaxFileSize = jsonConfig.MaxFileSize;
+        PriorityFileExtensions = jsonConfig.PriorityFileExtensions;
 
         // If the key was null, write the new key
         if (xorKey == null)
@@ -101,7 +103,8 @@ public class ConfigManagerReference
     {
         var jsonConfig = new ConfigElement
         {
-            EncryptedFileTypes = EncryptedFileTypes,
+            EncryptedFileExtensions = EncryptedFileExtensions,
+            PriorityFileExtensions = PriorityFileExtensions,
             XorKey = XorKey,
             LogFormat = LogFormat,
             EasyCryptoPath = EasyCryptoPath,
@@ -132,7 +135,8 @@ public class ConfigManagerReference
     {
         var sb = new StringBuilder();
         sb.AppendLine($"Language: {Language}");
-        sb.AppendLine($"EncryptedFileTypes: {string.Join(", ", EncryptedFileTypes)}");
+        sb.AppendLine($"EncryptedFileExtensions: {string.Join(", ", EncryptedFileExtensions)}");
+        sb.AppendLine($"PriorityFileExtensions: {string.Join(", ", PriorityFileExtensions)}");
         sb.AppendLine($"XorKey: {XorKey}");
         sb.AppendLine($"LogFormat: {LogFormat}");
         sb.AppendLine($"EasyCryptoPath: {EasyCryptoPath ?? "<null>"}");

@@ -19,9 +19,11 @@ public class TransferManager : IJobStatusPublisher
         _job = job;
         _sourceFolder = new BackupFolder(_job.SourceFolder);
         InstructionsFolder = new BackupFolder(_job.DestinationFolder);
+        PriorityFileFolder = InstructionsFolder;
     }
 
     private BackupFolder InstructionsFolder { get; set; }
+    private BackupFolder PriorityFileFolder { get; set; }
 
     public void Subscribe(IJobStatusSubscriber subscriber)
     {
@@ -174,6 +176,22 @@ public class TransferManager : IJobStatusPublisher
     public void TransferFiles()
     {
         _job.State = JobState.Copy;
+        if (ConfigManager.Instance.PriorityFileExtensions.Any())
+        {
+            Interlocked.Increment(ref Job.Job.CurrentPriorityRunning);
+            var filteredFiles = _filterPriorityFiles(InstructionsFolder);
+            PriorityFileFolder = filteredFiles[0];
+            InstructionsFolder = filteredFiles[1];
+            _transferFile(PriorityFileFolder, "", PriorityFileFolder.Name);
+            Interlocked.Decrement(ref Job.Job.CurrentPriorityRunning);
+            Job.Job.NotifyWaitingJobs.Set();
+        }
+
+        while (Interlocked.Read(Job.Job.CurrentPriorityRunning) > 0)
+        {
+            Job.Job.NotifyWaitingJobs.WaitOne();
+        }
+
         _transferFile(InstructionsFolder, "", InstructionsFolder.Name);
     }
 
@@ -206,7 +224,7 @@ public class TransferManager : IJobStatusPublisher
             _notifySubscribersForChange();
             var cryptoStart = DateTime.Now;
             var cryptoEnd = cryptoStart;
-            if (ConfigManager.Instance.EncryptedFileTypes
+            if (ConfigManager.Instance.EncryptedFileExtensions
                 .Contains(file.Extension)) // check if the file extension is in the list of encrypted file types
             {
                 var fileEncryption = new Process() // create a new process to run the EasyCrypto.exe
@@ -244,6 +262,32 @@ public class TransferManager : IJobStatusPublisher
             _transferFile(subFolder, Path.Combine(sourcePath, subFolder.Name),
                 Path.Combine(destinationPath, subFolder.Name));
         }
+    }
+
+    private List<BackupFolder> _filterPriorityFiles(BackupFolder instructionsFolder)
+    {
+        var tempPriorityFolders = new BackupFolder(instructionsFolder.Name + Path.DirectorySeparatorChar);
+        var tempInstructionsFolders = new BackupFolder(instructionsFolder.Name + Path.DirectorySeparatorChar);
+        foreach (var subFolder in instructionsFolder.SubFolders)
+        {
+            var selectedFiles = _filterPriorityFiles(subFolder);
+            tempPriorityFolders.SubFolders.Add(selectedFiles[0]);
+            tempInstructionsFolders.SubFolders.Add(selectedFiles[1]);
+        }
+
+        foreach (var file in instructionsFolder.Files)
+        {
+            if (ConfigManager.Instance.PriorityFileExtensions.Contains(file.Extension))
+            {
+                tempPriorityFolders.Files.Add(file);
+            }
+            else
+            {
+                tempInstructionsFolders.Files.Add(file);
+            }
+        }
+
+        return new List<BackupFolder>() { tempPriorityFolders, tempInstructionsFolders };
     }
 
     private void _notifySubscribersForChange()
