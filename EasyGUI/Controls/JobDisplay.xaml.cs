@@ -125,6 +125,8 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         if (Job.State == JobState.End)
         {
             JobProgressGrid.Visibility = Visibility.Collapsed;
+            JobProgressText = "0 %";
+            JobProgressBar.Value = 0;
             return;
         }
 
