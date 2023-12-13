@@ -16,6 +16,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Rectangle Grid.Row="0"
@@ -90,6 +91,45 @@
             <TextBlock
                 Text="{Binding JobPaths, RelativeSource={RelativeSource AncestorType={x:Type local:JobDisplay}}}"
                 FontSize="14" />
+        </Grid>
+
+        <Grid x:Name="JobProgressGrid" Grid.Row="3" Margin="36,4,8,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"
+                        Background="LightGray"
+                        Height="8"
+                        VerticalAlignment="Center"
+                        CornerRadius="3" />
+
+                <ProgressBar x:Name="JobProgressBar" Grid.Column="0" Height="8">
+                    <ProgressBar.Template>
+                        <ControlTemplate TargetType="ProgressBar">
+                            <Border Background="Transparent" CornerRadius="4" Padding="0">
+                                <Grid x:Name="PART_Track">
+                                    <Rectangle
+                                        x:Name="PART_Indicator"
+                                        HorizontalAlignment="Left"
+                                        Fill="{StaticResource BlueBrush}"
+                                        RadiusX="4"
+                                        RadiusY="4" />
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </ProgressBar.Template>
+                </ProgressBar>
+
+                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    TextAlignment="Right"
+                    Width="64"
+                    Text="{Binding JobProgressText, RelativeSource={RelativeSource AncestorType={x:Type local:JobDisplay}}}" />
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

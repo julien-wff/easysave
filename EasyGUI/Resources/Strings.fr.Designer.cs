@@ -150,24 +150,6 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Note : l&apos;application peut ne pas répondre, veuillez ne rien faire.
-        /// </summary>
-        public static string JobRunPopup_FreezeNote {
-            get {
-                return ResourceManager.GetString("JobRunPopup_FreezeNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exécution de {0} tâche(s).
-        /// </summary>
-        public static string JobRunPopup_PopupTitle_JobsRunning {
-            get {
-                return ResourceManager.GetString("JobRunPopup_PopupTitle_JobsRunning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Copie.
         /// </summary>
         public static string JobState_Copy {
