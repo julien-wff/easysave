@@ -22,6 +22,7 @@
                 JobEdited="JobsList_OnJobEdited"
                 JobResumed="JobsList_OnJobResumed"
                 JobDeleted="JobsList_OnJobDeleted"
+                JobDiscarded="JobsList_OnJobDiscarded"
                 JobStarted="JobsList_OnJobStarted" />
         </StackPanel>
 

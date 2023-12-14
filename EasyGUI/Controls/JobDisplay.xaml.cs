@@ -91,6 +91,7 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
     public event EventHandler<JobEventArgs>? JobEdited;
     public event EventHandler<JobEventArgs>? JobResumed;
     public event EventHandler<JobEventArgs>? JobDeleted;
+    public event EventHandler<JobEventArgs>? JobDiscarded;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
@@ -129,8 +130,9 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         var paused = Job.State != JobState.End && !Job.CurrentlyRunning;
         SetElementVisibility(EditButton, Job.State == JobState.End);
         SetElementVisibility(StartButton, Job.State == JobState.End);
-        SetElementVisibility(ResumeButton, paused);
         SetElementVisibility(DeleteButton, Job.State == JobState.End);
+        SetElementVisibility(ResumeButton, paused);
+        SetElementVisibility(DiscardButton, paused);
     }
 
     private void UpdateJobProgress()
@@ -205,5 +207,10 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
     private void DeleteButton_OnClick(object sender, RoutedEventArgs e)
     {
         JobDeleted?.Invoke(this, new JobEventArgs(Job));
+    }
+
+    private void DiscardButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        JobDiscarded?.Invoke(this, new JobEventArgs(Job));
     }
 }

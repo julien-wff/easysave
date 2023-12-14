@@ -114,6 +114,15 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discard.
+        /// </summary>
+        public static string DiscardButton_Discard {
+            get {
+                return ResourceManager.GetString("DiscardButton_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string EditButton_Edit {

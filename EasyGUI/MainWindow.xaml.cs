@@ -89,10 +89,8 @@ public partial class MainWindow
         else
         {
             var job = Jobs.First(j => j.Id == id);
-            var jobIndex = Jobs.IndexOf(job);
             _jobManager.EditJob(job, name, source, destination, type.Value);
-            Jobs.Remove(job);
-            Jobs.Insert(jobIndex, job);
+            UpdateJob(job);
         }
 
         CreateJobPopup.Visibility = Visibility.Collapsed;
@@ -146,5 +144,22 @@ public partial class MainWindow
         var job = e.Job;
         Dispatcher.Invoke(() => _jobManager.DeleteJob(job));
         Jobs.Remove(job);
+    }
+
+    private void JobsList_OnJobDiscarded(object? sender, JobEventArgs e)
+    {
+        var job = e.Job;
+        Dispatcher.Invoke(() =>
+        {
+            _jobManager.CancelJob(job);
+            UpdateJob(job);
+        });
+    }
+
+    private void UpdateJob(Job job)
+    {
+        var jobIndex = Jobs.IndexOf(job);
+        Jobs.Remove(job);
+        Jobs.Insert(jobIndex, job);
     }
 }

@@ -128,4 +128,7 @@
     <data name="DeleteButton_Delete" xml:space="preserve">
         <value>Supprimer</value>
     </data>
+    <data name="DiscardButton_Discard" xml:space="preserve">
+        <value>Abandonner</value>
+    </data>
 </root>

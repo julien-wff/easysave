@@ -35,6 +35,7 @@
                             JobEdited="JobDisplay_OnJobEdited"
                             JobResumed="JobDisplay_OnJobResumed"
                             JobDeleted="JobDisplay_OnJobDeleted"
+                            JobDiscarded="JobDisplay_OnJobDiscarded"
                             JobStarted="JobDisplay_OnJobStarted" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
