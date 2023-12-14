@@ -134,4 +134,10 @@
     <data name="PauseButton_Pause" xml:space="preserve">
         <value>Pause</value>
     </data>
+    <data name="MainWindow_InstanceError_Title" xml:space="preserve">
+        <value>Application already running</value>
+    </data>
+    <data name="MainWindow_InstanceError_Message" xml:space="preserve">
+        <value>An instance of this application is already running. Please close it first.</value>
+    </data>
 </root>
