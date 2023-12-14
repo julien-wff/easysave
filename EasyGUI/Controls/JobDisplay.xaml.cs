@@ -98,6 +98,7 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         {
             UpdateJobProgress();
             UpdateBreadcrumbs();
+            UpdateButtons();
         }
 
         if (propertyName == nameof(SelectedJobs) && !_selectedJobsLocked)
@@ -110,14 +111,22 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
 
     private void UpdateBreadcrumbs()
     {
-        SetBreadcrumbVisibility(FullBreadCrumb, Job.Type == JobType.Full);
-        SetBreadcrumbVisibility(DifferentialBreadCrumb, Job.Type == JobType.Differential);
-        SetBreadcrumbVisibility(IncrementalBreadCrumb, Job.Type == JobType.Incremental);
-        SetBreadcrumbVisibility(EndBreadCrumb, Job.State == JobState.End);
-        SetBreadcrumbVisibility(SourceBreadCrumb, Job.State == JobState.SourceScan);
-        SetBreadcrumbVisibility(DiffCalcBreadCrumb, Job.State == JobState.DifferenceCalculation);
-        SetBreadcrumbVisibility(StructureBreadCrumb, Job.State == JobState.DestinationStructureCreation);
-        SetBreadcrumbVisibility(CopyBreadCrumb, Job.State == JobState.Copy);
+        SetElementVisibility(FullBreadCrumb, Job.Type == JobType.Full);
+        SetElementVisibility(DifferentialBreadCrumb, Job.Type == JobType.Differential);
+        SetElementVisibility(IncrementalBreadCrumb, Job.Type == JobType.Incremental);
+        SetElementVisibility(EndBreadCrumb, Job.State == JobState.End);
+        SetElementVisibility(SourceBreadCrumb, Job.State == JobState.SourceScan);
+        SetElementVisibility(DiffCalcBreadCrumb, Job.State == JobState.DifferenceCalculation);
+        SetElementVisibility(StructureBreadCrumb, Job.State == JobState.DestinationStructureCreation);
+        SetElementVisibility(CopyBreadCrumb, Job.State == JobState.Copy);
+        SetElementVisibility(PausedBreadCrumb, Job.State != JobState.End && !Job.CurrentlyRunning);
+    }
+
+    private void UpdateButtons()
+    {
+        var paused = Job.State != JobState.End && !Job.CurrentlyRunning;
+        SetElementVisibility(EditButton, Job.State == JobState.End);
+        SetElementVisibility(StartButton, Job.State == JobState.End || paused);
     }
 
     private void UpdateJobProgress()
@@ -140,9 +149,9 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         }
     }
 
-    private static void SetBreadcrumbVisibility(UIElement breadCrumb, bool visible)
+    private static void SetElementVisibility(UIElement element, bool visible)
     {
-        breadCrumb.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+        element.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private void StartButton_OnClick(object sender, RoutedEventArgs e)
@@ -155,6 +164,7 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         Job.Subscribe(this);
         UpdateBreadcrumbs();
         UpdateJobProgress();
+        UpdateButtons();
         SelectedJobs.CollectionChanged += (_, _) => OnPropertyChanged(nameof(SelectedJobs));
     }
 

@@ -186,6 +186,15 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paused.
+        /// </summary>
+        public static string JobState_Paused {
+            get {
+                return ResourceManager.GetString("JobState_Paused", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source scan.
         /// </summary>
         public static string JobState_SourceScan {
