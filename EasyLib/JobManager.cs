@@ -26,6 +26,7 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     /// </summary>
     private readonly List<IJobStatusSubscriber> _subscribers = new();
 
+
     public JobManager(bool ramOnly = false)
     {
         _ramOnly = ramOnly;
@@ -265,6 +266,16 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     public void CancelJob(Job.Job job)
     {
         job.Cancel();
+        StateManager.Instance.WriteJobs(_jobs);
+    }
+
+    /// <summary>
+    /// pause a job
+    /// </summary>
+    /// <param name="job">Job to cancel</param>
+    public void PauseJob(Job.Job job)
+    {
+        job.Pause();
         StateManager.Instance.WriteJobs(_jobs);
     }
 
