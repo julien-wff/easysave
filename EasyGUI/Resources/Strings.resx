@@ -122,4 +122,7 @@
     <data name="JobState_Paused" xml:space="preserve">
         <value>Paused</value>
     </data>
+    <data name="ResumeButton_Resume" xml:space="preserve">
+        <value>Resume</value>
+    </data>
 </root>

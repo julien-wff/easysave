@@ -20,6 +20,7 @@
                 Jobs="{Binding Jobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                 SelectedJobs="{Binding SelectedJobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                 JobEdited="JobsList_OnJobEdited"
+                JobResumed="JobsList_OnJobResumed"
                 JobStarted="JobsList_OnJobStarted" />
         </StackPanel>
 

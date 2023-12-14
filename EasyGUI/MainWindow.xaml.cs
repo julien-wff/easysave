@@ -134,4 +134,10 @@ public partial class MainWindow
     {
         SettingsPopup.Visibility = Visibility.Visible;
     }
+
+    private void JobsList_OnJobResumed(object? sender, JobEventArgs e)
+    {
+        var job = e.Job;
+        Dispatcher.Invoke(() => _jobManager.ResumeJob(job));
+    }
 }
