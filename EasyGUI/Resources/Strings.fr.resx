@@ -119,4 +119,7 @@
     <data name="SettingsPopup_MaxFileSize" xml:space="preserve">
         <value>Taille minimum des fichiers volumineux (en octets)</value>
     </data>
+    <data name="JobState_Paused" xml:space="preserve">
+        <value>En pause</value>
+    </data>
 </root>

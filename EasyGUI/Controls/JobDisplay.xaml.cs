@@ -118,6 +118,7 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         SetBreadcrumbVisibility(DiffCalcBreadCrumb, Job.State == JobState.DifferenceCalculation);
         SetBreadcrumbVisibility(StructureBreadCrumb, Job.State == JobState.DestinationStructureCreation);
         SetBreadcrumbVisibility(CopyBreadCrumb, Job.State == JobState.Copy);
+        SetBreadcrumbVisibility(PausedBreadCrumb, Job.State != JobState.End && !Job.CurrentlyRunning);
     }
 
     private void UpdateJobProgress()

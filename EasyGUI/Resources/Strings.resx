@@ -119,4 +119,7 @@
     <data name="SettingsPopup_MaxFileSize" xml:space="preserve">
         <value>Minimum size for a file to be 'big' (in bytes)</value>
     </data>
+    <data name="JobState_Paused" xml:space="preserve">
+        <value>Paused</value>
+    </data>
 </root>

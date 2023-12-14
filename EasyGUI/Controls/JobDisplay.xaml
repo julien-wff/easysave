@@ -79,6 +79,10 @@
                     x:Name="CopyBreadCrumb"
                     BreadCrumbText="{x:Static resx:Strings.JobState_Copy}"
                     BreadCrumbColor="{StaticResource GreenBrush}" Margin="0,0,8,0" />
+                <local:BreadCrumb
+                    x:Name="PausedBreadCrumb"
+                    BreadCrumbText="{x:Static resx:Strings.JobState_Paused}"
+                    BreadCrumbColor="{StaticResource OrangeBrush}" Margin="0,0,8,0" />
             </StackPanel>
 
             <StackPanel Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
