@@ -150,7 +150,7 @@ public class Job(
         // Reset the job stats if the job is not resumed
         if (!resume)
         {
-            Cancel();
+            _resetJobStats();
         }
 
         // Create the transfer manager and the folder selector
@@ -212,6 +212,12 @@ public class Job(
     public bool Cancel()
     {
         CancellationToken.Cancel();
+        _resetJobStats();
+        return true;
+    }
+
+    private bool _resetJobStats()
+    {
         FilesCount = 0;
         FilesSizeBytes = 0;
         FilesCopied = 0;
