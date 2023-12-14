@@ -113,4 +113,10 @@
     <data name="SettingsPopup_CompanySoftwareProcess" xml:space="preserve">
         <value>Exécutable du logiciel métier</value>
     </data>
+    <data name="SettingsPopup_PriorityFilesExtensions" xml:space="preserve">
+        <value>Extensions de fichier prioritaires (sans le point, séparés par des virgules)</value>
+    </data>
+    <data name="SettingsPopup_MaxFileSize" xml:space="preserve">
+        <value>Taille minimum des fichiers volumineux (en octets)</value>
+    </data>
 </root>

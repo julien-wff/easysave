@@ -113,4 +113,10 @@
     <data name="SettingsPopup_CompanySoftwareProcess" xml:space="preserve">
         <value>Company software process executable</value>
     </data>
+    <data name="SettingsPopup_PriorityFilesExtensions" xml:space="preserve">
+        <value>Priority files extensions (without the dot, comma-separated)</value>
+    </data>
+    <data name="SettingsPopup_MaxFileSize" xml:space="preserve">
+        <value>Minimum size for a file to be 'big' (in bytes)</value>
+    </data>
 </root>
