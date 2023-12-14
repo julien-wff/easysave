@@ -8,6 +8,8 @@ namespace EasyLib.Files;
 /// </summary>
 public static class JsonFileUtils
 {
+    private static readonly object _jsonLock = new();
+
     /// <summary>
     /// Enable formatting of JSON files.
     /// </summary>
@@ -40,14 +42,16 @@ public static class JsonFileUtils
     public static void WriteJson<T>(string path, T obj)
     {
         SetDefaultSettings();
-
-        if (!File.Exists(path))
+        lock (_jsonLock)
         {
-            File.Create(path).Close();
-        }
+            if (!File.Exists(path))
+            {
+                File.Create(path).Close();
+            }
 
-        var json = JsonConvert.SerializeObject(obj);
-        File.WriteAllText(path, json);
+            var json = JsonConvert.SerializeObject(obj);
+            File.WriteAllText(path, json);
+        }
     }
 
     /// <summary>

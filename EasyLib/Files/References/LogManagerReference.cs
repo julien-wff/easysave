@@ -43,7 +43,7 @@ public class LogManagerReference
     {
         if (ConfigManager.Instance.LogFormat == ".xml")
         {
-            XmlFileUtils.AddXmlLog(LogFilePath, log);
+            XmlFileUtils.AppendXmlLog(LogFilePath, log);
         }
         else
         {
