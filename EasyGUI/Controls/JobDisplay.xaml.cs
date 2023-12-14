@@ -150,8 +150,11 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         if (Job.State == JobState.Copy)
         {
             var progress = (float)Job.FilesCopied / Job.FilesCount;
-            JobProgressText = $"{progress:P}";
-            JobProgressBar.Value = progress * 100;
+            if (!float.IsNaN(progress))
+            {
+                JobProgressText = $"{progress:P}";
+                JobProgressBar.Value = progress * 100;
+            }
         }
     }
 
