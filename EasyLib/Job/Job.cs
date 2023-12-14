@@ -23,7 +23,7 @@ public class Job(
     JobState state = JobState.End) : IJobStatusPublisher, IJobStatusSubscriber
 {
     public static readonly Semaphore MaxSizeFileCopying = new Semaphore(1, 1);
-    public static uint CurrentPriorityRunning = 0;
+    public static ulong CurrentPriorityRunning = 0;
     public static readonly EventWaitHandle NotifyWaitingJobs = new EventWaitHandle(initialState: false, ManualReset);
 
     /// <summary>

@@ -203,14 +203,16 @@ public class TransferManager : IJobStatusPublisher
             InstructionsFolder = filteredFiles[1];
             _transferFile(PriorityFileFolder, "", PriorityFileFolder.Name);
             Interlocked.Decrement(ref Job.Job.CurrentPriorityRunning);
+            if (_job.CancellationToken.IsCancellationRequested)
+                return;
             Job.Job.NotifyWaitingJobs.Set();
         }
 
-        while (Interlocked.Read(Job.Job.CurrentPriorityRunning) > 0)
+        while (Interlocked.Read(ref Job.Job.CurrentPriorityRunning) > 0)
         {
             Job.Job.NotifyWaitingJobs.WaitOne();
             Console.WriteLine("finished waiting");
-            if (Interlocked.Read(Job.Job.CurrentPriorityRunning) > 0)
+            if (Interlocked.Read(ref Job.Job.CurrentPriorityRunning) > 0)
             {
                 Job.Job.NotifyWaitingJobs.Reset();
             }
@@ -246,13 +248,16 @@ public class TransferManager : IJobStatusPublisher
                 copyEnd = DateTime.Now;
             }
 
-            // check if the file has to be encrypted
             _job.FilesCopied++;
             _job.FilesBytesCopied += file.Size;
             _notifySubscribersForChange();
-
+            if (_job.CancellationToken.IsCancellationRequested)
+                return;
             var cryptoStart = DateTime.Now;
             var cryptoEnd = cryptoStart;
+
+            // check if the file has to be encrypted
+
             if (ConfigManager.Instance.EncryptedFileExtensions
                 .Contains(file.Extension)) // check if the file extension is in the list of encrypted file types
             {
@@ -288,6 +293,8 @@ public class TransferManager : IJobStatusPublisher
 
         foreach (var subFolder in folder.SubFolders)
         {
+            if (_job.CancellationToken.IsCancellationRequested)
+                return;
             _transferFile(subFolder, Path.Combine(sourcePath, subFolder.Name),
                 Path.Combine(destinationPath, subFolder.Name));
         }
@@ -299,6 +306,8 @@ public class TransferManager : IJobStatusPublisher
         var tempInstructionsFolders = new BackupFolder(instructionsFolder.Name + Path.DirectorySeparatorChar);
         foreach (var subFolder in instructionsFolder.SubFolders)
         {
+            if (_job.CancellationToken.IsCancellationRequested)
+                return new List<BackupFolder>();
             var selectedFiles = _filterPriorityFiles(subFolder);
             tempPriorityFolders.SubFolders.Add(selectedFiles[0]);
             tempInstructionsFolders.SubFolders.Add(selectedFiles[1]);
@@ -306,6 +315,8 @@ public class TransferManager : IJobStatusPublisher
 
         foreach (var file in instructionsFolder.Files)
         {
+            if (_job.CancellationToken.IsCancellationRequested)
+                return new List<BackupFolder>();
             if (ConfigManager.Instance.PriorityFileExtensions.Contains(file.Extension))
             {
                 tempPriorityFolders.Files.Add(file);
