@@ -140,4 +140,12 @@
     <data name="MainWindow_InstanceError_Message" xml:space="preserve">
         <value>An instance of this application is already running. Please close it first.</value>
     </data>
+    <data name="App_CrashPopup_Title" xml:space="preserve">
+        <value>Unhandled error</value>
+    </data>
+    <data name="App_CrashPopup_Message" xml:space="preserve">
+        <value>An unknown error occurred: {0}
+
+We are sorry for this inconvenience.</value>
+    </data>
 </root>
