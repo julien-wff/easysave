@@ -140,4 +140,12 @@
     <data name="MainWindow_InstanceError_Message" xml:space="preserve">
         <value>Une instance de cette application est déjà en cours d'exécution. Veuillez la fermer en premier.</value>
     </data>
+    <data name="App_CrashPopup_Title" xml:space="preserve">
+        <value>Erreur imprévue</value>
+    </data>
+    <data name="App_CrashPopup_Message" xml:space="preserve">
+        <value>Une erreur inconnue est survenue : {0}
+
+Nous nous excusons pour la gêne occasionnée.</value>
+    </data>
 </root>

@@ -60,6 +60,26 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An unknown error occurred: {0}
+        ///
+        ///We are sorry for this inconvenience..
+        /// </summary>
+        public static string App_CrashPopup_Message {
+            get {
+                return ResourceManager.GetString("App_CrashPopup_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unhandled error.
+        /// </summary>
+        public static string App_CrashPopup_Title {
+            get {
+                return ResourceManager.GetString("App_CrashPopup_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string CancelButton_Cancel {

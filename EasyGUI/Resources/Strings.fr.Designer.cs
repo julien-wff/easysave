@@ -60,6 +60,26 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Une erreur inconnue est survenue : {0}
+        ///
+        ///Nous nous excusons pour la gêne occasionnée..
+        /// </summary>
+        public static string App_CrashPopup_Message {
+            get {
+                return ResourceManager.GetString("App_CrashPopup_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erreur imprévue.
+        /// </summary>
+        public static string App_CrashPopup_Title {
+            get {
+                return ResourceManager.GetString("App_CrashPopup_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Annuler.
         /// </summary>
         public static string CancelButton_Cancel {
