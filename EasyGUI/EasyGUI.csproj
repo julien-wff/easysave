@@ -39,6 +39,9 @@
         <Resource Include="Assets\Icons\play-circle-outline.png"/>
         <Resource Include="Assets\Icons\create-outline.png"/>
         <Resource Include="Assets\Icons\settings-outline.png"/>
+        <Resource Include="Assets\Icons\trash-outline.png"/>
+        <Resource Include="Assets\Icons\close-circle-outline.png"/>
+        <Resource Include="Assets\Icons\pause-circle-outline.png"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -83,6 +86,26 @@
             <SubType>Designer</SubType>
         </Page>
         <Page Update="Controls\SettingsPopup.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\Buttons\ResumeButton.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\Buttons\DeleteButton.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\Buttons\DiscardButton.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\Buttons\PauseButton.xaml">
             <Generator>MSBuild:Compile</Generator>
             <XamlRuntime>Wpf</XamlRuntime>
             <SubType>Designer</SubType>

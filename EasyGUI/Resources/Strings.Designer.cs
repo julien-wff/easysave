@@ -105,6 +105,24 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string DeleteButton_Delete {
+            get {
+                return ResourceManager.GetString("DeleteButton_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discard.
+        /// </summary>
+        public static string DiscardButton_Discard {
+            get {
+                return ResourceManager.GetString("DiscardButton_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string EditButton_Edit {
@@ -227,6 +245,24 @@ namespace EasyGUI.Resources {
         public static string JobType_Incremental {
             get {
                 return ResourceManager.GetString("JobType_Incremental", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pause.
+        /// </summary>
+        public static string PauseButton_Pause {
+            get {
+                return ResourceManager.GetString("PauseButton_Pause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resume.
+        /// </summary>
+        public static string ResumeButton_Resume {
+            get {
+                return ResourceManager.GetString("ResumeButton_Resume", resourceCulture);
             }
         }
         

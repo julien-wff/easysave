@@ -89,6 +89,10 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
     public event PropertyChangedEventHandler? PropertyChanged;
     public event EventHandler<JobEventArgs>? JobStarted;
     public event EventHandler<JobEventArgs>? JobEdited;
+    public event EventHandler<JobEventArgs>? JobResumed;
+    public event EventHandler<JobEventArgs>? JobDeleted;
+    public event EventHandler<JobEventArgs>? JobDiscarded;
+    public event EventHandler<JobEventArgs>? JobPaused;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
@@ -126,7 +130,11 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
     {
         var paused = Job.State != JobState.End && !Job.CurrentlyRunning;
         SetElementVisibility(EditButton, Job.State == JobState.End);
-        SetElementVisibility(StartButton, Job.State == JobState.End || paused);
+        SetElementVisibility(StartButton, Job.State == JobState.End);
+        SetElementVisibility(DeleteButton, Job.State == JobState.End);
+        SetElementVisibility(ResumeButton, paused);
+        SetElementVisibility(DiscardButton, paused);
+        SetElementVisibility(PauseButton, Job.State != JobState.End && Job.CurrentlyRunning);
     }
 
     private void UpdateJobProgress()
@@ -144,8 +152,11 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         if (Job.State == JobState.Copy)
         {
             var progress = (float)Job.FilesCopied / Job.FilesCount;
-            JobProgressText = $"{progress:P}";
-            JobProgressBar.Value = progress * 100;
+            if (!float.IsNaN(progress))
+            {
+                JobProgressText = $"{progress:P}";
+                JobProgressBar.Value = progress * 100;
+            }
         }
     }
 
@@ -191,5 +202,25 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
     private void EditButton_OnClick(object sender, RoutedEventArgs e)
     {
         JobEdited?.Invoke(this, new JobEventArgs(Job));
+    }
+
+    private void ResumeButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        JobResumed?.Invoke(this, new JobEventArgs(Job));
+    }
+
+    private void DeleteButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        JobDeleted?.Invoke(this, new JobEventArgs(Job));
+    }
+
+    private void DiscardButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        JobDiscarded?.Invoke(this, new JobEventArgs(Job));
+    }
+
+    private void PauseButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        JobPaused?.Invoke(this, new JobEventArgs(Job));
     }
 }

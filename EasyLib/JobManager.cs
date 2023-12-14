@@ -333,4 +333,11 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
 
         return JobCheckRule.Valid;
     }
+
+    public void ResumeJob(Job.Job job)
+    {
+        job.Subscribe(this);
+        job.Resume();
+        job.Unsubscribe(this);
+    }
 }
