@@ -140,4 +140,11 @@ public partial class MainWindow
         var job = e.Job;
         Dispatcher.Invoke(() => _jobManager.ResumeJob(job));
     }
+
+    private void JobsList_OnJobDeleted(object? sender, JobEventArgs e)
+    {
+        var job = e.Job;
+        Dispatcher.Invoke(() => _jobManager.DeleteJob(job));
+        Jobs.Remove(job);
+    }
 }

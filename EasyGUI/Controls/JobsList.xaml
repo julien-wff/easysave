@@ -34,6 +34,7 @@
                             SelectedJobs="{Binding SelectedJobs, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             JobEdited="JobDisplay_OnJobEdited"
                             JobResumed="JobDisplay_OnJobResumed"
+                            JobDeleted="JobDisplay_OnJobDeleted"
                             JobStarted="JobDisplay_OnJobStarted" />
                     </DataTemplate>
                 </ListView.ItemTemplate>

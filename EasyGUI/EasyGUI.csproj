@@ -39,6 +39,7 @@
         <Resource Include="Assets\Icons\play-circle-outline.png"/>
         <Resource Include="Assets\Icons\create-outline.png"/>
         <Resource Include="Assets\Icons\settings-outline.png"/>
+        <Resource Include="Assets\Icons\trash-outline.png"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -88,6 +89,11 @@
             <SubType>Designer</SubType>
         </Page>
         <Page Update="Controls\Buttons\ResumeButton.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\Buttons\DeleteButton.xaml">
             <Generator>MSBuild:Compile</Generator>
             <XamlRuntime>Wpf</XamlRuntime>
             <SubType>Designer</SubType>

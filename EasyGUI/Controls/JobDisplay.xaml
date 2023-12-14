@@ -89,6 +89,7 @@
                 <buttons:EditButton Click="EditButton_OnClick" x:Name="EditButton" Margin="8,0,0,0" />
                 <buttons:StartButton Click="StartButton_OnClick" x:Name="StartButton" Margin="8,0,0,0" />
                 <buttons:ResumeButton Click="ResumeButton_OnClick" x:Name="ResumeButton" Margin="8,0,0,0" />
+                <buttons:DeleteButton Click="DeleteButton_OnClick" x:Name="DeleteButton" Margin="8,0,0,0" />
             </StackPanel>
         </Grid>
 

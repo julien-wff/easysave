@@ -125,4 +125,7 @@
     <data name="ResumeButton_Resume" xml:space="preserve">
         <value>Resume</value>
     </data>
+    <data name="DeleteButton_Delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
 </root>

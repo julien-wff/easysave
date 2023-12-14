@@ -57,6 +57,8 @@ public partial class JobsList : INotifyPropertyChanged
 
     public event EventHandler<JobEventArgs>? JobResumed;
 
+    public event EventHandler<JobEventArgs>? JobDeleted;
+
     private void JobDisplay_OnJobStarted(object? sender, JobEventArgs e)
     {
         JobStarted?.Invoke(this, e);
@@ -75,5 +77,10 @@ public partial class JobsList : INotifyPropertyChanged
     private void JobDisplay_OnJobResumed(object? sender, JobEventArgs e)
     {
         JobResumed?.Invoke(this, e);
+    }
+
+    private void JobDisplay_OnJobDeleted(object? sender, JobEventArgs e)
+    {
+        JobDeleted?.Invoke(this, e);
     }
 }

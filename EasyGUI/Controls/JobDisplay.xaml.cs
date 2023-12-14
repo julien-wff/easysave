@@ -90,6 +90,7 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
     public event EventHandler<JobEventArgs>? JobStarted;
     public event EventHandler<JobEventArgs>? JobEdited;
     public event EventHandler<JobEventArgs>? JobResumed;
+    public event EventHandler<JobEventArgs>? JobDeleted;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
@@ -129,6 +130,7 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         SetElementVisibility(EditButton, Job.State == JobState.End);
         SetElementVisibility(StartButton, Job.State == JobState.End);
         SetElementVisibility(ResumeButton, paused);
+        SetElementVisibility(DeleteButton, Job.State == JobState.End);
     }
 
     private void UpdateJobProgress()
@@ -198,5 +200,10 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
     private void ResumeButton_OnClick(object sender, RoutedEventArgs e)
     {
         JobResumed?.Invoke(this, new JobEventArgs(Job));
+    }
+
+    private void DeleteButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        JobDeleted?.Invoke(this, new JobEventArgs(Job));
     }
 }
