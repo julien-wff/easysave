@@ -57,6 +57,8 @@ public class TransferManager : IJobStatusPublisher
     {
         foreach (var file in folder.Files)
         {
+            if (_job.CancellationToken.IsCancellationRequested)
+                return;
             _job.FilesSizeBytes += file.Size;
             _job.FilesCount++;
         }
@@ -65,6 +67,8 @@ public class TransferManager : IJobStatusPublisher
 
         foreach (var subFolder in folder.SubFolders)
         {
+            if (_job.CancellationToken.IsCancellationRequested)
+                return;
             _getFileInfo(subFolder);
         }
     }
@@ -75,6 +79,8 @@ public class TransferManager : IJobStatusPublisher
     /// <param name="folders"></param>
     public void ComputeDifference(List<List<string>> folders)
     {
+        if (_job.CancellationToken.IsCancellationRequested)
+            return;
         _job.State = JobState.DifferenceCalculation;
         InstructionsFolder = new BackupFolder(folders[1][0]);
         if (folders[2].Count != 0)
@@ -96,10 +102,14 @@ public class TransferManager : IJobStatusPublisher
     /// <param name="pathList"></param>
     private void _compareBackupPath(BackupFolder instruction, List<string> pathList)
     {
+        if (_job.CancellationToken.IsCancellationRequested)
+            return;
         instruction.SubFolders = _sourceFolder.SubFolders;
         instruction.Files = _sourceFolder.Files;
         foreach (var path in pathList)
         {
+            if (_job.CancellationToken.IsCancellationRequested)
+                return;
             var backupFolder = new BackupFolder(path + Path.DirectorySeparatorChar);
             backupFolder.Walk(path + Path.DirectorySeparatorChar);
             instruction.SubFolders = _compareFolders(instruction.SubFolders, backupFolder.SubFolders);
@@ -117,6 +127,8 @@ public class TransferManager : IJobStatusPublisher
     {
         foreach (var folder in destination)
         {
+            if (_job.CancellationToken.IsCancellationRequested)
+                return new List<BackupFolder>();
             var sourceFolder = source.Find(s => s.Name == folder.Name);
 
             if (sourceFolder == null)
@@ -147,6 +159,8 @@ public class TransferManager : IJobStatusPublisher
     /// <returns></returns>
     public void CreateDestinationStructure()
     {
+        if (_job.CancellationToken.IsCancellationRequested)
+            return;
         _job.State = JobState.DestinationStructureCreation;
         var actualJobPath = Path.Combine(_job.DestinationFolder, InstructionsFolder.Name);
         if (!Directory.Exists(actualJobPath))
@@ -164,6 +178,8 @@ public class TransferManager : IJobStatusPublisher
     /// <param name="folder"></param>
     private void _createTree(string parentPath, BackupFolder folder)
     {
+        if (_job.CancellationToken.IsCancellationRequested)
+            return;
         foreach (var subFolder in folder.SubFolders)
         {
             var actualSubFolderPath = Path.Combine(parentPath, subFolder.Name);
@@ -175,6 +191,8 @@ public class TransferManager : IJobStatusPublisher
 
     public void TransferFiles()
     {
+        if (_job.CancellationToken.IsCancellationRequested)
+            return;
         _job.State = JobState.Copy;
         if (ConfigManager.Instance.PriorityFileExtensions.Any())
         {
@@ -198,6 +216,8 @@ public class TransferManager : IJobStatusPublisher
             }
         }
 
+        if (_job.CancellationToken.IsCancellationRequested)
+            return;
         _transferFile(InstructionsFolder, "", InstructionsFolder.Name);
     }
 
@@ -205,6 +225,8 @@ public class TransferManager : IJobStatusPublisher
     {
         foreach (var file in folder.Files)
         {
+            if (_job.CancellationToken.IsCancellationRequested)
+                return;
             _job.CurrentFileSource = Path.Combine(_job.SourceFolder, sourcePath, file.Name);
             _job.CurrentFileDestination = Path.Combine(_job.DestinationFolder, destinationPath, file.Name);
             DateTime copyStart;
@@ -228,6 +250,7 @@ public class TransferManager : IJobStatusPublisher
             _job.FilesCopied++;
             _job.FilesBytesCopied += file.Size;
             _notifySubscribersForChange();
+
             var cryptoStart = DateTime.Now;
             var cryptoEnd = cryptoStart;
             if (ConfigManager.Instance.EncryptedFileExtensions

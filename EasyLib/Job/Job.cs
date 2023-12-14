@@ -57,6 +57,7 @@ public class Job(
     public string CurrentFileSource { get; set; } = string.Empty;
     public string CurrentFileDestination { get; set; } = string.Empty;
     public bool CurrentlyRunning { get; private set; }
+    public CancellationTokenSource CancellationToken { get; } = new();
 
     public void Subscribe(IJobStatusSubscriber subscriber)
     {
@@ -200,6 +201,7 @@ public class Job(
     /// <returns>True when the job is paused</returns>
     public bool Pause()
     {
+        CancellationToken.Cancel();
         return true;
     }
 
@@ -209,6 +211,7 @@ public class Job(
     /// <returns></returns>
     public bool Cancel()
     {
+        CancellationToken.Cancel();
         FilesCount = 0;
         FilesSizeBytes = 0;
         FilesCopied = 0;
