@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 using EasyGUI.Events;
 using EasyLib.Enums;
 using EasyLib.Events;
@@ -74,7 +76,6 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
     }
 
     public string NameDisplay => $"#{Job.Id} - {Job.Name}";
-    public string JobPaths => $"{Job.SourceFolder} \u2192 {Job.DestinationFolder}";
 
     public void OnJobStateChange(JobState state, Job job)
     {
@@ -222,5 +223,15 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
     private void PauseButton_OnClick(object sender, RoutedEventArgs e)
     {
         JobPaused?.Invoke(this, new JobEventArgs(Job));
+    }
+
+    private void JobSource_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        Process.Start("explorer.exe", Job.SourceFolder);
+    }
+
+    private void JobDestination_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        Process.Start("explorer.exe", Job.DestinationFolder);
     }
 }
