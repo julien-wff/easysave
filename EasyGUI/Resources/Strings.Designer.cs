@@ -249,6 +249,24 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An instance of this application is already running. Please close it first..
+        /// </summary>
+        public static string MainWindow_InstanceError_Message {
+            get {
+                return ResourceManager.GetString("MainWindow_InstanceError_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application already running.
+        /// </summary>
+        public static string MainWindow_InstanceError_Title {
+            get {
+                return ResourceManager.GetString("MainWindow_InstanceError_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pause.
         /// </summary>
         public static string PauseButton_Pause {
