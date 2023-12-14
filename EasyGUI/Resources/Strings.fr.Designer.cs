@@ -249,6 +249,15 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pause.
+        /// </summary>
+        public static string PauseButton_Pause {
+            get {
+                return ResourceManager.GetString("PauseButton_Pause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reprendre.
         /// </summary>
         public static string ResumeButton_Resume {

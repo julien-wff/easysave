@@ -131,4 +131,7 @@
     <data name="DiscardButton_Discard" xml:space="preserve">
         <value>Discard</value>
     </data>
+    <data name="PauseButton_Pause" xml:space="preserve">
+        <value>Pause</value>
+    </data>
 </root>

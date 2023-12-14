@@ -156,6 +156,12 @@ public partial class MainWindow
         });
     }
 
+    private void JobsList_OnJobPaused(object? sender, JobEventArgs e)
+    {
+        var job = e.Job;
+        Dispatcher.Invoke(() => _jobManager.PauseJob(job));
+    }
+
     private void UpdateJob(Job job)
     {
         var jobIndex = Jobs.IndexOf(job);

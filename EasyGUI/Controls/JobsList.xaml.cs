@@ -61,6 +61,8 @@ public partial class JobsList : INotifyPropertyChanged
 
     public event EventHandler<JobEventArgs>? JobDiscarded;
 
+    public event EventHandler<JobEventArgs>? JobPaused;
+
     private void JobDisplay_OnJobStarted(object? sender, JobEventArgs e)
     {
         JobStarted?.Invoke(this, e);
@@ -89,5 +91,10 @@ public partial class JobsList : INotifyPropertyChanged
     private void JobDisplay_OnJobDiscarded(object? sender, JobEventArgs e)
     {
         JobDiscarded?.Invoke(this, e);
+    }
+
+    private void JobDisplay_OnJobPaused(object? sender, JobEventArgs e)
+    {
+        JobPaused?.Invoke(this, e);
     }
 }
