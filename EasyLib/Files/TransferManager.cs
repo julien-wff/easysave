@@ -203,7 +203,6 @@ public class TransferManager : IJobStatusPublisher
         while (Interlocked.Read(ref Job.Job.CurrentPriorityRunning) > 0)
         {
             Job.Job.NotifyWaitingJobs.WaitOne();
-            Console.WriteLine("finished waiting");
             if (Interlocked.Read(ref Job.Job.CurrentPriorityRunning) > 0)
             {
                 Job.Job.NotifyWaitingJobs.Reset();
