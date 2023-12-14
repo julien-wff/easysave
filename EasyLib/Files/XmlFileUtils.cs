@@ -6,11 +6,21 @@ namespace EasyLib.Files;
 
 public static class XmlFileUtils
 {
+    private static readonly object _xmlLock = new();
+
     /// <summary>
     /// Add the log to the xml file, log must be type of LogElement
     /// </summary>
     /// <param name="xmlFilePath"></param>
     /// <param name="log"></param>
+    public static void AppendXmlLog(string xmlFilePath, LogElement log)
+    {
+        lock (_xmlLock)
+        {
+            AddXmlLog(xmlFilePath, log);
+        }
+    }
+
     public static void AddXmlLog(string xmlFilePath, LogElement log)
     {
         if (!File.Exists(xmlFilePath) ||
