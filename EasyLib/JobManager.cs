@@ -106,6 +106,12 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     {
         _jobs.Clear();
         _jobs.AddRange(StateManager.Instance.ReadJobs());
+
+        foreach (var job in _jobs)
+        {
+            job.Subscribe(this);
+        }
+
         return true;
     }
 
@@ -218,7 +224,6 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
         var success = true;
         foreach (var job in jobs)
         {
-            job.Subscribe(this);
             var jobSuccess = job.Run();
             if (jobSuccess)
                 continue;
@@ -252,6 +257,8 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
             StateManager.Instance.WriteJobs(_jobs);
         }
 
+        newJob.Subscribe(this);
+
         return newJob;
     }
 
@@ -261,6 +268,7 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     /// <param name="job">Job to delete</param>
     public void DeleteJob(Job.Job job)
     {
+        job.Unsubscribe(this);
         _jobs.Remove(job);
         if (!_ramOnly)
         {
