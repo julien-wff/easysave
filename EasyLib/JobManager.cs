@@ -81,6 +81,11 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
         StateManager.Instance.WriteJobs(_jobs);
     }
 
+    public void StopCheck()
+    {
+        _pauseJobEvent.Stop();
+    }
+
     [GeneratedRegex(@"^\d+-\d+$", RegexOptions.NonBacktracking)]
     private static partial Regex JobIndexRangeRegex();
 
@@ -362,15 +367,9 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
         }
     }
 
-    public bool ReloadConfig()
+    public void ReloadConfig()
     {
-        if (Environment.OSVersion.Platform == PlatformID.Win32NT) // only on Windows can run this feature
-        {
-            _pauseJobEvent.Stop();
-            _pauseJobEvent = new ProcessStartEvent(ConfigManager.Instance.CompanySoftwareProcessPath, this);
-            return true;
-        }
-
-        return false;
+        _pauseJobEvent.Stop();
+        _pauseJobEvent = new ProcessStartEvent(ConfigManager.Instance.CompanySoftwareProcessPath, this);
     }
 }
