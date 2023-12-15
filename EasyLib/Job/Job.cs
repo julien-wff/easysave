@@ -24,6 +24,8 @@ public class Job(
     public static readonly Semaphore MaxSizeFileCopying = new Semaphore(1, 1);
     public static readonly EventWaitHandle NotifyWaitingJobs = new EventWaitHandle(initialState: false, ManualReset);
 
+    public static ulong CurrentPriorityRunning;
+
     /// <summary>
     /// Create a job instance from a JsonJob object
     /// </summary>
@@ -40,8 +42,6 @@ public class Job(
         CurrentFileSource = job.active_job_info?.current_file_source ?? string.Empty;
         CurrentFileDestination = job.active_job_info?.current_file_destination ?? string.Empty;
     }
-
-    public static ulong CurrentPriorityRunning { get; set; }
 
     private List<IJobStatusSubscriber> Subscribers { get; } = new();
     public string DestinationFolder { get; set; } = destinationFolder;
