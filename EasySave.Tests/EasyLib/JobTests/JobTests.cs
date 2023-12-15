@@ -16,7 +16,7 @@ public class JobTests
         const JobType jobType = JobType.Full;
 
         // Act
-        var job = new Job(jobName, sourcePath, targetPath, jobType);
+        var job = new LocalJob(jobName, sourcePath, targetPath, jobType);
 
         // Assert
         job.Name.Should().Be(jobName);
@@ -30,7 +30,7 @@ public class JobTests
     public void ToJsonJob_ShouldReturnCorrectJsonJob()
     {
         // Arrange
-        var job = new Job("job1", "C:\\", "D:\\", JobType.Full)
+        var job = new LocalJob("job1", "C:\\", "D:\\", JobType.Full)
         {
             Id = 1,
             State = JobState.Copy,
@@ -78,7 +78,7 @@ public class JobTests
         };
 
         // Act
-        var job = new Job(jsonJob);
+        var job = new LocalJob(jsonJob);
 
         // Assert
         Assert.Equal(jsonJob.id, job.Id);

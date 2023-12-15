@@ -35,7 +35,7 @@ public class TransferManagerTests
 
         var paths = CreateTestFiles(tempDirPath, testPath);
         // Act
-        var job = new Job(jobName, paths[0], paths[1], jobType);
+        var job = new LocalJob(jobName, paths[0], paths[1], jobType);
         var transferManager = new TransferManager(job);
         var folderList = Directory.GetDirectories(paths[1]).ToList();
         var directories = new List<List<string>>() { folderList };

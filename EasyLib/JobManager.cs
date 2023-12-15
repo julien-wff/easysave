@@ -34,18 +34,19 @@ public abstract class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     public abstract List<Job.Job> GetJobsFromString(string jobsIString);
     public abstract List<Job.Job> GetJobsFromIds(IEnumerable<int> jobIds);
     public abstract JobCheckRule EditJob(Job.Job job, string name, string source, string destination, JobType? type);
+
+    public abstract JobCheckRule CheckJobRules(int id, string name, string source, string destination,
+        bool testEmpty = true);
+
     public abstract bool ExecuteJobs(IEnumerable<int> jobIds);
     public abstract bool ExecuteJobs(IEnumerable<Job.Job> jobs);
     public abstract Job.Job CreateJob(string name, string src, string dest, JobType type);
     public abstract void DeleteJob(Job.Job job);
     public abstract void CancelJob(Job.Job job);
     public abstract void PauseJob(Job.Job job);
+    public abstract void ResumeJob(Job.Job job);
     public abstract void PauseAllJobs();
 
-    public abstract JobCheckRule CheckJobRules(int id, string name, string source, string destination,
-        bool testEmpty = true);
-
-    public abstract void ResumeJob(Job.Job job);
     public abstract void ResumeAllJobs();
     public abstract void ReloadConfig();
     public abstract void StopCheck();

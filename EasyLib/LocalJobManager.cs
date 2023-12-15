@@ -226,7 +226,7 @@ public partial class LocalJobManager : JobManager
     public override Job.Job CreateJob(string name, string src, string dest, JobType type)
     {
         var highestId = _jobs.Count > 0 ? _jobs.Max(job => job.Id) : 0;
-        var newJob = new Job.Job(name, src, dest, type)
+        var newJob = new Job.LocalJob(name, src, dest, type)
         {
             Id = highestId + 1
         };

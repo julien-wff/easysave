@@ -100,7 +100,7 @@ public class StateManagerTests
     public void WriteJobs_ShouldWriteCorrectJobs()
     {
         // Arrange
-        var job = new Job("job1", "C:\\", "D:\\", JobType.Full)
+        var job = new LocalJob("job1", "C:\\", "D:\\", JobType.Full)
         {
             Id = 1,
         };
