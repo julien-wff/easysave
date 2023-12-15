@@ -188,6 +188,24 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Une erreur est survenue pendant l&apos;exécution de la tâche {0} : {1}.
+        /// </summary>
+        public static string JobDisplay_ErrorPopup_Message {
+            get {
+                return ResourceManager.GetString("JobDisplay_ErrorPopup_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erreur de tâche.
+        /// </summary>
+        public static string JobDisplay_ErrorPopup_Title {
+            get {
+                return ResourceManager.GetString("JobDisplay_ErrorPopup_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copie.
         /// </summary>
         public static string JobState_Copy {
@@ -220,6 +238,15 @@ namespace EasyGUI.Resources {
         public static string JobState_End {
             get {
                 return ResourceManager.GetString("JobState_End", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erreur.
+        /// </summary>
+        public static string JobState_Error {
+            get {
+                return ResourceManager.GetString("JobState_Error", resourceCulture);
             }
         }
         

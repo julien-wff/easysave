@@ -50,7 +50,7 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
         _subscribers.Remove(subscriber);
     }
 
-    public void OnJobError(string error)
+    public void OnJobError(Exception error)
     {
         foreach (var subscriber in _subscribers)
         {
