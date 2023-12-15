@@ -1,14 +1,17 @@
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using EasyGUI.Events;
+using EasyGUI.Resources;
 using EasyLib.Enums;
 using EasyLib.Events;
 using EasyLib.Job;
 using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace EasyGUI.Controls;
 
@@ -34,6 +37,10 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         typeof(JobDisplay),
         new PropertyMetadata(default(ObservableCollection<Job>))
     );
+
+    private readonly object _errorMessageLock = new();
+
+    private string? _errorMessage;
 
     private bool _isJobSelectedLocked;
 
@@ -79,12 +86,41 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
 
     public void OnJobStateChange(JobState state, Job job)
     {
-        Application.Current.Dispatcher.Invoke(() => OnPropertyChanged(nameof(Job)));
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            _errorMessage = null;
+            OnPropertyChanged(nameof(Job));
+        });
     }
 
     public void OnJobProgress(Job job)
     {
         Application.Current.Dispatcher.Invoke(() => OnPropertyChanged(nameof(Job)));
+    }
+
+    public void OnJobError(Exception error)
+    {
+        lock (_errorMessageLock)
+        {
+            if (_errorMessage != null)
+                return;
+
+            _errorMessage = error.Message;
+        }
+
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            var jobName = Job.Name;
+
+            Task.Run(() => MessageBox.Show(
+                string.Format(Strings.JobDisplay_ErrorPopup_Message, jobName, error.Message),
+                Strings.JobDisplay_ErrorPopup_Title,
+                MessageBoxButton.OK,
+                MessageBoxImage.Error
+            ));
+
+            OnPropertyChanged(nameof(Job));
+        });
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -126,6 +162,7 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         SetElementVisibility(StructureBreadCrumb, Job.State == JobState.DestinationStructureCreation);
         SetElementVisibility(CopyBreadCrumb, Job.State == JobState.Copy);
         SetElementVisibility(PausedBreadCrumb, Job.State != JobState.End && !Job.CurrentlyRunning);
+        SetElementVisibility(ErrorBreadCrumb, !string.IsNullOrEmpty(_errorMessage));
     }
 
     private void UpdateButtons()
@@ -189,7 +226,18 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         UpdateBreadcrumbs();
         UpdateJobProgress();
         UpdateButtons();
-        SelectedJobs.CollectionChanged += (_, _) => OnPropertyChanged(nameof(SelectedJobs));
+        SelectedJobs.CollectionChanged += _selectedJobs_CollectionChanged;
+    }
+
+    private void JobDisplay_OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        Job.Unsubscribe(this);
+        SelectedJobs.CollectionChanged -= _selectedJobs_CollectionChanged;
+    }
+
+    private void _selectedJobs_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(SelectedJobs));
     }
 
     private void JobCheckBox_OnChecked(object sender, RoutedEventArgs e)

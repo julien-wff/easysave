@@ -18,7 +18,7 @@ public interface IJobStatusSubscriber
     /// Event triggered when an error occurs during the job
     /// </summary>
     /// <param name="error"></param>
-    public void OnJobError(string error)
+    public void OnJobError(Exception error)
     {
         // Implementation optional
     }

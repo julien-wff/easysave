@@ -159,7 +159,19 @@ public class Job(
         var folders = selector.SelectFolders(directories, lastFolder, Type, DestinationFolder);
 
         // Run the job in a new thread
-        var thread = new Thread(() => JobSteps(transferManager, folders));
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                JobSteps(transferManager, folders);
+            }
+            catch (Exception e)
+            {
+                CurrentlyRunning = false;
+                Pause();
+                _notifySubscribersForError(e);
+            }
+        });
         thread.Start();
         return true;
     }
@@ -246,6 +258,14 @@ public class Job(
         foreach (var subscriber in Subscribers)
         {
             subscriber.OnJobStateChange(subState, this);
+        }
+    }
+
+    private void _notifySubscribersForError(Exception error)
+    {
+        foreach (var subscriber in Subscribers)
+        {
+            subscriber.OnJobError(error);
         }
     }
 
