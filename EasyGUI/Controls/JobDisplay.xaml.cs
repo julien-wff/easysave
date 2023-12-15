@@ -104,6 +104,7 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
             UpdateJobProgress();
             UpdateBreadcrumbs();
             UpdateButtons();
+            SetButtonsState(true);
         }
 
         if (propertyName == nameof(SelectedJobs) && !_selectedJobsLocked)
@@ -138,6 +139,16 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         SetElementVisibility(PauseButton, Job.State != JobState.End && Job.CurrentlyRunning);
     }
 
+    private void SetButtonsState(bool enabled)
+    {
+        EditButton.IsEnabled = enabled;
+        StartButton.IsEnabled = enabled;
+        DeleteButton.IsEnabled = enabled;
+        ResumeButton.IsEnabled = enabled;
+        DiscardButton.IsEnabled = enabled;
+        PauseButton.IsEnabled = enabled;
+    }
+
     private void UpdateJobProgress()
     {
         if (Job.State == JobState.End)
@@ -168,6 +179,7 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
 
     private void StartButton_OnClick(object sender, RoutedEventArgs e)
     {
+        SetButtonsState(false);
         JobStarted?.Invoke(this, new JobEventArgs(Job));
     }
 
@@ -207,21 +219,25 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
 
     private void ResumeButton_OnClick(object sender, RoutedEventArgs e)
     {
+        SetButtonsState(false);
         JobResumed?.Invoke(this, new JobEventArgs(Job));
     }
 
     private void DeleteButton_OnClick(object sender, RoutedEventArgs e)
     {
+        SetButtonsState(false);
         JobDeleted?.Invoke(this, new JobEventArgs(Job));
     }
 
     private void DiscardButton_OnClick(object sender, RoutedEventArgs e)
     {
+        SetButtonsState(false);
         JobDiscarded?.Invoke(this, new JobEventArgs(Job));
     }
 
     private void PauseButton_OnClick(object sender, RoutedEventArgs e)
     {
+        SetButtonsState(false);
         JobPaused?.Invoke(this, new JobEventArgs(Job));
     }
 

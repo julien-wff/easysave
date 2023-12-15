@@ -57,7 +57,7 @@ public class Job(
     public string CurrentFileSource { get; set; } = string.Empty;
     public string CurrentFileDestination { get; set; } = string.Empty;
     public bool CurrentlyRunning { get; private set; }
-    public CancellationTokenSource CancellationToken { get; } = new();
+    public CancellationTokenSource CancellationToken { get; private set; } = new();
 
     public void Subscribe(IJobStatusSubscriber subscriber)
     {
@@ -182,16 +182,41 @@ public class Job(
     {
         transferManager.Subscribe(this);
         CurrentlyRunning = true;
-        _setJobState(JobState.SourceScan);
-        transferManager.ScanSource();
-        _setJobState(JobState.DifferenceCalculation);
-        transferManager.ComputeDifference(folders);
-        _setJobState(JobState.DestinationStructureCreation);
-        transferManager.CreateDestinationStructure();
-        _setJobState(JobState.Copy);
-        transferManager.TransferFiles();
+
+        if (!CancellationToken.IsCancellationRequested)
+        {
+            _setJobState(JobState.SourceScan);
+            transferManager.ScanSource();
+        }
+
+        if (!CancellationToken.IsCancellationRequested)
+        {
+            _setJobState(JobState.DifferenceCalculation);
+            transferManager.ComputeDifference(folders);
+        }
+
+        if (!CancellationToken.IsCancellationRequested)
+        {
+            _setJobState(JobState.DestinationStructureCreation);
+            transferManager.CreateDestinationStructure();
+        }
+
+        if (!CancellationToken.IsCancellationRequested)
+        {
+            _setJobState(JobState.Copy);
+            transferManager.TransferFiles();
+        }
+
         CurrentlyRunning = false;
-        _setJobState(JobState.End);
+
+        // If the job is cancelled, re-send the state to the subscribers so they can update their UI
+        // Otherwise, set the state to "End"
+        _setJobState(!CancellationToken.IsCancellationRequested ? JobState.End : State);
+
+        // Make the cancellation token available for the next job
+        CancellationToken.Dispose();
+        CancellationToken = new CancellationTokenSource();
+
         transferManager.Unsubscribe(this);
     }
 
