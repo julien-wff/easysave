@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using EasyGUI.Events;
@@ -172,5 +173,11 @@ public partial class MainWindow
     private void SettingsPopup_OnReloadConfig(object? sender, EventArgs e)
     {
         _jobManager.ReloadConfig();
+    }
+
+    private void MainWindow_OnClosing(object? sender, CancelEventArgs e)
+    {
+        // destroy job manager
+        _jobManager.StopCheck();
     }
 }
