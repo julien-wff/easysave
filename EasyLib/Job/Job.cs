@@ -57,7 +57,7 @@ public class Job(
     public string CurrentFileSource { get; set; } = string.Empty;
     public string CurrentFileDestination { get; set; } = string.Empty;
     public bool CurrentlyRunning { get; private set; }
-    public CancellationTokenSource CancellationToken { get; } = new();
+    public CancellationTokenSource CancellationToken { get; private set; } = new();
 
     public void Subscribe(IJobStatusSubscriber subscriber)
     {
@@ -201,7 +201,6 @@ public class Job(
             transferManager.CreateDestinationStructure();
         }
 
-
         if (!CancellationToken.IsCancellationRequested)
         {
             _setJobState(JobState.Copy);
@@ -213,6 +212,10 @@ public class Job(
         // If the job is cancelled, re-send the state to the subscribers so they can update their UI
         // Otherwise, set the state to "End"
         _setJobState(!CancellationToken.IsCancellationRequested ? JobState.End : State);
+
+        // Make the cancellation token available for the next job
+        CancellationToken.Dispose();
+        CancellationToken = new CancellationTokenSource();
 
         transferManager.Unsubscribe(this);
     }
