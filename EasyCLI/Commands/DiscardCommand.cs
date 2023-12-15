@@ -30,7 +30,7 @@ public class DiscardCommand : Command
             Console.WriteLine("Invalid arguments. Type 'easysave help discard' for more information");
         }
 
-        var jm = new JobManager();
+        var jm = new LocalJobManager();
         var fetchSuccess = jm.FetchJobs();
 
         if (!fetchSuccess)

@@ -57,7 +57,7 @@ public class ResumeCommand : Command, IJobStatusSubscriber
             return;
         }
 
-        var jm = new JobManager();
+        var jm = new LocalJobManager();
         var fetchSuccess = jm.FetchJobs();
 
         if (!fetchSuccess)

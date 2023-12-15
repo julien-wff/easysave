@@ -96,7 +96,7 @@ public class EditCommand : Command
             jobType = (JobType)Params.Flags[0].Type.ParseValue();
         }
 
-        var jm = new JobManager();
+        var jm = new LocalJobManager();
 
         var job = jm.GetJobsFromIds(new[] { id });
 

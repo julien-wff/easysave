@@ -29,7 +29,7 @@ public class DeleteCommand : Command
             return;
         }
 
-        var jobManager = new JobManager();
+        var jobManager = new LocalJobManager();
 
         if (jobManager.GetJobs().Count == 0)
         {

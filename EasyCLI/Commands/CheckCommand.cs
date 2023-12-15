@@ -24,7 +24,7 @@ public class CheckCommand : Command
     public override void Run(IEnumerable<string> args)
     {
         var argsList = args.ToList();
-        var jm = new JobManager();
+        var jm = new LocalJobManager();
         var fetchJobsResult = jm.FetchJobs();
 
         if (!fetchJobsResult)

@@ -22,7 +22,7 @@ public partial class MainWindow
     {
         InitializeComponent();
 
-        _jobManager = new JobManager();
+        _jobManager = new LocalJobManager();
         foreach (var job in _jobManager.GetJobs())
         {
             Jobs.Add(job);
