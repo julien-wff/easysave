@@ -182,16 +182,38 @@ public class Job(
     {
         transferManager.Subscribe(this);
         CurrentlyRunning = true;
-        _setJobState(JobState.SourceScan);
-        transferManager.ScanSource();
-        _setJobState(JobState.DifferenceCalculation);
-        transferManager.ComputeDifference(folders);
-        _setJobState(JobState.DestinationStructureCreation);
-        transferManager.CreateDestinationStructure();
-        _setJobState(JobState.Copy);
-        transferManager.TransferFiles();
+
+        if (!CancellationToken.IsCancellationRequested)
+        {
+            _setJobState(JobState.SourceScan);
+            transferManager.ScanSource();
+        }
+
+        if (!CancellationToken.IsCancellationRequested)
+        {
+            _setJobState(JobState.DifferenceCalculation);
+            transferManager.ComputeDifference(folders);
+        }
+
+        if (!CancellationToken.IsCancellationRequested)
+        {
+            _setJobState(JobState.DestinationStructureCreation);
+            transferManager.CreateDestinationStructure();
+        }
+
+
+        if (!CancellationToken.IsCancellationRequested)
+        {
+            _setJobState(JobState.Copy);
+            transferManager.TransferFiles();
+        }
+
         CurrentlyRunning = false;
-        _setJobState(JobState.End);
+
+        // If the job is cancelled, re-send the state to the subscribers so they can update their UI
+        // Otherwise, set the state to "End"
+        _setJobState(!CancellationToken.IsCancellationRequested ? JobState.End : State);
+
         transferManager.Unsubscribe(this);
     }
 
