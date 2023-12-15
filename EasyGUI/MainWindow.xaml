@@ -33,6 +33,7 @@
             Visibility="Collapsed" />
         <controls:SettingsPopup
             x:Name="SettingsPopup"
-            Visibility="Collapsed" />
+            Visibility="Collapsed"
+            ReloadConfig="SettingsPopup_OnReloadConfig"/>
     </Grid>
 </Window>

@@ -26,6 +26,8 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
     /// </summary>
     private readonly List<IJobStatusSubscriber> _subscribers = new();
 
+    private ProcessStartEvent _pauseJobEvent;
+
 
     public JobManager(bool ramOnly = false)
     {
@@ -34,6 +36,8 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
         {
             FetchJobs();
         }
+
+        _pauseJobEvent = new ProcessStartEvent(ConfigManager.Instance.CompanySoftwareProcessPath, this);
     }
 
     public void Subscribe(IJobStatusSubscriber subscriber)
@@ -279,6 +283,14 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
         StateManager.Instance.WriteJobs(_jobs);
     }
 
+    public void PauseAllJobs()
+    {
+        foreach (var job in _jobs)
+        {
+            PauseJob(job);
+        }
+    }
+
     public JobCheckRule CheckJobRules(int id, string name, string source, string destination, bool testEmpty = true)
     {
         if (!Path.IsPathFullyQualified(source))
@@ -336,8 +348,29 @@ public partial class JobManager : IJobStatusSubscriber, IJobStatusPublisher
 
     public void ResumeJob(Job.Job job)
     {
-        job.Subscribe(this);
         job.Resume();
-        job.Unsubscribe(this);
+    }
+
+    public void ResumeAllJobs()
+    {
+        foreach (var job in _jobs)
+        {
+            if (job.State != JobState.End)
+            {
+                job.Resume();
+            }
+        }
+    }
+
+    public bool ReloadConfig()
+    {
+        if (Environment.OSVersion.Platform == PlatformID.Win32NT) // only on Windows can run this feature
+        {
+            _pauseJobEvent.Stop();
+            _pauseJobEvent = new ProcessStartEvent(ConfigManager.Instance.CompanySoftwareProcessPath, this);
+            return true;
+        }
+
+        return false;
     }
 }
