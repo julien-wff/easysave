@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -189,7 +190,18 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         UpdateBreadcrumbs();
         UpdateJobProgress();
         UpdateButtons();
-        SelectedJobs.CollectionChanged += (_, _) => OnPropertyChanged(nameof(SelectedJobs));
+        SelectedJobs.CollectionChanged += _selectedJobs_CollectionChanged;
+    }
+
+    private void JobDisplay_OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        Job.Unsubscribe(this);
+        SelectedJobs.CollectionChanged -= _selectedJobs_CollectionChanged;
+    }
+
+    private void _selectedJobs_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(SelectedJobs));
     }
 
     private void JobCheckBox_OnChecked(object sender, RoutedEventArgs e)

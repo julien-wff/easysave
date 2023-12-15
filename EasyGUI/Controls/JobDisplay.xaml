@@ -10,6 +10,7 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="1280"
              Loaded="JobDisplay_OnLoaded"
+             Unloaded="JobDisplay_OnUnloaded"
              d:DataContext="{x:Type job:Job}">
     <Grid>
         <Grid.RowDefinitions>
