@@ -226,7 +226,12 @@ public partial class SettingsPopup : INotifyPropertyChanged
             Application.Restart();
             Process.GetCurrentProcess().Kill();
         }
+
+        // Invoke reload config event
+        ReloadConfig?.Invoke(this, EventArgs.Empty);
     }
+
+    public event EventHandler? ReloadConfig;
 
     private void SettingsPopup_OnLoaded(object sender, RoutedEventArgs e)
     {

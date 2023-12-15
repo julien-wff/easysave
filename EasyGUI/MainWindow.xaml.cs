@@ -168,4 +168,9 @@ public partial class MainWindow
         Jobs.Remove(job);
         Jobs.Insert(jobIndex, job);
     }
+
+    private void SettingsPopup_OnReloadConfig(object? sender, EventArgs e)
+    {
+        _jobManager.ReloadConfig();
+    }
 }

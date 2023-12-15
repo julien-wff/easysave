@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using EasyLib.Enums;
 using EasyLib.Events;
 using EasyLib.Files;
@@ -23,8 +22,9 @@ public class Job(
     JobState state = JobState.End) : IJobStatusPublisher, IJobStatusSubscriber
 {
     public static readonly Semaphore MaxSizeFileCopying = new Semaphore(1, 1);
-    public static ulong CurrentPriorityRunning = 0;
     public static readonly EventWaitHandle NotifyWaitingJobs = new EventWaitHandle(initialState: false, ManualReset);
+
+    public static ulong CurrentPriorityRunning;
 
     /// <summary>
     /// Create a job instance from a JsonJob object
@@ -111,6 +111,8 @@ public class Job(
     /// <returns>True if the job is started correctly</returns>
     public bool Resume()
     {
+        CancellationToken.Dispose();
+        CancellationToken = new CancellationTokenSource();
         return Start(true);
     }
 
@@ -134,17 +136,6 @@ public class Job(
         if (CurrentlyRunning)
         {
             return false;
-        }
-
-        // Wait for the company software to be closed
-        if (ConfigManager.Instance.CheckProcessRunning())
-        {
-            var processName = Path.GetFileNameWithoutExtension(ConfigManager.Instance.CompanySoftwareProcessPath);
-            var processes = Process.GetProcessesByName(processName);
-            foreach (var process in processes)
-            {
-                process.WaitForExit();
-            }
         }
 
         // Reset the job stats if the job is not resumed
@@ -241,14 +232,13 @@ public class Job(
         return true;
     }
 
-    private bool _resetJobStats()
+    private void _resetJobStats()
     {
         FilesCount = 0;
         FilesSizeBytes = 0;
         FilesCopied = 0;
         FilesBytesCopied = 0;
         State = JobState.End;
-        return true;
     }
 
     private void _notifySubscribersForChangeState(JobState subState)
