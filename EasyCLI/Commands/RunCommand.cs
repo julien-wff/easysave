@@ -1,10 +1,10 @@
 using EasyCLI.Commands.CommandFeatures;
 using EasyCLI.Display;
 using EasyCLI.Localization;
-using EasyLib;
 using EasyLib.Enums;
 using EasyLib.Events;
 using EasyLib.Job;
+using EasyLib.JobManager;
 
 namespace EasyCLI.Commands;
 

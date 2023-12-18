@@ -10,15 +10,30 @@ namespace EasyLib.Job;
 /// <param name="name">Name of the task</param>
 /// <param name="sourceFolder">Folder to backup</param>
 /// <param name="destinationFolder">Backup destination</param>
-/// <param name="type">Backup type (full, differential)</param>
-/// <param name="state">Current state</param>
+/// <param name="typeype">Backup type (full, differential)</param>
+/// <param name="stateate">Current state</param>
 public class LocalJob(
     string name,
     string sourceFolder,
     string destinationFolder,
     JobType type,
-    JobState state = JobState.End) : Job
+    JobState state = JobState.End) : Job(name, sourceFolder, destinationFolder, type, state)
 {
+    /// <summary>
+    /// Lock for copying big files
+    /// </summary>
+    public static readonly Semaphore MaxSizeFileCopying = new(1, 1);
+
+    /// <summary>
+    /// Event for when jobs need to wait for the company software to close
+    /// </summary>
+    public static readonly EventWaitHandle NotifyWaitingJobs = new(initialState: false, EventResetMode.ManualReset);
+
+    /// <summary>
+    /// Number of current priority copies running (files with the listed extensions in the config file)
+    /// </summary>
+    public static ulong CurrentPriorityRunning;
+
     /// <summary>
     /// Create a job instance from a JsonJob object
     /// </summary>
@@ -36,94 +51,34 @@ public class LocalJob(
         CurrentFileDestination = job.active_job_info?.current_file_destination ?? string.Empty;
     }
 
-    public override string DestinationFolder { get; set; } = destinationFolder;
-    public override ulong FilesBytesCopied { get; set; }
-    public override uint FilesCopied { get; set; }
-    public override uint FilesCount { get; set; }
-    public override ulong FilesSizeBytes { get; set; }
-    public override uint Id { get; init; }
-    public override string Name { get; set; } = name;
-    public override string SourceFolder { get; set; } = sourceFolder;
-    public override JobState State { get; set; } = state;
-    public override JobType Type { get; set; } = type;
-    public override string CurrentFileSource { get; set; } = string.Empty;
-    public override string CurrentFileDestination { get; set; } = string.Empty;
-    public override bool CurrentlyRunning { get; protected set; }
-    public override CancellationTokenSource CancellationToken { get; protected set; } = new();
-
-    public override void OnJobProgress(Job job)
-    {
-        foreach (var subscriber in Subscribers)
-        {
-            subscriber.OnJobProgress(job);
-        }
-    }
-
     /// <summary>
-    /// Convert a job instance to a JsonJob object
+    /// Cancellation token to stop the job execution
     /// </summary>
-    /// <returns>JsonJob object</returns>
-    public override JsonJob ToJsonJob()
-    {
-        return new JsonJob
-        {
-            id = Id,
-            name = Name,
-            source_folder = SourceFolder,
-            destination_folder = DestinationFolder,
-            type = EnumConverter<JobType>.ConvertToString(Type),
-            state = EnumConverter<JobState>.ConvertToString(State),
-            active_job_info = State == JobState.End
-                ? null
-                : new JsonActiveJobInfo
-                {
-                    total_file_count = FilesCount,
-                    total_file_size = FilesSizeBytes,
-                    files_copied = FilesCopied,
-                    bytes_copied = FilesBytesCopied,
-                    current_file_source = CurrentFileSource,
-                    current_file_destination = CurrentFileDestination
-                }
-        };
-    }
+    public CancellationTokenSource CancellationToken { get; private set; } = new();
 
-    /// <summary>
-    /// Start the backup job without cancelling it
-    /// </summary>
-    /// <returns>True if the job is started correctly</returns>
     public override bool Resume()
     {
         CancellationToken.Dispose();
         CancellationToken = new CancellationTokenSource();
-        return Start(true);
+        return _executeJob();
     }
 
-    /// <summary>
-    /// Cancel the backup job and run
-    /// </summary>
-    /// <returns>True if the job is started correctly</returns>
     public override bool Run()
     {
-        return Start(false);
+        _resetJobStats();
+        return _executeJob();
     }
 
     /// <summary>
     /// Run the backup job
     /// </summary>
-    /// <param name="resume">If false, the job is cancelled first</param>
     /// <returns>True when the job is complete</returns>
-    protected override bool Start(bool resume)
+    private bool _executeJob()
     {
         // If the job is already running, return false
         if (CurrentlyRunning)
         {
             return false;
-        }
-
-        // Reset the job stats if the job is not resumed
-        if (!resume)
-        {
-            _resetJobStats();
         }
 
         // Create the transfer manager and the folder selector
@@ -145,13 +100,13 @@ public class LocalJob(
         {
             try
             {
-                JobSteps(transferManager, folders);
+                _runJobSteps(transferManager, folders);
             }
             catch (Exception e)
             {
                 CurrentlyRunning = false;
                 Pause();
-                _notifySubscribersForError(e);
+                OnJobError(e);
             }
         });
         thread.Start();
@@ -163,7 +118,7 @@ public class LocalJob(
     /// </summary>
     /// <param name="transferManager">Instance of the transfer manager</param>
     /// <param name="folders">Folders used to compute the difference</param>
-    protected override void JobSteps(TransferManager transferManager, List<List<string>> folders)
+    private void _runJobSteps(TransferManager transferManager, List<List<string>> folders)
     {
         transferManager.Subscribe(this);
         CurrentlyRunning = true;
@@ -205,20 +160,12 @@ public class LocalJob(
         transferManager.Unsubscribe(this);
     }
 
-    /// <summary>
-    /// Pause a job execution
-    /// </summary>
-    /// <returns>True when the job is paused</returns>
     public override bool Pause()
     {
         CancellationToken.Cancel();
         return true;
     }
 
-    /// <summary>
-    /// Cancel a running or a paused job, make its status to "End"
-    /// </summary>
-    /// <returns></returns>
     public override bool Cancel()
     {
         CancellationToken.Cancel();
@@ -226,7 +173,11 @@ public class LocalJob(
         return true;
     }
 
-    protected override void _resetJobStats()
+    /// <summary>
+    /// Reset the characteristics of the job to their default values,
+    /// like if it was just created
+    /// </summary>
+    private void _resetJobStats()
     {
         FilesCount = 0;
         FilesSizeBytes = 0;
@@ -235,25 +186,13 @@ public class LocalJob(
         State = JobState.End;
     }
 
-    protected override void _notifySubscribersForChangeState(JobState subState)
-    {
-        foreach (var subscriber in Subscribers)
-        {
-            subscriber.OnJobStateChange(subState, this);
-        }
-    }
-
-    protected override void _notifySubscribersForError(Exception error)
-    {
-        foreach (var subscriber in Subscribers)
-        {
-            subscriber.OnJobError(error);
-        }
-    }
-
-    protected override void _setJobState(JobState pubState)
+    /// <summary>
+    /// Change the state of the job and notify the subscribers
+    /// </summary>
+    /// <param name="pubState"></param>
+    private void _setJobState(JobState pubState)
     {
         State = pubState;
-        _notifySubscribersForChangeState(pubState);
+        OnJobStateChange(pubState, this);
     }
 }

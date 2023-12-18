@@ -1,6 +1,6 @@
 using EasyCLI.Commands.CommandFeatures;
-using EasyLib;
 using EasyLib.Enums;
+using EasyLib.JobManager;
 
 namespace EasyCLI.Commands;
 

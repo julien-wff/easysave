@@ -1,7 +1,7 @@
 using EasyCLI.Commands.CommandFeatures;
 using EasyCLI.Localization;
-using EasyLib;
 using EasyLib.Enums;
+using EasyLib.JobManager;
 
 namespace EasyCLI.Commands;
 

@@ -1,5 +1,5 @@
 using EasyCLI.Commands.CommandFeatures;
-using EasyLib;
+using EasyLib.JobManager;
 
 namespace EasyCLI.Commands;
 

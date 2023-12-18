@@ -4,9 +4,9 @@ using System.Windows;
 using System.Windows.Input;
 using EasyGUI.Events;
 using EasyGUI.Resources;
-using EasyLib;
 using EasyLib.Enums;
 using EasyLib.Job;
+using EasyLib.JobManager;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace EasyGUI;
@@ -178,6 +178,6 @@ public partial class MainWindow
     private void MainWindow_OnClosing(object? sender, CancelEventArgs e)
     {
         // destroy job manager
-        _jobManager.StopCheck();
+        _jobManager.CleanStop();
     }
 }
