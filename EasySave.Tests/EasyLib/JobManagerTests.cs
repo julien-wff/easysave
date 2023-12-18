@@ -1,5 +1,5 @@
-using EasyLib;
 using EasyLib.Enums;
+using EasyLib.JobManager;
 
 namespace EasySave.Tests.EasyLib;
 
@@ -14,7 +14,7 @@ public class JobManagerTests
     public void GetJobsFromString_ShouldReturnNoJob(string input)
     {
         // Arrange
-        var jobManager = new JobManager(true);
+        var jobManager = new LocalJobManager(true);
         if (jobManager.GetJobs().Count > 0)
         {
             jobManager.GetJobs().Clear();
@@ -39,7 +39,7 @@ public class JobManagerTests
     public void GetJobsFromString_ShouldReturnIndividualJob(string input)
     {
         // Arrange
-        var jobManager = new JobManager(true);
+        var jobManager = new LocalJobManager(true);
         if (jobManager.GetJobs().Count > 0)
         {
             jobManager.GetJobs().Clear();
@@ -66,7 +66,7 @@ public class JobManagerTests
     public void GetJobsFromString_ShouldReturnThreeJobsJob(string input)
     {
         // Arrange
-        var jobManager = new JobManager(true);
+        var jobManager = new LocalJobManager(true);
         if (jobManager.GetJobs().Count > 0)
         {
             jobManager.GetJobs().Clear();

@@ -1,8 +1,8 @@
 using EasyCLI.Commands.CommandFeatures;
 using EasyCLI.Commands.CommandFeatures.CommandArgType;
 using EasyCLI.Localization;
-using EasyLib;
 using EasyLib.Enums;
+using EasyLib.JobManager;
 
 namespace EasyCLI.Commands;
 
@@ -82,7 +82,7 @@ public class CreateCommand : Command
             jobType = (JobType)Params.Flags[0].Type.ParseValue();
         }
 
-        var jm = new JobManager();
+        var jm = new LocalJobManager();
 
         var jobCheck = jm.CheckJobRules(-1, name, source, destination);
         if (jobCheck != JobCheckRule.Valid)

@@ -29,9 +29,9 @@ public class StateManagerReference
     {
         var jsonJobs = JsonFileUtils.ReadJson<List<JsonJob>>(StateFilePath);
 
-        return jsonJobs == null
+        return new List<Job.Job>(jsonJobs == null
             ? new List<Job.Job>()
-            : jsonJobs.Select(job => new Job.Job(job)).ToList();
+            : jsonJobs.Select(job => new Job.LocalJob(job)).ToList());
     }
 
     public void WriteJobs(List<Job.Job> jobs)

@@ -47,7 +47,7 @@ public class StateManagerReferenceTests
         // Arrange
         var appDataDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
         var stateManager = new StateManagerReference(appDataDir);
-        var job = new Job("job1", "C:\\", "D:\\", JobType.Full)
+        var job = new LocalJob("job1", "C:\\", "D:\\", JobType.Full)
         {
             Id = 1,
         };

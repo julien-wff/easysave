@@ -1,7 +1,7 @@
 using EasyCLI.Commands.CommandFeatures;
 using EasyCLI.Localization;
-using EasyLib;
 using EasyLib.Enums;
+using EasyLib.JobManager;
 
 namespace EasyCLI.Commands;
 
@@ -24,7 +24,7 @@ public class CheckCommand : Command
     public override void Run(IEnumerable<string> args)
     {
         var argsList = args.ToList();
-        var jm = new JobManager();
+        var jm = new LocalJobManager();
         var fetchJobsResult = jm.FetchJobs();
 
         if (!fetchJobsResult)

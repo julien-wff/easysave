@@ -1,6 +1,6 @@
 using EasyCLI.Commands.CommandFeatures;
-using EasyLib;
 using EasyLib.Enums;
+using EasyLib.JobManager;
 
 namespace EasyCLI.Commands;
 
@@ -23,7 +23,7 @@ public class ListCommand : Command
     public override void Run(IEnumerable<string> args)
     {
         var argsList = args.ToList();
-        var jm = new JobManager();
+        var jm = new LocalJobManager();
         var fetchSuccess = jm.FetchJobs();
 
         if (!fetchSuccess)

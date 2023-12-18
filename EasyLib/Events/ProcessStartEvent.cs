@@ -1,76 +1,79 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Management;
 using System.Security.Principal;
 
 namespace EasyLib.Events;
 
+[SuppressMessage("Interoperability", "CA1416")]
 public class ProcessStartEvent
 {
-    public static long NumberOfRunningProcesses;
-    private readonly JobManager _jobManager;
+    private static long _numberOfRunningProcesses;
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
+    private readonly JobManager.JobManager _jobManager;
     private readonly ManagementEventWatcher? _processStartEvent;
     private readonly ManagementEventWatcher? _processStopEvent;
-    private CancellationTokenSource _cancellationTokenSource;
 
     /// <summary>
-    /// create the start and stop event for a process and bind the event to the job manager
+    /// Create the start and stop event for a process and bind the event to the job manager
     /// </summary>
     /// <param name="processName"></param>
     /// <param name="jobManager"></param>
-    public ProcessStartEvent(string? processName, JobManager jobManager)
+    public ProcessStartEvent(string processName, JobManager.JobManager jobManager)
     {
         // check if system is running Windows
         _jobManager = jobManager;
-        if ((Environment.OSVersion.Platform == PlatformID.Win32NT) &&
-            IsAdministrator) // only on Windows can run this feature
+
+        // only on Windows can run this feature
+        if (Environment.OSVersion.Platform == PlatformID.Win32NT && IsAdministrator)
         {
-#pragma warning disable CA1416
-            _processStartEvent =
-                new ManagementEventWatcher(
-                    new WqlEventQuery($"SELECT * FROM Win32_ProcessStartTrace WHERE ProcessName = '{processName}'"));
+            var eventQuery = new WqlEventQuery(
+                $"SELECT * FROM Win32_ProcessStartTrace WHERE ProcessName = '{processName}'"
+            );
+
+            _processStartEvent = new ManagementEventWatcher(eventQuery);
             _processStartEvent.EventArrived += ProcessStarted;
             // on stop
-            _processStopEvent = new ManagementEventWatcher(new WqlEventQuery(
-                $"SELECT * FROM Win32_ProcessStopTrace WHERE ProcessName = '{processName}'"));
+            _processStopEvent = new ManagementEventWatcher(eventQuery);
             _processStopEvent.EventArrived += ProcessStopped;
             _processStartEvent.Start();
             _processStopEvent.Start();
-#pragma warning disable CA1416
         }
         else
         {
+            _cancellationTokenSource.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
             var newThread = new Thread(() => _checkProcesses(processName));
             newThread.Start();
         }
     }
 
-    public static bool IsAdministrator =>
-        new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+    private static bool IsAdministrator => new WindowsPrincipal(WindowsIdentity.GetCurrent())
+        .IsInRole(WindowsBuiltInRole.Administrator);
 
-    private void ProcessStarted(object sender, EventArrivedEventArgs e)
+    private void ProcessStarted(object? sender = null, EventArrivedEventArgs? e = null)
     {
-        if (NumberOfRunningProcesses == 0)
+        if (_numberOfRunningProcesses == 0)
         {
             _jobManager.PauseAllJobs();
-            Interlocked.Increment(ref NumberOfRunningProcesses);
+            Interlocked.Increment(ref _numberOfRunningProcesses);
         }
         else
         {
-            Interlocked.Increment(ref NumberOfRunningProcesses);
+            Interlocked.Increment(ref _numberOfRunningProcesses);
         }
     }
 
-    private void ProcessStopped(object sender, EventArrivedEventArgs e)
+    private void ProcessStopped(object? sender = null, EventArrivedEventArgs? e = null)
     {
-        if (NumberOfRunningProcesses == 1)
+        if (_numberOfRunningProcesses == 1)
         {
             _jobManager.ResumeAllJobs();
-            Interlocked.Decrement(ref NumberOfRunningProcesses);
+            Interlocked.Decrement(ref _numberOfRunningProcesses);
         }
         else
         {
-            Interlocked.Decrement(ref NumberOfRunningProcesses);
+            Interlocked.Decrement(ref _numberOfRunningProcesses);
         }
     }
 
@@ -93,13 +96,13 @@ public class ProcessStartEvent
     {
         while (true)
         {
-            if (Process.GetProcessesByName(processName).Length > Interlocked.Read(ref NumberOfRunningProcesses))
+            if (Process.GetProcessesByName(processName).Length > Interlocked.Read(ref _numberOfRunningProcesses))
             {
-                ProcessStarted(null, null);
+                ProcessStarted();
             }
-            else if (Process.GetProcessesByName(processName).Length < Interlocked.Read(ref NumberOfRunningProcesses))
+            else if (Process.GetProcessesByName(processName).Length < Interlocked.Read(ref _numberOfRunningProcesses))
             {
-                ProcessStopped(null, null);
+                ProcessStopped();
             }
 
             Thread.Sleep(100);

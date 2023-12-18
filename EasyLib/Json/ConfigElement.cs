@@ -17,4 +17,6 @@ public struct ConfigElement
     public string? EasyCryptoPath { get; init; }
     public string? CompanySoftwareProcessPath { get; init; }
     public ulong MaxFileSize { get; init; }
+    public int ServerPort { get; init; }
+    public string ServerIp { get; init; }
 }

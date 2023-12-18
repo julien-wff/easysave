@@ -10,11 +10,11 @@ namespace EasyLib.Files;
 /// </summary>
 public class TransferManager : IJobStatusPublisher
 {
-    private readonly Job.Job _job;
+    private readonly Job.LocalJob _job;
     private readonly BackupFolder _sourceFolder;
-    private readonly List<IJobStatusSubscriber> _subscribers = new();
+    private readonly List<IJobStatusSubscriber> _subscribers = [];
 
-    public TransferManager(Job.Job job)
+    public TransferManager(Job.LocalJob job)
     {
         _job = job;
         _sourceFolder = new BackupFolder(_job.SourceFolder);
@@ -119,7 +119,7 @@ public class TransferManager : IJobStatusPublisher
     /// <param name="source"></param>
     /// <param name="destination"></param>
     /// <returns></returns>
-    private List<BackupFolder> _compareFolders(List<BackupFolder> source, List<BackupFolder> destination)
+    private static List<BackupFolder> _compareFolders(List<BackupFolder> source, List<BackupFolder> destination)
     {
         foreach (var folder in destination)
         {
@@ -188,24 +188,24 @@ public class TransferManager : IJobStatusPublisher
         if (_job.CancellationToken.IsCancellationRequested)
             return;
         _job.State = JobState.Copy;
-        if (ConfigManager.Instance.PriorityFileExtensions.Any())
+        if (ConfigManager.Instance.PriorityFileExtensions.Count != 0)
         {
-            Interlocked.Increment(ref Job.Job.CurrentPriorityRunning);
-            Job.Job.NotifyWaitingJobs.Reset();
+            Interlocked.Increment(ref Job.LocalJob.CurrentPriorityRunning);
+            Job.LocalJob.NotifyWaitingJobs.Reset();
             var filteredFiles = _filterPriorityFiles(InstructionsFolder);
             PriorityFileFolder = filteredFiles[0];
             InstructionsFolder = filteredFiles[1];
             _transferFile(PriorityFileFolder, "", PriorityFileFolder.Name);
-            Interlocked.Decrement(ref Job.Job.CurrentPriorityRunning);
-            Job.Job.NotifyWaitingJobs.Set();
+            Interlocked.Decrement(ref Job.LocalJob.CurrentPriorityRunning);
+            Job.LocalJob.NotifyWaitingJobs.Set();
         }
 
-        while (Interlocked.Read(ref Job.Job.CurrentPriorityRunning) > 0)
+        while (Interlocked.Read(ref Job.LocalJob.CurrentPriorityRunning) > 0)
         {
-            Job.Job.NotifyWaitingJobs.WaitOne();
-            if (Interlocked.Read(ref Job.Job.CurrentPriorityRunning) > 0)
+            Job.LocalJob.NotifyWaitingJobs.WaitOne();
+            if (Interlocked.Read(ref Job.LocalJob.CurrentPriorityRunning) > 0)
             {
-                Job.Job.NotifyWaitingJobs.Reset();
+                Job.LocalJob.NotifyWaitingJobs.Reset();
             }
         }
 
@@ -224,11 +224,11 @@ public class TransferManager : IJobStatusPublisher
             DateTime copyEnd;
             if (file.Size >= ConfigManager.Instance.MaxFileSize)
             {
-                Job.Job.MaxSizeFileCopying.WaitOne();
+                Job.LocalJob.MaxSizeFileCopying.WaitOne();
                 copyStart = DateTime.Now;
                 File.Copy(_job.CurrentFileSource, _job.CurrentFileDestination, true);
                 copyEnd = DateTime.Now;
-                Job.Job.MaxSizeFileCopying.Release();
+                Job.LocalJob.MaxSizeFileCopying.Release();
             }
             else
             {
@@ -294,7 +294,7 @@ public class TransferManager : IJobStatusPublisher
         foreach (var subFolder in instructionsFolder.SubFolders)
         {
             if (_job.CancellationToken.IsCancellationRequested)
-                return new List<BackupFolder>();
+                return [];
             var selectedFiles = _filterPriorityFiles(subFolder);
             tempPriorityFolders.SubFolders.Add(selectedFiles[0]);
             tempInstructionsFolders.SubFolders.Add(selectedFiles[1]);
@@ -303,7 +303,7 @@ public class TransferManager : IJobStatusPublisher
         foreach (var file in instructionsFolder.Files)
         {
             if (_job.CancellationToken.IsCancellationRequested)
-                return new List<BackupFolder>();
+                return [];
             if (ConfigManager.Instance.PriorityFileExtensions.Contains(file.Extension))
             {
                 tempPriorityFolders.Files.Add(file);
@@ -314,7 +314,7 @@ public class TransferManager : IJobStatusPublisher
             }
         }
 
-        return new List<BackupFolder>() { tempPriorityFolders, tempInstructionsFolders };
+        return [tempPriorityFolders, tempInstructionsFolders];
     }
 
     private void _notifySubscribersForChange()
