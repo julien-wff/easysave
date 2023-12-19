@@ -181,4 +181,37 @@ Nous nous excusons pour la gêne occasionnée.</value>
     <data name="RemoteConnectPopup_Error_HostUnreachable" xml:space="preserve">
         <value>Impossible de joindre l'hôte</value>
     </data>
+    <data name="Checks_SourcePathInvalid" xml:space="preserve">
+        <value>Chemin du dossier source invalide.</value>
+    </data>
+    <data name="Checks_DestinationPathInvalid" xml:space="preserve">
+        <value>Chemin du dossier de destination invalide.</value>
+    </data>
+    <data name="Checks_InvalidJobType" xml:space="preserve">
+        <value>Type de tâche invalide. Les options sont 'full' (complète) et 'differential' (differentielle)</value>
+    </data>
+    <data name="Checks_Valid" xml:space="preserve">
+        <value>Succès de la vérification, aucune erreur trouvée.</value>
+    </data>
+    <data name="Checks_SourcePathDoesNotExist" xml:space="preserve">
+        <value>Le chemin source n'existe pas.</value>
+    </data>
+    <data name="Checks_DestinationPathDoesNotExist" xml:space="preserve">
+        <value>Le chemin de destination n'existe pas.</value>
+    </data>
+    <data name="Checks_SharedRoot" xml:space="preserve">
+        <value>Les chemins source et de destination partagent sont inclus l'un dans l'autre.</value>
+    </data>
+    <data name="Checks_DuplicateId" xml:space="preserve">
+        <value>Une tâche avec le même identifiant existe déjà.</value>
+    </data>
+    <data name="Checks_DuplicateName" xml:space="preserve">
+        <value>Une tâche avec le même nom existe déjà.</value>
+    </data>
+    <data name="Checks_DuplicatePaths" xml:space="preserve">
+        <value>Une tâche avce le même fichier de source et de destination existe déjà.</value>
+    </data>
+    <data name="Checks_DestinationNotEmpty" xml:space="preserve">
+        <value>Dossier de destination non vide.</value>
+    </data>
 </root>

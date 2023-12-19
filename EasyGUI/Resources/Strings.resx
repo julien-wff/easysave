@@ -181,4 +181,37 @@ We are sorry for this inconvenience.</value>
     <data name="RemoteConnectPopup_Error_HostUnreachable" xml:space="preserve">
         <value>Host unreachable</value>
     </data>
+    <data name="Checks_SourcePathInvalid" xml:space="preserve">
+        <value>Source path is not valid.</value>
+    </data>
+    <data name="Checks_DestinationPathInvalid" xml:space="preserve">
+        <value>Destination path is not valid.</value>
+    </data>
+    <data name="Checks_InvalidJobType" xml:space="preserve">
+        <value>Invalid job type. Valid options are 'full', 'incremental' and 'differential'.</value>
+    </data>
+    <data name="Checks_Valid" xml:space="preserve">
+        <value>Check successful, no errors found.</value>
+    </data>
+    <data name="Checks_SourcePathDoesNotExist" xml:space="preserve">
+        <value>Source path does not exist.</value>
+    </data>
+    <data name="Checks_DestinationPathDoesNotExist" xml:space="preserve">
+        <value>Destination path does not exist.</value>
+    </data>
+    <data name="Checks_SharedRoot" xml:space="preserve">
+        <value>Source and destination paths share the same root.</value>
+    </data>
+    <data name="Checks_DuplicateId" xml:space="preserve">
+        <value>A job with the same ID already exists.</value>
+    </data>
+    <data name="Checks_DuplicateName" xml:space="preserve">
+        <value>A job with the same name already exists.</value>
+    </data>
+    <data name="Checks_DuplicatePaths" xml:space="preserve">
+        <value>A job with the same source and destination paths already exists.</value>
+    </data>
+    <data name="Checks_DestinationNotEmpty" xml:space="preserve">
+        <value>Destination folder is not empty.</value>
+    </data>
 </root>

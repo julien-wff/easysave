@@ -21,6 +21,7 @@
 
                     <TextBlock
                         Visibility="Collapsed"
+                        TextWrapping="Wrap"
                         x:Name="ErrorMessageTextBlock"
                         Text="{Binding ErrorMessage, RelativeSource={RelativeSource AncestorType=UserControl}}"
                         Margin="0,0,0,16"

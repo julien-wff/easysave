@@ -83,7 +83,8 @@ public partial class MainWindow
 
         if (result != JobCheckRule.Valid)
         {
-            CreateJobPopup.ErrorMessage = EnumConverter<JobCheckRule>.ConvertToString(result);
+            var errorEnum = EnumConverter<JobCheckRule>.ConvertToString(result);
+            CreateJobPopup.ErrorMessage = Strings.ResourceManager.GetString($"Checks_{errorEnum}") ?? errorEnum;
             return;
         }
 
