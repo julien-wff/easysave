@@ -44,8 +44,8 @@ public class ConfigManagerReference
     public string? EasyCryptoPath { get; set; }
     public string? CompanySoftwareProcessPath { get; set; }
     public ulong MaxFileSize { get; set; } = 1000000;
-    public int? ServerPort { get; set; } = null;
-    public string? ServerIp { get; set; } = null;
+    public int? ServerPort { get; set; }
+    public string? ServerIp { get; set; }
 
     private static string GenerateRandomKey()
     {
