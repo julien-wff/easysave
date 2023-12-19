@@ -1,17 +1,54 @@
-﻿using EasyLib.Enums;
+﻿using System.Net;
+using System.Net.Sockets;
+using EasyLib.Api;
+using EasyLib.Enums;
 
 namespace EasyLib.JobManager;
 
 public class RemoteJobManager : JobManager
 {
+    private readonly Socket _clientSocket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+    private JobManagerClient? _client;
+    private Thread? _clientThread;
+    public event EventHandler? JobListChanged;
+
+    public bool Connect(EndPoint endPoint)
+    {
+        try
+        {
+            _clientSocket.Connect(endPoint);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+
+        _client = new JobManagerClient(this, _clientSocket);
+        _clientThread = new Thread(_client.Listen);
+        _clientThread.Start();
+
+        return true;
+    }
+
+    public override void CleanStop()
+    {
+        _clientSocket.Close();
+    }
+
     public override List<Job.Job> GetJobs()
     {
-        throw new NotImplementedException();
+        return Jobs;
     }
 
     public override bool FetchJobs()
     {
-        throw new NotImplementedException();
+        return false;
+    }
+
+    public void AddJob(Job.Job job)
+    {
+        Jobs.Add(job);
+        JobListChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public override JobCheckRule EditJob(Job.Job job, string name, string source, string destination, JobType? type)
