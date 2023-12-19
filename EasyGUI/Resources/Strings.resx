@@ -166,4 +166,19 @@ We are sorry for this inconvenience.</value>
     <data name="RemoteConnectPopup_Host" xml:space="preserve">
         <value>Host (IP and port)</value>
     </data>
+    <data name="RemoteConnectPopup_Error_HostNorSpecified" xml:space="preserve">
+        <value>Host cannot be empty</value>
+    </data>
+    <data name="RemoteConnectPopup_Error_PortNorSpecified" xml:space="preserve">
+        <value>Port needs to be specified</value>
+    </data>
+    <data name="RemoteConnectPopup_Error_InvalidAdress" xml:space="preserve">
+        <value>Invalid address</value>
+    </data>
+    <data name="RemoteConnectPopup_Error_InvalidPort" xml:space="preserve">
+        <value>Invalid port</value>
+    </data>
+    <data name="RemoteConnectPopup_Error_HostUnreachable" xml:space="preserve">
+        <value>Host unreachable</value>
+    </data>
 </root>

@@ -18,6 +18,13 @@
                         Margin="0,0,0,16"
                         Text="{x:Static resx:Strings.RemoteConnectPopup_Title}" />
 
+                    <TextBlock
+                        Visibility="Collapsed"
+                        x:Name="ErrorMessageTextBlock"
+                        Text="{Binding ErrorMessage, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Margin="0,0,0,16"
+                        Foreground="{StaticResource RedBrush}" />
+
                     <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.RemoteConnectPopup_Host}" />
                     <Grid>
                         <TextBox
@@ -29,6 +36,7 @@
                             Foreground="Gray" />
                         <TextBox Background="Transparent"
                                  TextChanged="TextBoxBase_OnTextChanged"
+                                 KeyDown="UIElement_OnKeyDown"
                                  Text="{Binding Host, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                  Margin="0,0,0,16" />
                     </Grid>

@@ -191,4 +191,9 @@ public partial class MainWindow
         RemoteConnectPopup.Host = "";
         RemoteConnectPopup.Visibility = Visibility.Visible;
     }
+
+    private void RemoteConnectPopup_OnConnect(object? sender, RemoteConnectEventArgs e)
+    {
+        var endpoint = e.EndPoint;
+    }
 }

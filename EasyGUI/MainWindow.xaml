@@ -39,6 +39,7 @@
             ReloadConfig="SettingsPopup_OnReloadConfig" />
         <controls:RemoteConnectPopup
             Visibility="Collapsed"
+            Connect="RemoteConnectPopup_OnConnect"
             x:Name="RemoteConnectPopup" />
     </Grid>
 </Window>

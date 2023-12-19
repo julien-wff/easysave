@@ -332,6 +332,51 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to L&apos;hôte ne peut pas être vide.
+        /// </summary>
+        public static string RemoteConnectPopup_Error_HostNorSpecified {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Error_HostNorSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Impossible de joindre l&apos;hôte.
+        /// </summary>
+        public static string RemoteConnectPopup_Error_HostUnreachable {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Error_HostUnreachable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to L&apos;adresse est invalide.
+        /// </summary>
+        public static string RemoteConnectPopup_Error_InvalidAdress {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Error_InvalidAdress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port invalide.
+        /// </summary>
+        public static string RemoteConnectPopup_Error_InvalidPort {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Error_InvalidPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Le port doit être spécifié.
+        /// </summary>
+        public static string RemoteConnectPopup_Error_PortNorSpecified {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Error_PortNorSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hôte (IP et port).
         /// </summary>
         public static string RemoteConnectPopup_Host {
