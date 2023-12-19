@@ -89,7 +89,9 @@ public class ConfigManagerReference
         CompanySoftwareProcessPath = jsonConfig.CompanySoftwareProcessPath;
         Language = CultureInfo.GetCultureInfo(jsonConfig.Language);
         MaxFileSize = jsonConfig.MaxFileSize;
-        PriorityFileExtensions = jsonConfig.PriorityFileExtensions;
+        PriorityFileExtensions = jsonConfig.PriorityFileExtensions ?? [];
+        ServerPort = jsonConfig.ServerPort;
+        ServerIp = jsonConfig.ServerIp;
 
         // If the key was null, write the new key
         if (xorKey == null)
@@ -112,7 +114,9 @@ public class ConfigManagerReference
             EasyCryptoPath = EasyCryptoPath,
             CompanySoftwareProcessPath = CompanySoftwareProcessPath,
             Language = Language.ToString(),
-            MaxFileSize = MaxFileSize
+            MaxFileSize = MaxFileSize,
+            ServerPort = ServerPort,
+            ServerIp = ServerIp
         };
         JsonFileUtils.WriteJson(_configFilePath, jsonConfig);
     }
