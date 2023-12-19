@@ -32,7 +32,6 @@ public sealed class LocalJobManager : JobManager
         }
 
         _pauseJobEvent = new ProcessStartEvent(ConfigManager.Instance.CompanySoftwareProcessPath, this);
-        ConfigManager.Instance.ServerPort = 4242;
         if (ConfigManager.Instance.ServerPort != null)
         {
             _server = new JobManagerServer(this);
