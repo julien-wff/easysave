@@ -184,6 +184,11 @@ public abstract partial class JobManager : IJobStatusSubscriber, IJobStatusPubli
             .Aggregate(true, (current, result) => current && result);
     }
 
+    public virtual void ExecuteJob(Job.Job job)
+    {
+        job.Run();
+    }
+
     /// <summary>
     /// Create a new job
     /// </summary>
