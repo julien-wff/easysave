@@ -1,3 +1,4 @@
+using EasyLib.Api;
 using EasyLib.Enums;
 using EasyLib.Events;
 using EasyLib.Files;
@@ -15,6 +16,8 @@ public sealed class LocalJobManager : JobManager
     /// </summary>
     private readonly bool _ramOnly;
 
+    private readonly JobManagerServer? _server;
+
     /// <summary>
     /// Event for when jobs need to wait for the company software to close
     /// </summary>
@@ -29,6 +32,11 @@ public sealed class LocalJobManager : JobManager
         }
 
         _pauseJobEvent = new ProcessStartEvent(ConfigManager.Instance.CompanySoftwareProcessPath, this);
+        ConfigManager.Instance.ServerPort = 4242;
+        if (ConfigManager.Instance.ServerPort != null)
+        {
+            _server = new JobManagerServer(this);
+        }
     }
 
     public override void OnJobProgress(Job.Job job)
@@ -41,6 +49,11 @@ public sealed class LocalJobManager : JobManager
         if (job.State == JobState.Copy)
         {
             StateManager.Instance.WriteJobs(Jobs);
+        }
+
+        if (_server != null)
+        {
+            _server.Broadcast(ApiAction.Progress, job.ToJsonJob());
         }
     }
 
@@ -57,6 +70,11 @@ public sealed class LocalJobManager : JobManager
     public override void CleanStop()
     {
         _pauseJobEvent.Stop();
+        if (_server != null)
+        {
+            _server.CancellationTokenSource.Cancel();
+            _server.CleanInstance();
+        }
     }
 
     public override List<Job.Job> GetJobs()
