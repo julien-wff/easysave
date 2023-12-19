@@ -89,6 +89,105 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destination folder is not empty..
+        /// </summary>
+        public static string Checks_DestinationNotEmpty {
+            get {
+                return ResourceManager.GetString("Checks_DestinationNotEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination path does not exist..
+        /// </summary>
+        public static string Checks_DestinationPathDoesNotExist {
+            get {
+                return ResourceManager.GetString("Checks_DestinationPathDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination path is not valid..
+        /// </summary>
+        public static string Checks_DestinationPathInvalid {
+            get {
+                return ResourceManager.GetString("Checks_DestinationPathInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A job with the same ID already exists..
+        /// </summary>
+        public static string Checks_DuplicateId {
+            get {
+                return ResourceManager.GetString("Checks_DuplicateId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A job with the same name already exists..
+        /// </summary>
+        public static string Checks_DuplicateName {
+            get {
+                return ResourceManager.GetString("Checks_DuplicateName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A job with the same source and destination paths already exists..
+        /// </summary>
+        public static string Checks_DuplicatePaths {
+            get {
+                return ResourceManager.GetString("Checks_DuplicatePaths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid job type. Valid options are &apos;full&apos;, &apos;incremental&apos; and &apos;differential&apos;..
+        /// </summary>
+        public static string Checks_InvalidJobType {
+            get {
+                return ResourceManager.GetString("Checks_InvalidJobType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source and destination paths share the same root..
+        /// </summary>
+        public static string Checks_SharedRoot {
+            get {
+                return ResourceManager.GetString("Checks_SharedRoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source path does not exist..
+        /// </summary>
+        public static string Checks_SourcePathDoesNotExist {
+            get {
+                return ResourceManager.GetString("Checks_SourcePathDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source path is not valid..
+        /// </summary>
+        public static string Checks_SourcePathInvalid {
+            get {
+                return ResourceManager.GetString("Checks_SourcePathInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check successful, no errors found..
+        /// </summary>
+        public static string Checks_Valid {
+            get {
+                return ResourceManager.GetString("Checks_Valid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remote connect.
         /// </summary>
         public static string ConnectButton_Connect {

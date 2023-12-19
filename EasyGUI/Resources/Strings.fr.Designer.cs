@@ -89,6 +89,105 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dossier de destination non vide..
+        /// </summary>
+        public static string Checks_DestinationNotEmpty {
+            get {
+                return ResourceManager.GetString("Checks_DestinationNotEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Le chemin de destination n&apos;existe pas..
+        /// </summary>
+        public static string Checks_DestinationPathDoesNotExist {
+            get {
+                return ResourceManager.GetString("Checks_DestinationPathDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chemin du dossier de destination invalide..
+        /// </summary>
+        public static string Checks_DestinationPathInvalid {
+            get {
+                return ResourceManager.GetString("Checks_DestinationPathInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Une tâche avec le même identifiant existe déjà..
+        /// </summary>
+        public static string Checks_DuplicateId {
+            get {
+                return ResourceManager.GetString("Checks_DuplicateId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Une tâche avec le même nom existe déjà..
+        /// </summary>
+        public static string Checks_DuplicateName {
+            get {
+                return ResourceManager.GetString("Checks_DuplicateName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Une tâche avce le même fichier de source et de destination existe déjà..
+        /// </summary>
+        public static string Checks_DuplicatePaths {
+            get {
+                return ResourceManager.GetString("Checks_DuplicatePaths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type de tâche invalide. Les options sont &apos;full&apos; (complète) et &apos;differential&apos; (differentielle).
+        /// </summary>
+        public static string Checks_InvalidJobType {
+            get {
+                return ResourceManager.GetString("Checks_InvalidJobType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Les chemins source et de destination partagent sont inclus l&apos;un dans l&apos;autre..
+        /// </summary>
+        public static string Checks_SharedRoot {
+            get {
+                return ResourceManager.GetString("Checks_SharedRoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Le chemin source n&apos;existe pas..
+        /// </summary>
+        public static string Checks_SourcePathDoesNotExist {
+            get {
+                return ResourceManager.GetString("Checks_SourcePathDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chemin du dossier source invalide..
+        /// </summary>
+        public static string Checks_SourcePathInvalid {
+            get {
+                return ResourceManager.GetString("Checks_SourcePathInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Succès de la vérification, aucune erreur trouvée..
+        /// </summary>
+        public static string Checks_Valid {
+            get {
+                return ResourceManager.GetString("Checks_Valid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connexion à distance.
         /// </summary>
         public static string ConnectButton_Connect {
