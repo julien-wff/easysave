@@ -96,16 +96,17 @@ public class ProcessStartEvent
     {
         while (true)
         {
-            if (Process.GetProcessesByName(processName).Length > Interlocked.Read(ref _numberOfRunningProcesses))
+            var processesLength = Process.GetProcessesByName(processName).Length;
+            if (processesLength > Interlocked.Read(ref _numberOfRunningProcesses))
             {
                 ProcessStarted();
             }
-            else if (Process.GetProcessesByName(processName).Length < Interlocked.Read(ref _numberOfRunningProcesses))
+            else if (processesLength < Interlocked.Read(ref _numberOfRunningProcesses))
             {
                 ProcessStopped();
             }
 
-            Thread.Sleep(100);
+            Thread.Sleep(500);
             if (_cancellationTokenSource.IsCancellationRequested) return;
         }
     }

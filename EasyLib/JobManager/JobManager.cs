@@ -130,7 +130,7 @@ public abstract partial class JobManager : IJobStatusSubscriber, IJobStatusPubli
     /// </summary>
     /// <param name="jobIds">List of IDs to select</param>
     /// <returns>List of jobs</returns>
-    public virtual List<Job.Job> GetJobsFromIds(IEnumerable<int> jobIds)
+    public virtual List<Job.Job> GetJobsFromIds(IEnumerable<uint> jobIds)
     {
         var list = jobIds.ToList();
         var ids = list.Select(id => (uint)id);
@@ -182,6 +182,11 @@ public abstract partial class JobManager : IJobStatusSubscriber, IJobStatusPubli
         return jobs
             .Select(job => job.Run())
             .Aggregate(true, (current, result) => current && result);
+    }
+
+    public virtual void ExecuteJob(Job.Job job)
+    {
+        job.Run();
     }
 
     /// <summary>
