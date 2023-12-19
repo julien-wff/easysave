@@ -44,8 +44,8 @@ public class ConfigManagerReference
     public string? EasyCryptoPath { get; set; }
     public string? CompanySoftwareProcessPath { get; set; }
     public ulong MaxFileSize { get; set; } = 1000000;
-    public int? ServerPort { get; set; } = null;
-    public string? ServerIp { get; set; } = null;
+    public int? ServerPort { get; set; }
+    public string? ServerIp { get; set; }
 
     private static string GenerateRandomKey()
     {
@@ -89,7 +89,9 @@ public class ConfigManagerReference
         CompanySoftwareProcessPath = jsonConfig.CompanySoftwareProcessPath;
         Language = CultureInfo.GetCultureInfo(jsonConfig.Language);
         MaxFileSize = jsonConfig.MaxFileSize;
-        PriorityFileExtensions = jsonConfig.PriorityFileExtensions;
+        PriorityFileExtensions = jsonConfig.PriorityFileExtensions ?? [];
+        ServerPort = jsonConfig.ServerPort;
+        ServerIp = jsonConfig.ServerIp;
 
         // If the key was null, write the new key
         if (xorKey == null)
@@ -112,7 +114,9 @@ public class ConfigManagerReference
             EasyCryptoPath = EasyCryptoPath,
             CompanySoftwareProcessPath = CompanySoftwareProcessPath,
             Language = Language.ToString(),
-            MaxFileSize = MaxFileSize
+            MaxFileSize = MaxFileSize,
+            ServerPort = ServerPort,
+            ServerIp = ServerIp
         };
         JsonFileUtils.WriteJson(_configFilePath, jsonConfig);
     }
@@ -143,6 +147,9 @@ public class ConfigManagerReference
         sb.AppendLine($"LogFormat: {LogFormat}");
         sb.AppendLine($"EasyCryptoPath: {EasyCryptoPath ?? "<null>"}");
         sb.AppendLine($"CompanySoftwareProcessPath: {CompanySoftwareProcessPath ?? "<null>"}");
+        sb.AppendLine($"MaxFileSize: {MaxFileSize}");
+        sb.AppendLine($"ServerPort: {ServerPort}");
+        sb.AppendLine($"ServerIp: {ServerIp ?? "<null>"}");
         return sb.ToString();
     }
 }
