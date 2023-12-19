@@ -7,10 +7,9 @@ public enum ApiAction
     Resume,
     Cancel,
     Delete,
-    Update,
     Edit,
     Error,
     State,
     Progress,
-    Jobs,
+    Create,
 }

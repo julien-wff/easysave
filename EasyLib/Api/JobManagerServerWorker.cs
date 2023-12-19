@@ -1,5 +1,6 @@
 ﻿using System.Net.Sockets;
 using System.Text;
+using EasyLib.Enums;
 using EasyLib.Job;
 using EasyLib.Json;
 
@@ -18,16 +19,16 @@ public class Worker
         this._server = server;
     }
 
+    public void Start()
+    {
+        new Thread(Run).Start();
+    }
+
     public void Send(JsonApiRequest request)
     {
         string json = Newtonsoft.Json.JsonConvert.SerializeObject(request);
         byte[] buffer = Encoding.UTF8.GetBytes(json);
         _stream.Write(buffer, 0, buffer.Length);
-    }
-
-    public void Start()
-    {
-        new Thread(Run).Start();
     }
 
     private void Run()
@@ -50,13 +51,24 @@ public class Worker
         }
         catch (Exception e)
         {
-            // ignored
+            Close();
+            lock (_server.ServerLockObject)
+            {
+                _server.RemoveWorker(this);
+            }
+        }
+    }
+
+    public void SendAllJobs(List<Job.Job> jobs)
+    {
+        foreach (Job.Job job in jobs)
+        {
+            Send(new JsonApiRequest() { Action = ApiAction.Create, Job = job.ToJsonJob() });
         }
     }
 
     public void Close()
     {
         _stream.Close();
-        _socket.Close();
     }
 }
