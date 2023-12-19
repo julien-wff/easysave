@@ -147,6 +147,9 @@ public class ConfigManagerReference
         sb.AppendLine($"LogFormat: {LogFormat}");
         sb.AppendLine($"EasyCryptoPath: {EasyCryptoPath ?? "<null>"}");
         sb.AppendLine($"CompanySoftwareProcessPath: {CompanySoftwareProcessPath ?? "<null>"}");
+        sb.AppendLine($"MaxFileSize: {MaxFileSize}");
+        sb.AppendLine($"ServerPort: {ServerPort}");
+        sb.AppendLine($"ServerIp: {ServerIp ?? "<null>"}");
         return sb.ToString();
     }
 }
