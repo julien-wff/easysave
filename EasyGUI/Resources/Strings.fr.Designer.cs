@@ -332,6 +332,24 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hôte (IP et port).
+        /// </summary>
+        public static string RemoteConnectPopup_Host {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Host", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connexion à distance.
+        /// </summary>
+        public static string RemoteConnectPopup_Title {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reprendre.
         /// </summary>
         public static string ResumeButton_Resume {

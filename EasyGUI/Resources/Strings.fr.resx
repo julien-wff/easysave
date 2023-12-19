@@ -160,4 +160,10 @@ Nous nous excusons pour la gêne occasionnée.</value>
     <data name="ConnectButton_Connect" xml:space="preserve">
         <value>Connexion à distance</value>
     </data>
+    <data name="RemoteConnectPopup_Title" xml:space="preserve">
+        <value>Connexion à distance</value>
+    </data>
+    <data name="RemoteConnectPopup_Host" xml:space="preserve">
+        <value>Hôte (IP et port)</value>
+    </data>
 </root>
