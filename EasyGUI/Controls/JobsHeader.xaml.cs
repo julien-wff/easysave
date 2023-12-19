@@ -30,6 +30,13 @@ public partial class JobsHeader : INotifyPropertyChanged
         typeof(JobsHeader)
     );
 
+    private static readonly RoutedEvent ConnectButtonClickEvent = EventManager.RegisterRoutedEvent(
+        nameof(ConnectButtonClick),
+        RoutingStrategy.Bubble,
+        typeof(RoutedEventHandler),
+        typeof(JobsHeader)
+    );
+
     private static readonly DependencyProperty JobsProperty = DependencyProperty.Register(
         nameof(Jobs),
         typeof(ObservableCollection<Job>),
@@ -89,6 +96,12 @@ public partial class JobsHeader : INotifyPropertyChanged
         remove => RemoveHandler(SettingsButtonClickEvent, value);
     }
 
+    public event RoutedEventHandler ConnectButtonClick
+    {
+        add => AddHandler(ConnectButtonClickEvent, value);
+        remove => RemoveHandler(ConnectButtonClickEvent, value);
+    }
+
     private void CreateButton_OnClick(object sender, RoutedEventArgs e)
     {
         RaiseEvent(new RoutedEventArgs(CreateButtonClickEvent));
@@ -140,5 +153,10 @@ public partial class JobsHeader : INotifyPropertyChanged
     private void SettingsButton_OnClick(object sender, RoutedEventArgs e)
     {
         RaiseEvent(new RoutedEventArgs(SettingsButtonClickEvent));
+    }
+
+    private void ConnectButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        RaiseEvent(new RoutedEventArgs(ConnectButtonClickEvent));
     }
 }

@@ -56,6 +56,11 @@ public partial class MainWindow
         {
             SettingsPopup.Visibility = Visibility.Collapsed;
         }
+
+        if (e.Key == Key.Escape && RemoteConnectPopup.Visibility == Visibility.Visible)
+        {
+            RemoteConnectPopup.Visibility = Visibility.Collapsed;
+        }
     }
 
     private void CreateJobPopup_OnValidateJob(object sender, RoutedEventArgs e)
@@ -179,5 +184,16 @@ public partial class MainWindow
     {
         // destroy job manager
         _jobManager.CleanStop();
+    }
+
+    private void JobsHeader_OnConnectButtonClick(object sender, RoutedEventArgs e)
+    {
+        RemoteConnectPopup.Host = "";
+        RemoteConnectPopup.Visibility = Visibility.Visible;
+    }
+
+    private void RemoteConnectPopup_OnConnect(object? sender, RemoteConnectEventArgs e)
+    {
+        var endpoint = e.EndPoint;
     }
 }

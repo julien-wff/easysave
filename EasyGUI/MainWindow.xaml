@@ -16,6 +16,7 @@
                 SelectedJobs="{Binding SelectedJobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                 CreateButtonClick="JobsHeader_OnCreateButtonClick"
                 SettingsButtonClick="JobsHeader_OnSettingsButtonClick"
+                ConnectButtonClick="JobsHeader_OnConnectButtonClick"
                 StartButtonClick="JobsHeader_OnStartButtonClick" />
             <controls:JobsList
                 Jobs="{Binding Jobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
@@ -35,6 +36,10 @@
         <controls:SettingsPopup
             x:Name="SettingsPopup"
             Visibility="Collapsed"
-            ReloadConfig="SettingsPopup_OnReloadConfig"/>
+            ReloadConfig="SettingsPopup_OnReloadConfig" />
+        <controls:RemoteConnectPopup
+            Visibility="Collapsed"
+            Connect="RemoteConnectPopup_OnConnect"
+            x:Name="RemoteConnectPopup" />
     </Grid>
 </Window>

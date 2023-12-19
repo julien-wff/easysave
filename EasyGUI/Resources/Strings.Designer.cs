@@ -89,6 +89,15 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remote connect.
+        /// </summary>
+        public static string ConnectButton_Connect {
+            get {
+                return ResourceManager.GetString("ConnectButton_Connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
         public static string CreateButton_Create {
@@ -319,6 +328,69 @@ namespace EasyGUI.Resources {
         public static string PauseButton_Pause {
             get {
                 return ResourceManager.GetString("PauseButton_Pause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Host cannot be empty.
+        /// </summary>
+        public static string RemoteConnectPopup_Error_HostNorSpecified {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Error_HostNorSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Host unreachable.
+        /// </summary>
+        public static string RemoteConnectPopup_Error_HostUnreachable {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Error_HostUnreachable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid address.
+        /// </summary>
+        public static string RemoteConnectPopup_Error_InvalidAdress {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Error_InvalidAdress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid port.
+        /// </summary>
+        public static string RemoteConnectPopup_Error_InvalidPort {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Error_InvalidPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port needs to be specified.
+        /// </summary>
+        public static string RemoteConnectPopup_Error_PortNorSpecified {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Error_PortNorSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Host (IP and port).
+        /// </summary>
+        public static string RemoteConnectPopup_Host {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Host", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open remote connection.
+        /// </summary>
+        public static string RemoteConnectPopup_Title {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_Title", resourceCulture);
             }
         }
         
