@@ -188,6 +188,7 @@ public partial class MainWindow
 
     private void JobsHeader_OnConnectButtonClick(object sender, RoutedEventArgs e)
     {
+        RemoteConnectPopup.Host = "";
         RemoteConnectPopup.Visibility = Visibility.Visible;
     }
 }
