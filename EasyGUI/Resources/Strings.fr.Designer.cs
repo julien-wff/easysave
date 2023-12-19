@@ -89,6 +89,15 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connexion à distance.
+        /// </summary>
+        public static string ConnectButton_Connect {
+            get {
+                return ResourceManager.GetString("ConnectButton_Connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Créer.
         /// </summary>
         public static string CreateButton_Create {

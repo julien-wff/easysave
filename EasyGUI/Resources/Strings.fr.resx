@@ -157,4 +157,7 @@ Nous nous excusons pour la gêne occasionnée.</value>
     <data name="JobDisplay_ErrorPopup_Message" xml:space="preserve">
         <value>Une erreur est survenue pendant l'exécution de la tâche {0} : {1}</value>
     </data>
+    <data name="ConnectButton_Connect" xml:space="preserve">
+        <value>Connexion à distance</value>
+    </data>
 </root>

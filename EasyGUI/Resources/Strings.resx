@@ -157,4 +157,7 @@ We are sorry for this inconvenience.</value>
     <data name="JobDisplay_ErrorPopup_Message" xml:space="preserve">
         <value>An error occured during the execution of {0}: {1}</value>
     </data>
+    <data name="ConnectButton_Connect" xml:space="preserve">
+        <value>Remote connect</value>
+    </data>
 </root>

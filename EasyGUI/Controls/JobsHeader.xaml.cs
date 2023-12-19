@@ -141,4 +141,9 @@ public partial class JobsHeader : INotifyPropertyChanged
     {
         RaiseEvent(new RoutedEventArgs(SettingsButtonClickEvent));
     }
+
+    private void ConnectButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
 }
