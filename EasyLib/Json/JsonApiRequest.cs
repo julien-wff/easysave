@@ -2,8 +2,12 @@
 
 namespace EasyLib.Json;
 
-public struct JsonApiRequest
+public readonly struct JsonApiRequest(ApiAction action, JsonJob job)
 {
-    public ApiAction Action { get; set; }
-    public JsonJob Job { get; set; }
+    public JsonApiRequest(ApiAction action, Job.Job job) : this(action, job.ToJsonJob())
+    {
+    }
+
+    public ApiAction Action { get; init; } = action;
+    public JsonJob Job { get; init; } = job;
 }
