@@ -21,7 +21,6 @@ public partial class MainWindow
     public MainWindow()
     {
         InitializeComponent();
-
         _jobManager = new LocalJobManager();
         foreach (var job in _jobManager.GetJobs())
         {

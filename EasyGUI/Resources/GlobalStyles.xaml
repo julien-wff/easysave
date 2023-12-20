@@ -10,6 +10,7 @@
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontFamily" Value="Inter, Segoe UI Variable, Arial" />
         <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="Foreground" Value="{StaticResource TextBlackBrush}"/>
     </Style>
 
     <Style TargetType="{x:Type TextBox}">
@@ -31,7 +32,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Background" Value="{StaticResource TextWhiteBrush}" />
+        <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
         <Setter Property="Foreground" Value="{StaticResource TextBlackBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource DarkGrayBrush}" />
         <Setter Property="BorderThickness" Value="1" />
@@ -52,20 +53,20 @@
                 Grid.ColumnSpan="2"
                 CornerRadius="6"
                 Padding="6,8"
-                Background="{StaticResource TextWhiteBrush}"
+                Background="{StaticResource TextBlackBrush}"
                 BorderBrush="{StaticResource DarkGrayBrush}"
                 BorderThickness="1" />
             <Border
                 Grid.Column="0"
                 CornerRadius="6,0,0,6"
                 Margin="1"
-                Background="{StaticResource TextWhiteBrush}"
+                Background="{StaticResource BackgroundBrush}"
                 BorderBrush="{StaticResource DarkGrayBrush}"
                 BorderThickness="0,0,1,0" />
             <Path
                 x:Name="Arrow"
                 Grid.Column="1"
-                Fill="{StaticResource TextBlackBrush}"
+                Fill="{StaticResource BackgroundBrush}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z" />
@@ -126,7 +127,7 @@
                                   MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                 <Border
                                     x:Name="DropDownBorder"
-                                    Background="{StaticResource TextWhiteBrush}"
+                                    Background="{StaticResource BackgroundBrush}"
                                     BorderThickness="1"
                                     BorderBrush="{StaticResource DarkGrayBrush}" />
                                 <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
