@@ -3,21 +3,13 @@ using System.Text;
 using EasyLib.Enums;
 using EasyLib.Job;
 using EasyLib.Json;
+using Newtonsoft.Json;
 
 namespace EasyLib.Api;
 
-public class Worker
+public class Worker(TcpClient socket, JobManagerServer server)
 {
-    private readonly JobManagerServer _server;
-    private readonly TcpClient _socket;
-    private readonly Stream _stream;
-
-    public Worker(TcpClient socket, JobManagerServer server)
-    {
-        this._socket = socket;
-        this._stream = socket.GetStream();
-        this._server = server;
-    }
+    private readonly Stream _stream = socket.GetStream();
 
     public void Start()
     {
@@ -26,44 +18,54 @@ public class Worker
 
     public void Send(JsonApiRequest request)
     {
-        string json = Newtonsoft.Json.JsonConvert.SerializeObject(request);
-        byte[] buffer = Encoding.UTF8.GetBytes(json);
+        var json = JsonConvert.SerializeObject(request, Formatting.None) + "\n\r";
+        var buffer = Encoding.UTF8.GetBytes(json);
         _stream.Write(buffer, 0, buffer.Length);
+        _stream.Flush();
     }
 
     private void Run()
     {
         try
         {
-            byte[] buffer = new byte[2018];
+            var buffer = new byte[2018];
             while (true)
             {
-                int receivedBytes = _stream.Read(buffer, 0, buffer.Length);
+                var receivedBytes = _stream.Read(buffer, 0, buffer.Length);
+
                 if (receivedBytes < 1)
                     break;
-                JsonApiRequest request =
-                    Newtonsoft.Json.JsonConvert.DeserializeObject<JsonApiRequest>(
-                        Encoding.UTF8.GetString(buffer, 0, receivedBytes));
-                _server.ExecuteJobCommand(request.Action, new LocalJob(request.Job));
-                if (_server.CancellationTokenSource.IsCancellationRequested)
+
+                var request = JsonConvert.DeserializeObject<JsonApiRequest>(
+                    Encoding.UTF8.GetString(buffer, 0, receivedBytes)
+                );
+
+                server.ExecuteJobCommand(request.Action, new LocalJob(request.Job));
+
+                if (server.CancellationTokenSource.IsCancellationRequested)
                     break;
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
             Close();
-            lock (_server.ServerLockObject)
+            lock (server.ServerLockObject)
             {
-                _server.RemoveWorker(this);
+                server.RemoveWorker(this);
             }
         }
     }
 
     public void SendAllJobs(List<Job.Job> jobs)
     {
-        foreach (Job.Job job in jobs)
+        foreach (var job in jobs)
         {
-            Send(new JsonApiRequest() { Action = ApiAction.Create, Job = job.ToJsonJob() });
+            Send(new JsonApiRequest
+            {
+                Action = ApiAction.Create,
+                Job = job.ToJsonJob(),
+                JobRunning = job.CurrentlyRunning
+            });
         }
     }
 
