@@ -10,7 +10,7 @@
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontFamily" Value="Inter, Segoe UI Variable, Arial" />
         <Setter Property="FontWeight" Value="Regular" />
-        <Setter Property="Foreground" Value="{StaticResource TextBlackBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBlackBrush}"/>
     </Style>
 
     <Style TargetType="{x:Type TextBox}">
@@ -26,15 +26,15 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource BlueBrush}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource BlueBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource TextBlackBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource DarkGrayBrush}" />
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBlackBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DarkGrayBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Padding" Value="8,6" />
         <Setter Property="FontSize" Value="16" />
@@ -53,20 +53,20 @@
                 Grid.ColumnSpan="2"
                 CornerRadius="6"
                 Padding="6,8"
-                Background="{StaticResource TextBlackBrush}"
-                BorderBrush="{StaticResource DarkGrayBrush}"
+                Background="{DynamicResource BackgroundBrush}"
+                BorderBrush="{DynamicResource DarkGrayBrush}"
                 BorderThickness="1" />
             <Border
                 Grid.Column="0"
                 CornerRadius="6,0,0,6"
                 Margin="1"
-                Background="{StaticResource BackgroundBrush}"
-                BorderBrush="{StaticResource DarkGrayBrush}"
+                Background="{DynamicResource BackgroundBrush}"
+                BorderBrush="{DynamicResource DarkGrayBrush}"
                 BorderThickness="0,0,1,0" />
             <Path
                 x:Name="Arrow"
                 Grid.Column="1"
-                Fill="{StaticResource BackgroundBrush}"
+                Fill="{DynamicResource BackgroundBrush}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z" />
@@ -74,7 +74,7 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="ComboBoxTextBox" TargetType="{x:Type TextBox}">
-        <Border x:Name="PART_ContentHost" Focusable="False" Background="{StaticResource TextWhiteBrush}" />
+        <Border x:Name="PART_ContentHost" Focusable="False" Background="{DynamicResource TextWhiteBrush}" />
     </ControlTemplate>
 
     <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
@@ -85,14 +85,14 @@
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
         <Setter Property="MinWidth" Value="120" />
         <Setter Property="MinHeight" Value="34" />
-        <Setter Property="Foreground" Value="{StaticResource TextBlackBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBlackBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBox}">
                     <Grid>
                         <ToggleButton
                             Name="ToggleButton"
-                            Template="{StaticResource ComboBoxToggleButton}"
+                            Template="{DynamicResource ComboBoxToggleButton}"
                             Grid.Column="2"
                             Focusable="false"
                             IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
@@ -106,7 +106,7 @@
                                           HorizontalAlignment="Left" />
                         <TextBox x:Name="PART_EditableTextBox"
                                  Style="{x:Null}"
-                                 Template="{StaticResource ComboBoxTextBox}"
+                                 Template="{DynamicResource ComboBoxTextBox}"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Center"
                                  Margin="3,3,23,3"
@@ -127,9 +127,9 @@
                                   MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                 <Border
                                     x:Name="DropDownBorder"
-                                    Background="{StaticResource BackgroundBrush}"
+                                    Background="{DynamicResource BackgroundBrush}"
                                     BorderThickness="1"
-                                    BorderBrush="{StaticResource DarkGrayBrush}" />
+                                    BorderBrush="{DynamicResource DarkGrayBrush}" />
                                 <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
                                     <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                 </ScrollViewer>
@@ -141,7 +141,7 @@
                             <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{StaticResource TextWhiteBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource TextWhiteBrush}" />
                         </Trigger>
                         <Trigger Property="IsGrouping" Value="true">
                             <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
@@ -163,7 +163,7 @@
 
     <Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
         <Setter Property="SnapsToDevicePixels" Value="true" />
-        <Setter Property="Foreground" Value="{StaticResource TextBlackBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBlackBrush}" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Template">
             <Setter.Value>
@@ -178,7 +178,7 @@
                             <Setter TargetName="Border" Property="Background" Value="LightGray" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{StaticResource DarkGrayBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource DarkGrayBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

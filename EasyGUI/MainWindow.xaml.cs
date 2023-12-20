@@ -5,8 +5,10 @@ using System.Windows.Input;
 using EasyGUI.Events;
 using EasyGUI.Resources;
 using EasyLib.Enums;
+using EasyLib.Files;
 using EasyLib.Job;
 using EasyLib.JobManager;
+using Application = System.Windows.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace EasyGUI;
@@ -20,6 +22,16 @@ public partial class MainWindow
 
     public MainWindow()
     {
+        // checkif os in dark mode
+        if (ConfigManager.Instance.DarkMode)
+        {
+            Application.Current.Resources.MergedDictionaries.RemoveAt(0);
+        }
+        else
+        {
+            Application.Current.Resources.MergedDictionaries.RemoveAt(1);
+        }
+
         InitializeComponent();
         _jobManager = new LocalJobManager();
         foreach (var job in _jobManager.GetJobs())
