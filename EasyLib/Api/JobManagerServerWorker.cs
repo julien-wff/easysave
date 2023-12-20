@@ -21,6 +21,7 @@ public class Worker(TcpClient socket, JobManagerServer server)
         var json = JsonConvert.SerializeObject(request, Formatting.None) + "\n\r";
         var buffer = Encoding.UTF8.GetBytes(json);
         _stream.Write(buffer, 0, buffer.Length);
+        _stream.Flush();
     }
 
     private void Run()
