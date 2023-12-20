@@ -74,26 +74,32 @@ public class RemoteJobManager : JobManager
 
     public override void CancelJob(Job.Job job)
     {
-        throw new NotImplementedException();
+        job.Cancel();
     }
 
     public override void PauseJob(Job.Job job)
     {
-        throw new NotImplementedException();
+        job.Pause();
     }
 
     public override void ResumeJob(Job.Job job)
     {
-        throw new NotImplementedException();
+        job.Resume();
     }
 
     public override void PauseAllJobs()
     {
-        throw new NotImplementedException();
+        foreach (var job in Jobs)
+        {
+            job.Pause();
+        }
     }
 
     public override void ResumeAllJobs()
     {
-        throw new NotImplementedException();
+        foreach (var job in Jobs)
+        {
+            job.Resume();
+        }
     }
 }

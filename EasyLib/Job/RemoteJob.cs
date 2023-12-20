@@ -1,16 +1,19 @@
-﻿using EasyLib.Enums;
+﻿using EasyLib.Api;
+using EasyLib.Enums;
 using EasyLib.Json;
 
 namespace EasyLib.Job;
 
-public class RemoteJob(string name, string source, string destination, JobType type)
+public class RemoteJob(string name, string source, string destination, JobType type, JobManagerClient client)
     : Job(name, source, destination, type)
 {
     /// <summary>
     /// Create a job instance from a JsonJob object
     /// </summary>
     /// <param name="job">JsonJob object</param>
-    public RemoteJob(JsonJob job) : this(job.name, job.source_folder, job.destination_folder, JobType.Full)
+    /// <param name="client">JobManagerClient instance</param>
+    public RemoteJob(JsonJob job, JobManagerClient client)
+        : this(job.name, job.source_folder, job.destination_folder, JobType.Full, client)
     {
         Id = job.id;
         Type = EnumConverter<JobType>.ConvertToEnum(job.type);
@@ -25,21 +28,21 @@ public class RemoteJob(string name, string source, string destination, JobType t
 
     public override bool Resume()
     {
-        throw new NotImplementedException();
+        return client.SendAction(ApiAction.Resume, this);
     }
 
     public override bool Run()
     {
-        throw new NotImplementedException();
+        return client.SendAction(ApiAction.Start, this);
     }
 
     public override bool Pause()
     {
-        throw new NotImplementedException();
+        return client.SendAction(ApiAction.Pause, this);
     }
 
     public override bool Cancel()
     {
-        throw new NotImplementedException();
+        return client.SendAction(ApiAction.Cancel, this);
     }
 }
