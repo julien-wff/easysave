@@ -26,7 +26,7 @@ public class JobManagerServer
         }
     }
 
-    public CancellationTokenSource CancellationTokenSource { get; } = new CancellationTokenSource();
+    public CancellationTokenSource CancellationTokenSource { get; } = new();
 
     private void _waitForConnection()
     {
@@ -34,16 +34,16 @@ public class JobManagerServer
         {
             while (true)
             {
-                TcpClient socket = _serverSocket.AcceptTcpClient();
+                var socket = _serverSocket.AcceptTcpClient();
 
-                Worker worker = new Worker(socket, this);
+                var worker = new Worker(socket, this);
                 AddWorker(worker);
                 worker.SendAllJobs(_localJobManager.GetJobs());
                 if (CancellationTokenSource.IsCancellationRequested)
                     break;
             }
         }
-        catch (SocketException e)
+        catch (SocketException)
         {
             CleanInstance();
         }
@@ -67,13 +67,18 @@ public class JobManagerServer
         }
     }
 
-    public void Broadcast(ApiAction action, JsonJob jsonJob)
+    public void Broadcast(ApiAction action, JsonJob jsonJob, bool jobRunning)
     {
         lock (ServerLockObject)
         {
-            foreach (Worker worker in _workers)
+            foreach (var worker in _workers)
             {
-                worker.Send(new JsonApiRequest() { Action = action, Job = jsonJob });
+                worker.Send(new JsonApiRequest
+                {
+                    Action = action,
+                    Job = jsonJob,
+                    JobRunning = jobRunning
+                });
             }
         }
     }

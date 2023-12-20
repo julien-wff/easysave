@@ -60,7 +60,12 @@ public class Worker(TcpClient socket, JobManagerServer server)
     {
         foreach (var job in jobs)
         {
-            Send(new JsonApiRequest() { Action = ApiAction.Create, Job = job.ToJsonJob() });
+            Send(new JsonApiRequest
+            {
+                Action = ApiAction.Create,
+                Job = job.ToJsonJob(),
+                JobRunning = job.CurrentlyRunning
+            });
         }
     }
 

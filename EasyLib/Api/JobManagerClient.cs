@@ -37,7 +37,7 @@ public class JobManagerClient(RemoteJobManager remoteJobManager, Socket serverSo
     {
         try
         {
-            var json = JsonConvert.SerializeObject(new JsonApiRequest(action, job)) + "\n\r";
+            var json = JsonConvert.SerializeObject(new JsonApiRequest(action, job, job.CurrentlyRunning)) + "\n\r";
             var data = Encoding.ASCII.GetBytes(json);
             serverSocket.Send(data);
             return true;
@@ -60,7 +60,7 @@ public class JobManagerClient(RemoteJobManager remoteJobManager, Socket serverSo
             return;
         }
 
-        var job = _createOrUpdateJob(request.Job);
+        var job = _createOrUpdateJob(request.Job, request.JobRunning);
 
         switch (request.Action)
         {
@@ -93,7 +93,7 @@ public class JobManagerClient(RemoteJobManager remoteJobManager, Socket serverSo
         }
     }
 
-    private Job.Job _createOrUpdateJob(JsonJob jsonJob)
+    private Job.Job _createOrUpdateJob(JsonJob jsonJob, bool running)
     {
         var job = remoteJobManager.GetJobs().Find(j => j.Id == jsonJob.id)
                   ?? new RemoteJob(jsonJob, this);
@@ -108,6 +108,7 @@ public class JobManagerClient(RemoteJobManager remoteJobManager, Socket serverSo
         job.FilesBytesCopied = jsonJob.active_job_info?.bytes_copied ?? 0;
         job.CurrentFileSource = jsonJob.active_job_info?.current_file_source ?? string.Empty;
         job.CurrentFileDestination = jsonJob.active_job_info?.current_file_destination ?? string.Empty;
+        job.CurrentlyRunning = running;
         return job;
     }
 }

@@ -75,7 +75,7 @@ public abstract class Job(
     /// True if the job is currently running, false otherwise
     /// If it's false but the state is not End, it means that the job is paused
     /// </summary>
-    public bool CurrentlyRunning { get; protected set; }
+    public bool CurrentlyRunning { get; set; }
 
     /// <summary>
     /// Subscribers to the job-related events
