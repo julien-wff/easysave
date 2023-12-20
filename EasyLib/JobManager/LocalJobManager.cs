@@ -50,10 +50,7 @@ public sealed class LocalJobManager : JobManager
             StateManager.Instance.WriteJobs(Jobs);
         }
 
-        if (_server != null)
-        {
-            _server.Broadcast(ApiAction.Progress, job.ToJsonJob());
-        }
+        _server?.Broadcast(ApiAction.Progress, job.ToJsonJob());
     }
 
     public override void OnJobStateChange(JobState state, Job.Job job)
@@ -64,16 +61,15 @@ public sealed class LocalJobManager : JobManager
         }
 
         StateManager.Instance.WriteJobs(Jobs);
+
+        _server?.Broadcast(ApiAction.State, job.ToJsonJob());
     }
 
     public override void CleanStop()
     {
         _pauseJobEvent.Stop();
-        if (_server != null)
-        {
-            _server.CancellationTokenSource.Cancel();
-            _server.CleanInstance();
-        }
+        _server?.CancellationTokenSource.Cancel();
+        _server?.CleanInstance();
     }
 
     public override List<Job.Job> GetJobs()
