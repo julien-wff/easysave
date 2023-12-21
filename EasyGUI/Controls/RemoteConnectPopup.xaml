@@ -6,7 +6,8 @@
              xmlns:buttons="clr-namespace:EasyGUI.Controls.Buttons"
              xmlns:resx="clr-namespace:EasyGUI.Resources"
              mc:Ignorable="d"
-             d:DesignHeight="720" d:DesignWidth="1280">
+             d:DesignHeight="720" d:DesignWidth="1280"
+             Loaded="RemoteConnectPopup_OnLoaded">
     <Grid>
         <Grid Background="Black" Opacity=".75" ZIndex="10" />
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center" ZIndex="11" Width="350">
@@ -24,6 +25,12 @@
                         Text="{Binding ErrorMessage, RelativeSource={RelativeSource AncestorType=UserControl}}"
                         Margin="0,0,0,16"
                         Foreground="{StaticResource RedBrush}" />
+
+                    <TextBlock
+                        Margin="0,0,0,16"
+                        x:Name="ServerIpTextBlock"
+                        Visibility="Collapsed"
+                        TextWrapping="Wrap" />
 
                     <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.RemoteConnectPopup_Host}" />
                     <Grid>

@@ -485,6 +485,15 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adresse locale de l&apos;instance : {0}.
+        /// </summary>
+        public static string RemoteConnectPopup_HostAddress {
+            get {
+                return ResourceManager.GetString("RemoteConnectPopup_HostAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connexion à distance.
         /// </summary>
         public static string RemoteConnectPopup_Title {

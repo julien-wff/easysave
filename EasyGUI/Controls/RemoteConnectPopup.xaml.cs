@@ -1,11 +1,13 @@
 using System.ComponentModel;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using EasyGUI.Events;
+using EasyLib.Files;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using Strings = EasyGUI.Resources.Strings;
 
@@ -22,6 +24,13 @@ public partial class RemoteConnectPopup : INotifyPropertyChanged
 
     private static readonly DependencyProperty ErrorMessageProperty = DependencyProperty.Register(
         nameof(ErrorMessage),
+        typeof(string),
+        typeof(RemoteConnectPopup),
+        new PropertyMetadata(default(string))
+    );
+
+    private static readonly DependencyProperty HostIpProperty = DependencyProperty.Register(
+        nameof(HostIp),
         typeof(string),
         typeof(RemoteConnectPopup),
         new PropertyMetadata(default(string))
@@ -52,9 +61,34 @@ public partial class RemoteConnectPopup : INotifyPropertyChanged
         }
     }
 
+    public string? HostIp
+    {
+        get => (string?)GetValue(HostIpProperty);
+        set
+        {
+            SetValue(HostIpProperty, value);
+            Console.WriteLine(value);
+            OnPropertyChanged();
+        }
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public event EventHandler<RemoteConnectEventArgs>? Connect;
+
+    private static string? GetLocalIpAddress()
+    {
+        var host = Dns.GetHostEntry(Dns.GetHostName());
+        foreach (var ip in host.AddressList)
+        {
+            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            {
+                return ip.ToString();
+            }
+        }
+
+        return null;
+    }
 
     private void CancelButton_OnClick(object sender, RoutedEventArgs e)
     {
@@ -127,6 +161,18 @@ public partial class RemoteConnectPopup : INotifyPropertyChanged
                 ? Visibility.Collapsed
                 : Visibility.Visible;
         }
+
+        if (propertyName == nameof(HostIp))
+        {
+            ServerIpTextBlock.Visibility = string.IsNullOrWhiteSpace(HostIp)
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+
+            ServerIpTextBlock.Text = string.Format(
+                Strings.RemoteConnectPopup_HostAddress,
+                HostIp
+            );
+        }
     }
 
     private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -141,6 +187,14 @@ public partial class RemoteConnectPopup : INotifyPropertyChanged
         if (e.Key == Key.Enter)
         {
             ValidateButton_OnClick(sender, e);
+        }
+    }
+
+    private void RemoteConnectPopup_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        if (ConfigManager.Instance.ServerPort is not null)
+        {
+            HostIp = $"{GetLocalIpAddress()}:{ConfigManager.Instance.ServerPort}";
         }
     }
 }
