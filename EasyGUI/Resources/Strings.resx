@@ -223,4 +223,7 @@ We are sorry for this inconvenience.</value>
     <data name="SettingsPopup_ThemeDark" xml:space="preserve">
         <value>Dark</value>
     </data>
+    <data name="SettingsPopup_ServerPort" xml:space="preserve">
+        <value>Server port</value>
+    </data>
 </root>
