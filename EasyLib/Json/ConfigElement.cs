@@ -19,4 +19,5 @@ public struct ConfigElement
     public ulong MaxFileSize { get; init; }
     public int? ServerPort { get; init; }
     public string? ServerIp { get; init; }
+    public string Theme { get; init; }
 }
