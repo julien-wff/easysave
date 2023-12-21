@@ -226,4 +226,7 @@ We are sorry for this inconvenience.</value>
     <data name="SettingsPopup_ServerPort" xml:space="preserve">
         <value>Server port</value>
     </data>
+    <data name="RemoteConnectPopup_HostAddress" xml:space="preserve">
+        <value>Local instance address: {0}</value>
+    </data>
 </root>
