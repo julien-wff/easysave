@@ -53,6 +53,7 @@ public partial class SettingsPopup : INotifyPropertyChanged
     );
 
     private string? _baseCulture;
+    private string? _baseTheme;
 
     public SettingsPopup()
     {
@@ -162,6 +163,13 @@ public partial class SettingsPopup : INotifyPropertyChanged
         EasyCryptoPath = ConfigManager.Instance.EasyCryptoPath ?? "";
         CompanySoftwareProcess = ConfigManager.Instance.CompanySoftwareProcessPath ?? "";
         MaxFileSize = ConfigManager.Instance.MaxFileSize.ToString();
+
+        ThemeComboBox.SelectedIndex = ConfigManager.Instance.Theme switch
+        {
+            "light" => 0,
+            "dark" => 1,
+            _ => 0
+        };
     }
 
     private void ValidateButton_OnClick(object sender, RoutedEventArgs e)
@@ -214,6 +222,15 @@ public partial class SettingsPopup : INotifyPropertyChanged
             ConfigManager.Instance.MaxFileSize = maxFileSize;
         }
 
+        // update dark mode
+
+        ConfigManager.Instance.Theme = (ThemeComboBox.SelectedIndex switch
+        {
+            0 => "light",
+            1 => "dark",
+            _ => "light"
+        });
+
         // Save config
         ConfigManager.Instance.WriteConfig();
 
@@ -221,7 +238,7 @@ public partial class SettingsPopup : INotifyPropertyChanged
         Visibility = Visibility.Collapsed;
 
         // Reload window if the language changed
-        if (_baseCulture != culture.Name)
+        if (_baseCulture != culture.Name || _baseTheme != ConfigManager.Instance.Theme)
         {
             Application.Restart();
             Process.GetCurrentProcess().Kill();
@@ -237,5 +254,6 @@ public partial class SettingsPopup : INotifyPropertyChanged
     {
         UpdateProperties();
         _baseCulture = ConfigManager.Instance.Language.Name;
+        _baseTheme = ConfigManager.Instance.Theme;
     }
 }

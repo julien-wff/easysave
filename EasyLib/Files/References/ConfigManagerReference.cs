@@ -46,7 +46,7 @@ public class ConfigManagerReference
     public ulong MaxFileSize { get; set; } = 1000000;
     public int? ServerPort { get; set; }
     public string? ServerIp { get; set; }
-    public bool DarkMode { get; set; } = false;
+    public string Theme { get; set; } = "light";
 
     private static string GenerateRandomKey()
     {
@@ -93,7 +93,7 @@ public class ConfigManagerReference
         PriorityFileExtensions = jsonConfig.PriorityFileExtensions ?? [];
         ServerPort = jsonConfig.ServerPort;
         ServerIp = jsonConfig.ServerIp;
-        DarkMode = jsonConfig.DarkMode;
+        Theme = jsonConfig.Theme;
 
         // If the key was null, write the new key
         if (xorKey == null)
@@ -119,7 +119,7 @@ public class ConfigManagerReference
             MaxFileSize = MaxFileSize,
             ServerPort = ServerPort,
             ServerIp = ServerIp,
-            DarkMode = DarkMode
+            Theme = Theme
         };
         JsonFileUtils.WriteJson(_configFilePath, jsonConfig);
     }
@@ -153,7 +153,7 @@ public class ConfigManagerReference
         sb.AppendLine($"MaxFileSize: {MaxFileSize}");
         sb.AppendLine($"ServerPort: {ServerPort}");
         sb.AppendLine($"ServerIp: {ServerIp ?? "<null>"}");
-        sb.AppendLine($"DarkMode: {DarkMode}");
+        sb.AppendLine($"DarkMode: {Theme}");
         return sb.ToString();
     }
 }

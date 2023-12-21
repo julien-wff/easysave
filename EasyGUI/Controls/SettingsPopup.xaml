@@ -87,6 +87,16 @@
                         <TextBox
                             Text="{Binding MaxFileSize, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             Margin="0,0,0,16" />
+                        
+                        <TextBlock Margin="0,0,0,4" Text="{x:Static resx:Strings.SettingsPopup_Theme}" />
+                        <ComboBox Margin="0,0,0,16" x:Name="ThemeComboBox">
+                            <ComboBoxItem>
+                                <TextBlock Text="{x:Static resx:Strings.SettingsPopup_ThemeLight}" />
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock Text="{x:Static resx:Strings.SettingsPopup_ThemeDark}" />
+                            </ComboBoxItem>
+                        </ComboBox>
 
                         <Grid>
                             <Grid.ColumnDefinitions>

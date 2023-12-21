@@ -214,4 +214,13 @@ We are sorry for this inconvenience.</value>
     <data name="Checks_DestinationNotEmpty" xml:space="preserve">
         <value>Destination folder is not empty.</value>
     </data>
+    <data name="SettingsPopup_Theme" xml:space="preserve">
+        <value>Interface theme</value>
+    </data>
+    <data name="SettingsPopup_ThemeLight" xml:space="preserve">
+        <value>Light</value>
+    </data>
+    <data name="SettingsPopup_ThemeDark" xml:space="preserve">
+        <value>Dark</value>
+    </data>
 </root>

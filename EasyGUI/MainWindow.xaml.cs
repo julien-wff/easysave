@@ -23,7 +23,7 @@ public partial class MainWindow
     public MainWindow()
     {
         // checkif os in dark mode
-        if (ConfigManager.Instance.DarkMode)
+        if (ConfigManager.Instance.Theme == "dark")
         {
             Application.Current.Resources.MergedDictionaries.RemoveAt(0);
         }

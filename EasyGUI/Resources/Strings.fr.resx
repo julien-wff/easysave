@@ -214,4 +214,13 @@ Nous nous excusons pour la gêne occasionnée.</value>
     <data name="Checks_DestinationNotEmpty" xml:space="preserve">
         <value>Dossier de destination non vide.</value>
     </data>
+    <data name="SettingsPopup_Theme" xml:space="preserve">
+        <value>Thème de l'interface</value>
+    </data>
+    <data name="SettingsPopup_ThemeLight" xml:space="preserve">
+        <value>Claire</value>
+    </data>
+    <data name="SettingsPopup_ThemeDark" xml:space="preserve">
+        <value>Sombre</value>
+    </data>
 </root>

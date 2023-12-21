@@ -602,6 +602,33 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thème de l&apos;interface.
+        /// </summary>
+        public static string SettingsPopup_Theme {
+            get {
+                return ResourceManager.GetString("SettingsPopup_Theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sombre.
+        /// </summary>
+        public static string SettingsPopup_ThemeDark {
+            get {
+                return ResourceManager.GetString("SettingsPopup_ThemeDark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Claire.
+        /// </summary>
+        public static string SettingsPopup_ThemeLight {
+            get {
+                return ResourceManager.GetString("SettingsPopup_ThemeLight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clé de chiffrement.
         /// </summary>
         public static string SettingsPopup_XorKey {
