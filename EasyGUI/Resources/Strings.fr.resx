@@ -223,4 +223,7 @@ Nous nous excusons pour la gêne occasionnée.</value>
     <data name="SettingsPopup_ThemeDark" xml:space="preserve">
         <value>Sombre</value>
     </data>
+    <data name="SettingsPopup_ServerPort" xml:space="preserve">
+        <value>Port du server</value>
+    </data>
 </root>
