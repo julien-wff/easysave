@@ -18,7 +18,7 @@ namespace EasyGUI;
 /// </summary>
 public partial class MainWindow
 {
-    private readonly JobManager _jobManager;
+    private JobManager _jobManager;
 
     public MainWindow()
     {
@@ -34,10 +34,7 @@ public partial class MainWindow
 
         InitializeComponent();
         _jobManager = new LocalJobManager();
-        foreach (var job in _jobManager.GetJobs())
-        {
-            Jobs.Add(job);
-        }
+        _refreshJobs();
     }
 
     public ObservableCollection<Job> Jobs { get; } = new();
@@ -207,5 +204,41 @@ public partial class MainWindow
     private void RemoteConnectPopup_OnConnect(object? sender, RemoteConnectEventArgs e)
     {
         var endpoint = e.EndPoint;
+
+        // Instantiate and configure a new remote job manager
+        var remoteJobManager = new RemoteJobManager();
+        remoteJobManager.JobListChanged += _refreshJobs;
+
+        // Connect to the remote job manager
+        var connected = remoteJobManager.Connect(endpoint);
+        if (!connected)
+        {
+            remoteJobManager.JobListChanged -= _refreshJobs;
+            RemoteConnectPopup.ErrorMessage = Strings.RemoteConnectPopup_Error_HostUnreachable;
+            return;
+        }
+
+        // Remove the old job manager and delete the jobs
+        _jobManager.CleanStop();
+        Jobs.Clear();
+
+        // Change the job manager
+        _jobManager = remoteJobManager;
+
+        // Close the popup
+        RemoteConnectPopup.Visibility = Visibility.Collapsed;
+    }
+
+    private void _refreshJobs(object? sender = null, EventArgs? e = null)
+    {
+        var jobs = _jobManager.GetJobs();
+        Dispatcher.Invoke(() =>
+        {
+            Jobs.Clear();
+            foreach (var job in jobs)
+            {
+                Jobs.Add(job);
+            }
+        });
     }
 }
