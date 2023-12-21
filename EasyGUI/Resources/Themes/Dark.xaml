@@ -8,8 +8,11 @@
 
     <Color x:Key="GrayColor">#C1C1C7</Color>
     <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource GrayColor}"/>
+    
+    <Color x:Key="ButtonColor">#F7F7FB</Color>
+    <SolidColorBrush x:Key="ButtonColorBrush" Color="{StaticResource ButtonColor}"/>
 
-    <Color x:Key="TextWhiteColor">#F7F7FB</Color>
+    <Color x:Key="TextWhiteColor">#2E2E33</Color>
     <SolidColorBrush x:Key="TextWhiteBrush" Color="{StaticResource TextWhiteColor}"/>
 
     <Color x:Key="TextBlackColor">#F7F7FB</Color>
