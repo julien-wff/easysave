@@ -52,6 +52,13 @@ public partial class SettingsPopup : INotifyPropertyChanged
         new PropertyMetadata(default(string))
     );
 
+    private static readonly DependencyProperty ServerPortProperty = DependencyProperty.Register(
+        nameof(ServerPort),
+        typeof(int?),
+        typeof(SettingsPopup),
+        new PropertyMetadata(default(int?))
+    );
+
     private string? _baseCulture;
     private string? _baseTheme;
 
@@ -120,6 +127,16 @@ public partial class SettingsPopup : INotifyPropertyChanged
         }
     }
 
+    public int ServerPort
+    {
+        get => (int)GetValue(ServerPortProperty);
+        set
+        {
+            SetValue(ServerPortProperty, value);
+            OnPropertyChanged();
+        }
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -170,6 +187,7 @@ public partial class SettingsPopup : INotifyPropertyChanged
             "dark" => 1,
             _ => 0
         };
+        ServerPort = (int)ConfigManager.Instance.ServerPort!;
     }
 
     private void ValidateButton_OnClick(object sender, RoutedEventArgs e)
@@ -230,6 +248,8 @@ public partial class SettingsPopup : INotifyPropertyChanged
             1 => "dark",
             _ => "light"
         });
+
+        ConfigManager.Instance.ServerPort = ServerPort;
 
         // Save config
         ConfigManager.Instance.WriteConfig();

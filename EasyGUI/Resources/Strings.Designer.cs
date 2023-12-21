@@ -593,6 +593,15 @@ namespace EasyGUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server port.
+        /// </summary>
+        public static string SettingsPopup_ServerPort {
+            get {
+                return ResourceManager.GetString("SettingsPopup_ServerPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string SettingsPopup_Settings {
