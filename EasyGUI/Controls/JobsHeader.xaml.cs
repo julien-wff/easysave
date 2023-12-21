@@ -51,6 +51,13 @@ public partial class JobsHeader : INotifyPropertyChanged
         new PropertyMetadata(default(ObservableCollection<Job>))
     );
 
+    private static readonly DependencyProperty IsRemoteProperty = DependencyProperty.Register(
+        nameof(IsRemote),
+        typeof(bool),
+        typeof(JobsHeader),
+        new PropertyMetadata(default(bool))
+    );
+
     public JobsHeader()
     {
         InitializeComponent();
@@ -72,6 +79,16 @@ public partial class JobsHeader : INotifyPropertyChanged
         set
         {
             SetValue(SelectedJobsProperty, value);
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsRemote
+    {
+        get => (bool)GetValue(IsRemoteProperty);
+        set
+        {
+            SetValue(IsRemoteProperty, value);
             OnPropertyChanged();
         }
     }
@@ -111,7 +128,7 @@ public partial class JobsHeader : INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        if (propertyName == nameof(SelectedJobs))
+        if (propertyName is nameof(SelectedJobs) or nameof(IsRemote))
         {
             UpdateButtonsDisplay();
         }
@@ -123,6 +140,8 @@ public partial class JobsHeader : INotifyPropertyChanged
             SelectedJobs.Count > 1 && SelectedJobs.All(j => j.State is JobState.End or JobState.Paused)
                 ? Visibility.Visible
                 : Visibility.Collapsed;
+
+        ConnectButton.Visibility = IsRemote ? Visibility.Collapsed : Visibility.Visible;
     }
 
     private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)

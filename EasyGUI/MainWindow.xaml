@@ -12,6 +12,7 @@
         <StackPanel Margin="16">
             <controls:Header Margin="0,0,0,32" />
             <controls:JobsHeader
+                x:Name="JobsHeader"
                 Jobs="{Binding Jobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                 SelectedJobs="{Binding SelectedJobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                 CreateButtonClick="JobsHeader_OnCreateButtonClick"

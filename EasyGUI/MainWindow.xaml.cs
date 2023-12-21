@@ -213,6 +213,7 @@ public partial class MainWindow
 
         // Change the job manager
         _jobManager = remoteJobManager;
+        JobsHeader.IsRemote = true;
 
         // Close the popup
         RemoteConnectPopup.Visibility = Visibility.Collapsed;
