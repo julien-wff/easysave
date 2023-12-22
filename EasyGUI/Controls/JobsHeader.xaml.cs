@@ -142,6 +142,7 @@ public partial class JobsHeader : INotifyPropertyChanged
                 : Visibility.Collapsed;
 
         ConnectButton.Visibility = IsRemote ? Visibility.Collapsed : Visibility.Visible;
+        CreateButton.Visibility = IsRemote ? Visibility.Collapsed : Visibility.Visible;
     }
 
     private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)

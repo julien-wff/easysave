@@ -21,10 +21,10 @@
             VerticalAlignment="Center" />
 
         <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
-            <buttons:StartButton x:Name="StartButton" Click="StartButton_OnClick"/>
-            <buttons:ConnectButton x:Name="ConnectButton" Margin="8,0,0,0" Click="ConnectButton_OnClick"/>
+            <buttons:StartButton x:Name="StartButton" Click="StartButton_OnClick" />
+            <buttons:ConnectButton x:Name="ConnectButton" Margin="8,0,0,0" Click="ConnectButton_OnClick" />
             <buttons:SettingsButton Margin="8,0,0,0" Click="SettingsButton_OnClick" />
-            <buttons:CreateButton Margin="8,0,0,0" Click="CreateButton_OnClick" />
+            <buttons:CreateButton x:Name="CreateButton" Margin="8,0,0,0" Click="CreateButton_OnClick" />
         </StackPanel>
     </Grid>
 </UserControl>
