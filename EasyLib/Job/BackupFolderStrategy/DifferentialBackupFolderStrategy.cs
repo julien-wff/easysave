@@ -16,13 +16,14 @@ public class DifferentialBackupFolderStrategy : IBackupFolderStrategy
             1 =>
             [
                 folders[0],
-                [finalDestinationPath + Path.DirectorySeparatorChar + Path.GetDirectoryName(finalDestinationPath)], []
+                [finalDestinationPath + Path.DirectorySeparatorChar + Path.GetDirectoryName(finalDestinationPath)],
+                [finalDestinationPath]
             ],
             _ =>
             [
                 Directory.GetDirectories(folders[0][folderCount - 1]).Append(folders[0][0]).ToList(),
                 [finalDestinationPath + Path.DirectorySeparatorChar + Path.GetDirectoryName(finalDestinationPath)],
-                [folders[0][folderCount - 2]]
+                [folders[0][folderCount - 2] + Path.DirectorySeparatorChar]
             ]
         };
     }
