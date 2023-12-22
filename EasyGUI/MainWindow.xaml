@@ -20,6 +20,7 @@
                 ConnectButtonClick="JobsHeader_OnConnectButtonClick"
                 StartButtonClick="JobsHeader_OnStartButtonClick" />
             <controls:JobsList
+                x:Name="JobsList"
                 Jobs="{Binding Jobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                 SelectedJobs="{Binding SelectedJobs, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                 JobEdited="JobsList_OnJobEdited"

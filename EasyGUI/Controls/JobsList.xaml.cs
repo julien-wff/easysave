@@ -23,6 +23,13 @@ public partial class JobsList : INotifyPropertyChanged
         new PropertyMetadata(default(ObservableCollection<Job>))
     );
 
+    public static readonly DependencyProperty IsRemoteProperty = DependencyProperty.Register(
+        nameof(IsRemote),
+        typeof(bool),
+        typeof(JobsList),
+        new PropertyMetadata(default(bool))
+    );
+
     public JobsList()
     {
         DataContext = this;
@@ -45,6 +52,16 @@ public partial class JobsList : INotifyPropertyChanged
         set
         {
             SetValue(SelectedJobsProperty, value);
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsRemote
+    {
+        get => (bool)GetValue(IsRemoteProperty);
+        set
+        {
+            SetValue(IsRemoteProperty, value);
             OnPropertyChanged();
         }
     }
