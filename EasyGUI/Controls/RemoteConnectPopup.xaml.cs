@@ -67,7 +67,6 @@ public partial class RemoteConnectPopup : INotifyPropertyChanged
         set
         {
             SetValue(HostIpProperty, value);
-            Console.WriteLine(value);
             OnPropertyChanged();
         }
     }

@@ -38,6 +38,13 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         new PropertyMetadata(default(ObservableCollection<Job>))
     );
 
+    public static readonly DependencyProperty IsRemoteProperty = DependencyProperty.Register(
+        nameof(IsRemote),
+        typeof(bool),
+        typeof(JobDisplay),
+        new PropertyMetadata(default(bool))
+    );
+
     private readonly object _errorMessageLock = new();
 
     private string? _errorMessage;
@@ -78,6 +85,16 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
         set
         {
             SetValue(JobProgressTextProperty, value);
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsRemote
+    {
+        get => (bool)GetValue(IsRemoteProperty);
+        set
+        {
+            SetValue(IsRemoteProperty, value);
             OnPropertyChanged();
         }
     }
@@ -168,9 +185,9 @@ public partial class JobDisplay : INotifyPropertyChanged, IJobStatusSubscriber
     private void UpdateButtons()
     {
         var paused = Job.State != JobState.End && !Job.CurrentlyRunning;
-        SetElementVisibility(EditButton, Job.State == JobState.End);
         SetElementVisibility(StartButton, Job.State == JobState.End);
-        SetElementVisibility(DeleteButton, Job.State == JobState.End);
+        SetElementVisibility(EditButton, Job.State == JobState.End && !IsRemote);
+        SetElementVisibility(DeleteButton, Job.State == JobState.End && !IsRemote);
         SetElementVisibility(ResumeButton, paused);
         SetElementVisibility(DiscardButton, paused);
         SetElementVisibility(PauseButton, Job.State != JobState.End && Job.CurrentlyRunning);
