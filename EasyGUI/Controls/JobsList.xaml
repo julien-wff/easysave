@@ -32,6 +32,7 @@
                         <local:JobDisplay
                             Job="{Binding}"
                             SelectedJobs="{Binding SelectedJobs, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            IsRemote="{Binding IsRemote, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             JobEdited="JobDisplay_OnJobEdited"
                             JobResumed="JobDisplay_OnJobResumed"
                             JobDeleted="JobDisplay_OnJobDeleted"
